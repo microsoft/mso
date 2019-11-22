@@ -1,0 +1,20 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+add_subdirectory(compilerAdapters)
+add_subdirectory(comUtil)
+add_subdirectory(cppExtensions)
+add_subdirectory(cppType)
+add_subdirectory(crash)
+add_subdirectory(debugAssertApi)
+add_subdirectory(eventWaitHandle)
+add_subdirectory(functional)
+add_subdirectory(memoryApi)
+add_subdirectory(motifCpp)
+add_subdirectory(oacr)
+add_subdirectory(oacr_posix)
+add_subdirectory(object)
+add_subdirectory(platformAdapters)
+add_subdirectory(platform_posix)
+add_subdirectory(smartPtr)
+add_subdirectory(tagUtils)

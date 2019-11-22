@@ -1,0 +1,2 @@
+EXPORTS
+#include <core/memoryApi.def>

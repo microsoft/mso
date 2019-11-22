@@ -1,0 +1,3 @@
+
+// liblet_memoryapi  isn't allowed to use the sharedpch
+GCC_PREFIX_HEADER = 

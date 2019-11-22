@@ -1,14 +1,84 @@
+# Mso C++ Library
 
-# Contributing
+This project provides parts of C++ library which has been
+used extensively by Microsoft Office Apps. It can make it
+easier to share robust cross-platform C++ code between teams
+within Microsoft and outside.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+Mso C++ Library currently contains following components:
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+* Mso::UnknownObject
+* Mso::Future
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+## Development Requirements
+
+### Windows
+
+* Visual Studio 2019
+
+### MacOS
+
+* XCode
+
+### Linux
+
+* Visual Studio Code
+
+## Build Environment Preparation Steps
+
+These steps need to be performed only once.
+
+1. (Windows) Open VS Developer Command Prompt for VS 2019
+
+2. Create a "build" folder
+
+```bash
+mkdir build
+cd build
+```
+
+3. Configure the build.
+
+```bash
+cmake ..
+```
+
+## Build
+
+1. (Windows) Open VS Developer Command Prompt for VS 2019
+
+2. Navigate to "build" folder
+
+```bash
+cd build
+```
+
+3. Build
+
+```bash
+cmake --build .
+```
+
+## Run Tests
+
+1. (Windows) Open VS Developer Command Prompt for VS 2019
+
+2. Navigate to "build" folder
+
+```bash
+cd build
+```
+
+3. Run Unit Tests
+
+```bash
+ctest -C Debug
+```
+
+## Code of Conduct
+
+See [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Contributing
+
+See [Contributing](Contributing.md)

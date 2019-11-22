@@ -1,0 +1,20 @@
+// liblet_cppextensions is not allowed to use a shared pch
+GCC_PREFIX_HEADER =
+
+// Linking static libs and frameworks for cppextensions unit test
+TARGET_BUILD_DIR = $(MS_BUILD_UNITTEST_DIR)
+
+LIBRARY_SEARCH_PATHS = $(inherited) $(PLATFORM_STATIC_LIB_PRODUCTS_DIR)
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(MS_BUILD_INTERNAL_FRAMEWORKS_DIR)
+MS_TARGET_HSP_0 = $(MS_PATH_MOTIFUNITTEST)
+
+MS_LIB_0 = -lmbusafecrt
+MS_LIB_5 = -lwchar_crt
+MS_LIB_10 = -luuid
+MS_LIB_15 = -lmotifcpplib_mac
+
+MS_FRAMEWORK_0 = $(LIBLET_MOTIFCPP_FRAMEWORKS)
+
+MS_CLANG_WARNINGS_TARGET = -Wno-ignored-attributes
+
+EXPORTED_SYMBOLS_FILE = $(MS_PATH_WAREHOUSE)/libletmake/cross/cross/x-none/liblet_unit_test.exp
