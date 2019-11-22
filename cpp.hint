@@ -1,0 +1,54 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define _SA_deprecated_(NewFunctionName)
+#define ACTION_TEMPLATE(name, template_params, value_params)
+#define EXPECT_ANY_THROW(statement)
+#define EXPECT_DEATH_IF_SUPPORTED(statement, regex)
+#define EXPECT_FALSE(condition)
+#define EXPECT_FATAL_FAILURE(statement, substr)
+#define EXPECT_NONFATAL_FAILURE(statement, substr)
+#define EXPECT_TRUE(condition)
+#define GMOCK_FLAG(name)
+#define GTEST_API_
+#define GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+#define GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_
+#define GTEST_DISABLE_MSC_DEPRECATED_POP_()
+#define GTEST_DISABLE_MSC_WARNINGS_POP_()
+#define GTEST_DISABLE_MSC_WARNINGS_PUSH_(warnings)
+#define GTEST_EXCLUSIVE_LOCK_REQUIRED_(locks)
+#define GTEST_FLAG(name) name
+#define GTEST_IMPL_CMP_HELPER_(op_name, op)
+#define GTEST_LOCK_EXCLUDED_(locks)
+#define GTEST_NO_INLINE_
+#define GTEST_REMOVE_REFERENCE_AND_CONST_(T)
+#define INSTANTIATE_TEST_SUITE_P(prefix, test_suite_name, __VA_ARGS__)
+#define internal
+#define LIBLET_PUBLICAPI
+#define MATCHER(name, description)
+#define MATCHER_P(name, p0, description)
+#define MATCHER_P2(name, p0, p1, description)
+#define MATCHER_P3(name, p0, p1, p2, description) 
+#define MATCHER_P4(name, p0, p1, p2, p3, description) 
+#define MATCHER_P5(name, p0, p1, p2, p3, p4, description) 
+#define MATCHER_P6(name, p0, p1, p2, p3, p4, p5, description) 
+#define MATCHER_P7(name, p0, p1, p2, p3, p4, p5, p6, description)
+#define MATCHER_P8(name, p0, p1, p2, p3, p4, p5, p6, p7, description)
+#define MATCHER_P9(name, p0, p1, p2, p3, p4, p5, p6, p7, p8, description)
+#define MATCHER_P10(name, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, description)
+#define MSO_CLASS_GUID(type, guidString)
+#define MSO_STRUCT_GUID(type, guidString)
+#define MSOAPI_(type)
+#define MSOCPPAPI_(t)
+#define MSONOEXCEPT
+#define namespace
+#define OACR_CAPTURE_CALLS_FILE_LINE(tag)
+#define OACR_WARNING_DISABLE(cWarning, comment)
+#define OACR_WARNING_POP
+#define OACR_WARNING_PUSH
+#define OACR_WARNING_SUPPRESS(cWarning, comment)
+#define STATIC_OPERATOR_NEW
+#define stderr
+#define TEST(test_suite_name, test_name)
+#define TestClassComponent(x1, x2)
+#define THOUSAND_TESTS_(test_case_name_prefix)
