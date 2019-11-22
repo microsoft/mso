@@ -8,7 +8,7 @@ within Microsoft and outside.
 Mso C++ Library currently contains following components:
 
 * Mso::UnknownObject
-* Mso::Future
+* Mso::Functor
 
 ## Development Requirements
 
@@ -81,4 +81,4 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Contributing
 
-See [Contributing](Contributing.md)
+See [Contributing](CONTRIBUTING.md)
