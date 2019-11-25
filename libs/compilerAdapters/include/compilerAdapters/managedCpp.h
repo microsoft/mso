@@ -14,16 +14,16 @@
 	The pragmas below allow explicitly indicate that code is unmanaged, but these
 	pragmas are not recognized by Clang compiler.
  */
-#if !defined(__clang__) && !defined(__actasmsvc__)
+#if !defined(__clang__)
 
 #define MSO_PRAGMA_MANAGED_PUSH_OFF __pragma(managed(push, off))
 #define MSO_PRAGMA_MANAGED_POP      __pragma(managed(pop))
 
-#else // !defined(__clang__) && !defined(__actasmsvc__)
+#else // !defined(__clang__)
 
 #define MSO_PRAGMA_MANAGED_PUSH_OFF
 #define MSO_PRAGMA_MANAGED_POP
 
-#endif // !defined(__clang__) && !defined(__actasmsvc__)
+#endif // !defined(__clang__)
 
 #endif // COMPILERADAPTERS_MANAGEDCPP_H
