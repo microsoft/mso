@@ -7,7 +7,7 @@
 #ifndef LIBLET_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
 #define LIBLET_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
 
-#if defined(__clang__) || defined(__actasmsvc__)
+#if defined(__clang__)
 
 #define COMPILER_WARNING_PUSH() __pragma(clang diagnostic push)
 #define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn) COMPILER_WARNING_DISABLE_CLANG(clangWarn)
