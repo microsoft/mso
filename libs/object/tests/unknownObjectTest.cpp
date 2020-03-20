@@ -608,7 +608,8 @@ struct AsyncDeleter2
 		try
 		{
 			// Ideally we want to show here how to use dispatch queues, but we cannot add DispatchQueue liblet dependency here.
-			std::async(std::launch::async, [obj]() noexcept { TObject::RefCountPolicy::template Delete(obj); });
+			auto x = std::async(std::launch::async, [obj]() noexcept { TObject::RefCountPolicy::template Delete(obj); });
+			x.wait();
 		}
 		catch (...)
 		{
