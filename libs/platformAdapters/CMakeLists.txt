@@ -6,6 +6,7 @@ liblet(platformAdapters
     Mso::compilerAdapters
     Mso::debugAssertApi
     Mso::oacr
-    Mso::platform_posix
     Mso::tagUtils
+  DEPENDS_POSIX
+    Mso::platform_posix
 )
