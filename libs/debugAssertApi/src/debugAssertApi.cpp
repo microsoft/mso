@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 #include <compilerAdapters/cppMacrosDebug.h>
+#include <compilerAdapters/functionDecorations.h>
 #include <cppExtensions/autoRestore.h>
 #include <debugAssertApi/debugAssertApi.h>
 #include <debugAssertApi/debugAssertDisabler.h>

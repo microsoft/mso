@@ -203,4 +203,27 @@
 #define MSO_STATIC_FRIEND friend static
 #endif
 
+
+// Don't use any of these macros, they are being eliminated
+// The definitions are a mess to prevent removed macros from sneaking back in
+
+#if defined(__cplusplus) && !defined(__clang__)
+
+/* SSS_WARNINGS_OFF */
+#define MSOCPPAPI_(t)     extern "C++" __declspec(nothrow) t __cdecl
+#if defined(_M_X64)
+#define MSOAPI_(t)       MSOEXTERN_C  __declspec(nothrow) t __fastcall
+#else
+#define MSOAPI_(t)       MSOEXTERN_C  __declspec(nothrow) t __stdcall
+#endif
+/* SSS_WARNINGS_ON */
+#else
+#define MSOCPPAPI_(t)     extern "C++" t __cdecl
+#if defined(_M_X64)
+#define MSOAPI_(t)       MSOEXTERN_C t __fastcall
+#else
+#define MSOAPI_(t)       MSOEXTERN_C t __stdcall
+#endif
+#endif
+
 #endif

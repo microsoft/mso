@@ -13,6 +13,7 @@
 #define LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
 #include <cstdarg>
 #include <cstdint>
+#include <debugAssertApi/debugAssertApi.h>
 
 /**
 Mappings for core Debug asserts.
