@@ -245,7 +245,7 @@ private:
 	AssertListener m_listener;
 };
 
-using AssertHandler = AssertResult(*)(const MsoAssertParams& params, const char* szMsg);
+using AssertHandler = int32_t(*)(const MsoAssertParams& params, const char* szMsg);
 
 /**
 	Set the assert handler for this process. The previous handler is returned.

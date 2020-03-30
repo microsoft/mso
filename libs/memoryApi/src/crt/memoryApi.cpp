@@ -61,9 +61,9 @@ void Free(void* pv) noexcept
 }
 
 #ifdef DEBUG
-(void) RegisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
+void RegisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
 
-(void) UnregisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
+void UnregisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
 #endif 
 
 }} // Mso::Memory

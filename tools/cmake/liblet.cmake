@@ -272,6 +272,10 @@ function(_liblet_set_platform_definitions TARGET)
     message(FATAL_ERROR "Unknown MSO_LIBLET_PLATFORM: \"${MSO_LIBLET_PLATFORM}\"")
   endif()
 
+  if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    target_compile_definitions(${TARGET} PRIVATE DEBUG _DEBUG)
+  endif()
+
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(${TARGET}
       PRIVATE
