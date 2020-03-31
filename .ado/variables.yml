@@ -1,0 +1,5 @@
+variables:
+  BuildWindowsSDK: 10.0.18362.0
+  runCodesignValidationInjection: false
+  skipComponentGovernanceDetection: true
+#  system.debug: true
