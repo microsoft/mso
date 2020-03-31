@@ -18,72 +18,71 @@
 // UNTAGGED that can conflict with tagutils.h.
 extern "C"
 {
-    typedef UInt32 nl_assert_tag_t;
-    
-    Boolean NLFAssertsEnabled();
-    void NLEnableAllAsserts(Boolean inEnabled);
+  typedef UInt32 nl_assert_tag_t;
 
-    Boolean NLIsAssertEnabledByTag(nl_assert_tag_t inTag);
-    void NLDisableAssertByTag(nl_assert_tag_t inTag);
-    void NLEnableAssertByTag(nl_assert_tag_t inTag);
+  Boolean NLFAssertsEnabled();
+  void NLEnableAllAsserts(Boolean inEnabled);
+
+  Boolean NLIsAssertEnabledByTag(nl_assert_tag_t inTag);
+  void NLDisableAssertByTag(nl_assert_tag_t inTag);
+  void NLEnableAssertByTag(nl_assert_tag_t inTag);
 }
 #endif
 
 namespace Mso {
 
 #if DEBUG
-    class IgnoreAllAssertsPlatformImpl
+class IgnoreAllAssertsPlatformImpl
+{
+public:
+  IgnoreAllAssertsPlatformImpl() : m_nlEnabled(NLFAssertsEnabled())
+  {
+    NLEnableAllAsserts(false);
+  }
+
+  ~IgnoreAllAssertsPlatformImpl()
+  {
+    NLEnableAllAsserts(m_nlEnabled);
+  }
+
+private:
+  const bool m_nlEnabled;
+};
+
+class IgnoreAssertPlatformImpl
+{
+public:
+  IgnoreAssertPlatformImpl(DWORD tag) : m_tag(tag), m_tagEnabled(NLIsAssertEnabledByTag(tag))
+  {
+    if (m_tagEnabled)
     {
-    public:
-        IgnoreAllAssertsPlatformImpl() :
-            m_nlEnabled(NLFAssertsEnabled())
-        {
-            NLEnableAllAsserts(false);
-        }
-        
-        ~IgnoreAllAssertsPlatformImpl()
-        {
-            NLEnableAllAsserts(m_nlEnabled);
-        }
-        
-    private:
-        const bool m_nlEnabled;
-    };
-    
-    class IgnoreAssertPlatformImpl
+      NLDisableAssertByTag(m_tag);
+    }
+  }
+
+  ~IgnoreAssertPlatformImpl()
+  {
+    if (m_tagEnabled)
     {
-    public:
-        IgnoreAssertPlatformImpl(DWORD tag) :
-            m_tag(tag),
-            m_tagEnabled(NLIsAssertEnabledByTag(tag))
-        {
-            if (m_tagEnabled)
-            {
-                NLDisableAssertByTag(m_tag);
-            }
-        }
-        
-        ~IgnoreAssertPlatformImpl()
-        {
-            if (m_tagEnabled)
-            {
-                NLEnableAssertByTag(m_tag);
-            }
-        }
-        
-    private:
-        const bool m_tagEnabled;
-        const nl_assert_tag_t m_tag;
-    };
+      NLEnableAssertByTag(m_tag);
+    }
+  }
+
+private:
+  const bool m_tagEnabled;
+  const nl_assert_tag_t m_tag;
+};
 #else // DEBUG
-    class IgnoreAllAssertsPlatformImpl {};
-    class IgnoreAssertPlatformImpl
-    {
-    public:
-        IgnoreAssertPlatformImpl(uint32_t) {}
-    };
+class IgnoreAllAssertsPlatformImpl
+{
+};
+class IgnoreAssertPlatformImpl
+{
+public:
+  IgnoreAssertPlatformImpl(uint32_t) {}
+};
 #endif
-    
-} // Mso
+
+} // namespace Mso
 
 #endif // MOTIFCPP_ASSERT_IGNOREPLAT_APPLE_H

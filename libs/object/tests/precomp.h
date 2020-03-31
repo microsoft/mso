@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "targetVer.h"
 #include <functional>
+#include "targetVer.h"
 
 // Headers for CppUnitTest
 #include <motifCpp/gTestAdapter.h>

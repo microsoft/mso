@@ -7,22 +7,24 @@
 #ifdef __cplusplus
 #include <compilerAdapters/functionDecorations.h>
 
-namespace Mso {
-namespace Memory {
+namespace Mso { namespace Memory {
 
 /**
-	Is the ShutdownLeakScope currently active?
+  Is the ShutdownLeakScope currently active?
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI bool IsInShutdownLeakScope() noexcept;
 #else
-inline bool IsInShutdownLeakScope() noexcept { return false; }
+inline bool IsInShutdownLeakScope() noexcept
+{
+  return false;
+}
 #endif
 
 /**
-	Enter the scope so allocations on this thread should be marked for shutdown leak detection.
-	Scope can be entered a limited number of times.
-	Frames to skip is used to track which caller address is associated with this Enter.
+  Enter the scope so allocations on this thread should be marked for shutdown leak detection.
+  Scope can be entered a limited number of times.
+  Frames to skip is used to track which caller address is associated with this Enter.
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI void EnterShutdownLeakScope(unsigned int framesToSkip = 0) noexcept;
@@ -31,7 +33,7 @@ inline void EnterShutdownLeakScope(unsigned int /*framesToSkip*/ = 0) noexcept {
 #endif
 
 /**
-	Leave
+  Leave
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI void LeaveShutdownLeakScope() noexcept;
@@ -40,18 +42,21 @@ inline void LeaveShutdownLeakScope() noexcept {}
 #endif
 
 /**
-	Is the IgnoreLeakScope currently active?
+  Is the IgnoreLeakScope currently active?
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI bool IsInIgnoreLeakScope() noexcept;
 #else
-inline bool IsInIgnoreLeakScope() noexcept { return false; }
+inline bool IsInIgnoreLeakScope() noexcept
+{
+  return false;
+}
 #endif
 
 /**
-	Enter the scope so allocations on this thread should be ignored for leak detection.
-	Scope can be entered a limited number of times.
-	Frames to skip is used to track which caller address is associated with this Enter.
+  Enter the scope so allocations on this thread should be ignored for leak detection.
+  Scope can be entered a limited number of times.
+  Frames to skip is used to track which caller address is associated with this Enter.
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI void EnterIgnoreLeakScope(unsigned int framesToSkip = 0) noexcept;
@@ -60,7 +65,7 @@ inline void EnterIgnoreLeakScope(unsigned int /*framesToSkip*/ = 0) noexcept {}
 #endif
 
 /**
-	Leave
+  Leave
 */
 #ifdef DEBUG
 LIBLET_PUBLICAPI void LeaveIgnoreLeakScope() noexcept;
@@ -70,38 +75,37 @@ inline void LeaveIgnoreLeakScope() noexcept {}
 
 struct AutoShutdownLeakScope
 {
-	AutoShutdownLeakScope(unsigned int framesToSkip = 0) noexcept
-	{
-		EnterShutdownLeakScope(++framesToSkip);
-	}
-	
-	AutoShutdownLeakScope(const AutoShutdownLeakScope& /*other*/) noexcept : AutoShutdownLeakScope(1) {}
-	AutoShutdownLeakScope(AutoShutdownLeakScope&& /*other*/) noexcept : AutoShutdownLeakScope(1) {}
+  AutoShutdownLeakScope(unsigned int framesToSkip = 0) noexcept
+  {
+    EnterShutdownLeakScope(++framesToSkip);
+  }
 
-	~AutoShutdownLeakScope() noexcept
-	{
-		LeaveShutdownLeakScope();
-	}
+  AutoShutdownLeakScope(const AutoShutdownLeakScope& /*other*/) noexcept : AutoShutdownLeakScope(1) {}
+  AutoShutdownLeakScope(AutoShutdownLeakScope&& /*other*/) noexcept : AutoShutdownLeakScope(1) {}
+
+  ~AutoShutdownLeakScope() noexcept
+  {
+    LeaveShutdownLeakScope();
+  }
 };
 
 struct AutoIgnoreLeakScope
 {
-	AutoIgnoreLeakScope(unsigned int framesToSkip = 0) noexcept
-	{
-		EnterIgnoreLeakScope(++framesToSkip);
-	}
+  AutoIgnoreLeakScope(unsigned int framesToSkip = 0) noexcept
+  {
+    EnterIgnoreLeakScope(++framesToSkip);
+  }
 
-	AutoIgnoreLeakScope(const AutoIgnoreLeakScope& /*other*/) noexcept : AutoIgnoreLeakScope(1) {}
-	AutoIgnoreLeakScope(AutoIgnoreLeakScope&& /*other*/) noexcept : AutoIgnoreLeakScope(1) {}
+  AutoIgnoreLeakScope(const AutoIgnoreLeakScope& /*other*/) noexcept : AutoIgnoreLeakScope(1) {}
+  AutoIgnoreLeakScope(AutoIgnoreLeakScope&& /*other*/) noexcept : AutoIgnoreLeakScope(1) {}
 
-	~AutoIgnoreLeakScope() noexcept
-	{
-		LeaveIgnoreLeakScope();
-	}
+  ~AutoIgnoreLeakScope() noexcept
+  {
+    LeaveIgnoreLeakScope();
+  }
 };
 
-}
-} // Mso::Memory
+}} // namespace Mso::Memory
 
 #endif // C++
 #endif // LIBLET_MEMORYAPI_SCOPE

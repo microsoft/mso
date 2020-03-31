@@ -26,7 +26,7 @@
 #define _Ret_z_
 #define _Ret_maybenull_
 #define _Ret_notnull_
-#define _Ret_range_(x,y)
+#define _Ret_range_(x, y)
 #define _Post_writable_byte_size_(x)
 #define _Deref_pre_valid_
 #define _Deref_post_valid_
@@ -35,7 +35,7 @@
 #define _Printf_format_string_
 #define _Use_decl_annotations_
 #define _Null_terminated_
-#define _Out_cap_post_count_(x,y)
+#define _Out_cap_post_count_(x, y)
 #define _Out_cap_(x)
 #define UNREFERENCED_PARAMETER(x)
 #define _In_reads_bytes_(x)

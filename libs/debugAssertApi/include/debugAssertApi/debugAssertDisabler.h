@@ -4,13 +4,12 @@
 #pragma once
 #include <debugAssertApi/debugAssertApi.h>
 
-namespace Mso {
-namespace DebugAsserts {
+namespace Mso { namespace DebugAsserts {
 
 #ifdef DEBUG
 
 /**
-	Legacy APIs for disabling asserts
+  Legacy APIs for disabling asserts
 */
 LIBLET_PUBLICAPI void DisableAssertTag(uint32_t tag) noexcept;
 LIBLET_PUBLICAPI void EnableAssertTag(uint32_t tag) noexcept;
@@ -20,7 +19,10 @@ LIBLET_PUBLICAPI bool IsAssertTagDisabled(uint32_t tag) noexcept;
 
 inline void DisableAssertTag(uint32_t) noexcept {}
 inline void EnableAssertTag(uint32_t) noexcept {}
-inline bool IsAssertTagDisabled(uint32_t) noexcept { return false; }
+inline bool IsAssertTagDisabled(uint32_t) noexcept
+{
+  return false;
+}
 
 #endif
 
@@ -85,5 +87,4 @@ private:
 };
 #endif
 
-} // DebugAsserts
-} // Mso
+}} // namespace Mso::DebugAsserts
