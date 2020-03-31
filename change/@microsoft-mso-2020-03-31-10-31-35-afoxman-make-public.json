@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "make package.json public for beachball to work",
+  "packageName": "@microsoft/mso",
+  "email": "adam@thefoxmans.net",
+  "dependentChangeType": "patch",
+  "date": "2020-03-31T17:31:35.745Z"
+}
