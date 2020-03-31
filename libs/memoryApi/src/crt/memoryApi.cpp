@@ -69,15 +69,15 @@ void UnregisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
 }} // Mso::Memory
 
 #ifdef DEBUG
-void MsoSetLazyLeakDetection(const void *) noexcept
+MSOAPI_(void) MsoSetLazyLeakDetection(const void *) noexcept
 {
 }
 
-void MsoSetShutdownLeakDetection(const void *) noexcept
+MSOAPI_(void) MsoSetShutdownLeakDetection(const void *) noexcept
 {
 }
 
-BOOL FMemHeapMsoSaveBeHost(void* /*pinst*/, LPARAM /*lParam*/, const void* /*pvBlock*/, LONG_PTR /*cb*/, struct IMsoMemHeap* /*pmmh*/) noexcept
+MSOAPI_(BOOL) FMemHeapMsoSaveBeHost(void* /*pinst*/, LPARAM /*lParam*/, const void* /*pvBlock*/, LONG_PTR /*cb*/, struct IMsoMemHeap* /*pmmh*/) noexcept
 {
 	return true;
 }
