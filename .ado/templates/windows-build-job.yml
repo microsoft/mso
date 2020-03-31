@@ -7,10 +7,6 @@ parameters:
     type: string
     default: ''
 
-  - name: ShouldPublish
-    type: boolean
-    default: false
-
 jobs:
 - job: WindowsBuild
   displayName: Windows Build
