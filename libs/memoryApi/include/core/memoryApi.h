@@ -14,6 +14,7 @@ See MsoMemory.h for information about operator new.
 #define LIBLET_CORE_MEMORYAPI_H
 #include <compilerAdapters/cppMacrosDebug.h>
 #include <memoryApi/memoryApi.h>
+#include <platformAdapters/types.h>
 #include <safeAlloct.h>
 #include <type_traits>
 

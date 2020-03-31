@@ -11,7 +11,7 @@
 
 void CrashWithRecovery(uint32_t /*tag*/) noexcept
 {
-	*((int*)0) = 1;
+	*((volatile int*)0) = 1;
 	__builtin_trap();
 }
 
