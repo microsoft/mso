@@ -1,19 +1,30 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+name: PR.$(Date:yyyy-MM-dd).$(Rev:r)
 
-trigger:
-- master
+trigger: none
+pr:
+  - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  - template: variables.yml
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+  - job: ChangeLog
+    displayName: Change Log
+    pool:
+      vmImage: 'windows-2019'
+    timeoutInMinutes: 30
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    steps:
+      - checkout: self
+        clean: false
+        submodules: false
+
+      - script: yarn install --frozen-lockfile
+        displayName: Install packages
+
+      - script: yarn run check --changehint "Run 'yarn run change' from root of repo to generate a change file."
+        displayName: Check for change files
+
+  - template: templates/windows-build-job.yml
+    parameters:
+      DependsOn: ChangeLog

@@ -1,0 +1,102 @@
+##
+## Build a single slice, such as Debug x64, or Release x86.
+## Optionally publishes the result as a pipeline artifact.
+##
+parameters:
+  - name: DependsOn
+    type: string
+    default: ''
+
+  - name: ShouldPublish
+    type: boolean
+    default: false
+
+jobs:
+- job: WindowsBuild
+  displayName: Windows Build
+  ${{ if ne(parameters.DependsOn, '') }}:
+    dependsOn: ${{ parameters.DependsOn }}
+  ${{ if ne(parameters.DependsOn, '') }}:
+    condition: succeeded()
+  timeoutInMinutes: 30
+  cancelTimeoutInMinutes: 2
+  pool:
+    vmImage: 'windows-2019'
+  strategy:
+    matrix:
+      Win32_X86_Debug:
+        MsoPlatform: WIN32
+        BuildConfiguration: Debug
+        BuildPlatform: x86
+      Win32_X86_Release:
+        MsoPlatform: WIN32
+        BuildConfiguration: Release
+        BuildPlatform: x86
+      Win32_X64_Debug:
+        MsoPlatform: WIN32
+        BuildConfiguration: Debug
+        BuildPlatform: x64
+      Win32_X64_Release:
+        MsoPlatform: WIN32
+        BuildConfiguration: Release
+        BuildPlatform: x64
+      WinRT_X86_Debug:
+        MsoPlatform: WINRT
+        BuildConfiguration: Debug
+        BuildPlatform: x86
+      WinRT_X86_Release:
+        MsoPlatform: WINRT
+        BuildConfiguration: Release
+        BuildPlatform: x86
+      WinRT_X64_Debug:
+        MsoPlatform: WINRT
+        BuildConfiguration: Debug
+        BuildPlatform: x64
+      WinRT_X64_Release:
+        MsoPlatform: WINRT
+        BuildConfiguration: Release
+        BuildPlatform: x64
+  steps:
+    - checkout: self
+      clean: false
+      submodules: false
+
+    - script: choco install ninja
+      displayName: Install Ninja
+
+    - task: BatchScript@1
+      displayName: Setup Visual C++ Environment
+      inputs:
+        filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
+        arguments: $(BuildPlatform) $(BuildWindowsSDK)
+        modifyEnvironment: true
+
+    - task: CMake@1
+      displayName: Generate Ninja scripts
+      inputs:
+        workingDirectory: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+        cmakeArgs: -G Ninja -DMSO_LIBLET_PLATFORM=$(MsoPlatform) -DCMAKE_BUILD_TYPE=$(BuildConfiguration) -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)\tools\CMake\toolchain.windows.cmake $(Build.SourcesDirectory)
+
+    - task: CMake@1
+      displayName: Build
+      inputs:
+        workingDirectory: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+        cmakeArgs: --build .
+
+    - task: CMake@1
+      displayName: Stage built files
+      inputs:
+        workingDirectory: $(Pipeline.Workspace)
+        cmakeArgs: --install $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform) --prefix tests --component tests
+
+    - script: eventWaitHandle_tests
+      displayName: Tests - Event Wait Handle
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - script: functional_tests
+      displayName: Tests - Functional
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - script: object_tests
+      displayName: Tests - Object
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)

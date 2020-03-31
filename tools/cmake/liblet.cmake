@@ -195,6 +195,20 @@ function(liblet_tests)
       Mso::motifCpp
       ${${LIBLET_TESTS_TARGET}_DEPENDS}
   )
+
+  if(${MSO_LIBLET_PLATFORM} STREQUAL WIN32 OR ${MSO_LIBLET_PLATFORM} STREQUAL WINRT)
+    install(
+      TARGETS ${LIBLET_TESTS_TARGET}
+      DESTINATION ${MSO_LIBLET_PLATFORM}/${CMAKE_BUILD_TYPE}/${WIN_TARGET_ARCH}
+      COMPONENT tests
+    )
+  else()
+    install(
+      TARGETS ${LIBLET_TESTS_TARGET}
+      DESTINATION ${MSO_LIBLET_PLATFORM}/${CMAKE_BUILD_TYPE}
+      COMPONENT tests
+    )
+  endif()
 endfunction()
 
 function(_liblet_platform_args RESULT_PREFIX ARG_PREFIXES)
