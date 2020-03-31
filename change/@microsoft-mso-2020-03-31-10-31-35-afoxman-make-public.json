@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "make package.json public for beachball to work",
+  "comment": "Make package.json public for beachball to work. Remove workspaces since JS coding is not desired in this repo. Merge child workspace package.json files into top-level package.json.",
   "packageName": "@microsoft/mso",
   "email": "adam@thefoxmans.net",
   "dependentChangeType": "patch",
