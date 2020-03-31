@@ -5,7 +5,9 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 # project name and language
-project(Mso LANGUAGES CXX)
+project(Mso 
+  HOMEPAGE_URL "https://github.com/microsoft/Mso"
+  LANGUAGES CXX)
 
 # include liblet.cmake with liblet-specific functions
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tools/cmake")
