@@ -1,7 +1,6 @@
 {
   "name": "@microsoft/mso",
   "version": "0.0.1",
-  "private": false,
   "scripts": {
     "change": "beachball change",
     "check": "beachball check",
@@ -18,11 +17,6 @@
     "url": "git@github.com:microsoft/mso.git"
   },
   "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "tools/*"
-    ]
-  },
   "devDependencies": {
     "beachball": "^1.18.4",
     "husky": "^3.0.9"
