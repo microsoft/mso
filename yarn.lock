@@ -64,10 +64,10 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-beachball@^1.18.4:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.25.0.tgz#bb7b6476fd844412f255322385d9c5d5e8a8835c"
-  integrity sha512-Liwbk3le5o2cGA3HNviRN9BacR5kSmurLrVHX1P6LHKypV534IAA5mWn+K8iYpsVaosX0PUz1cfQAsj2TEIWIg==
+beachball@1.23.3:
+  version "1.23.3"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.23.3.tgz#4ac859de44d8f6525ab67b7ab8ec07c90f02f216"
+  integrity sha512-rnXeIAeVxXTBB7A/rDL3bWUc7JfaVm7iEX56UJHMFGqFWQ0uVt5eN28hTz+5r2fOodXu8vjzZr0ED5y1E2cOYA==
   dependencies:
     cosmiconfig "^6.0.0"
     fs-extra "^8.0.1"
