@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Add a PR CI loop definition which builds and tests all windows platforms/architectures.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "patch",
-  "date": "2020-03-31T05:16:08.215Z"
-}

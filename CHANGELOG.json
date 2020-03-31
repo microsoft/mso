@@ -2,6 +2,27 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 31 Mar 2020 18:07:08 GMT",
+      "tag": "@microsoft/mso_v0.0.2",
+      "version": "0.0.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Make package.json public for beachball to work. Remove workspaces since JS coding is not desired in this repo. Merge child workspace package.json files into top-level package.json.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          },
+          {
+            "comment": "Add a PR CI loop definition which builds and tests all windows platforms/architectures.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Mar 2020 17:24:58 GMT",
       "tag": "@microsoft/mso_v0.0.1",
       "version": "0.0.1",
