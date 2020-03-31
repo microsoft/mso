@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/mso",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "change": "beachball change",
     "check": "beachball check",

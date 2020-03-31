@@ -2,6 +2,27 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 31 Mar 2020 23:31:27 GMT",
+      "tag": "@microsoft/mso_v0.0.3",
+      "version": "0.0.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Removed the .clang-format until we create a better one",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          },
+          {
+            "comment": "Make iOS and macOS builds work. Verified debug and release.",
+            "author": "afoxman@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Mar 2020 19:37:56 GMT",
       "tag": "@microsoft/mso_v0.0.2",
       "version": "0.0.2",
