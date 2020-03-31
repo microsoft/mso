@@ -1,0 +1,11 @@
+{
+  "name": "@microsoft/mso",
+  "version": "0.0.1",
+  "scripts": {
+    "change": "beachball change",
+    "check": "beachball check"
+  },
+  "devDependencies": {
+    "beachball": "^1.18.4"
+  }
+}
