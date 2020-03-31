@@ -1,7 +1,3 @@
-##
-## Build a single slice, such as Debug x64, or Release x86.
-## Optionally publishes the result as a pipeline artifact.
-##
 parameters:
   - name: DependsOn
     type: string

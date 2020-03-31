@@ -28,3 +28,7 @@ jobs:
   - template: templates/windows-build-job.yml
     parameters:
       DependsOn: ChangeLog
+
+  - template: templates/apple-build-job.yml
+    parameters:
+      DependsOn: ChangeLog

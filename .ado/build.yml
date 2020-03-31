@@ -16,6 +16,8 @@ stages:
     jobs:
       - template: templates/windows-build-job.yml
 
+      - template: templates/apple-build-job.yml
+
   - stage: Release
     dependsOn: Build
     condition: succeeded()
