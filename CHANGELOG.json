@@ -2,6 +2,33 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 31 Mar 2020 19:37:56 GMT",
+      "tag": "@microsoft/mso_v0.0.2",
+      "version": "0.0.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "disabled clang-format as it causes build breaks",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          },
+          {
+            "comment": "Remove old pipeline file (no longer needed). Add Git URL to CMake project.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          },
+          {
+            "comment": "Add a Build CI loop which runs after each batch of PRs. Build will create a release, if necessary, using beachball.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Mar 2020 18:07:08 GMT",
       "tag": "@microsoft/mso_v0.0.2",
       "version": "0.0.2",
