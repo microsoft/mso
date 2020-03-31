@@ -3,11 +3,11 @@
 
 #pragma once
 
-#ifdef MS_TARGET_WIN
+#ifdef MS_TARGET_WINDOWS
 
-#include <wtypes.h>
+#include <platformAdapters/windowsFirst.h>
 
-#else // !MS_TARGET_WIN
+#else // !MS_TARGET_WINDOWS
 
 #ifdef MS_TARGET_POSIX
 
@@ -86,4 +86,4 @@ typedef LONG_PTR LRESULT;
 
 #endif // MS_TARGET_POSIX
 
-#endif // MS_TARGET_WIN
+#endif // MS_TARGET_WINDOWS
