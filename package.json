@@ -9,7 +9,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format"
+      "pre-commit-disabled": "yarn format"
     }
   },
   "repository": {
@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "beachball": "^1.18.4",
+    "beachball": "1.23.3",
     "clang-format": "1.2.4",
     "husky": "^3.0.9"
   }

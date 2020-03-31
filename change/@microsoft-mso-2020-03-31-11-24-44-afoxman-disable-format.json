@@ -1,0 +1,8 @@
+{
+  "type": "none",
+  "comment": "disabled clang-format as it causes build breaks",
+  "packageName": "@microsoft/mso",
+  "email": "adam@thefoxmans.net",
+  "dependentChangeType": "none",
+  "date": "2020-03-31T18:24:44.931Z"
+}
