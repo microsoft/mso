@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/mso",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "scripts": {
     "change": "beachball change",
     "check": "beachball check",
