@@ -3,7 +3,8 @@
 
 #pragma once
 #include <platformAdapters/msoGuid.h>
-#include <cstdint>
+#include <platformAdapters/types.h>
+#include <platformAdapters/windowsFirst.h>
 
 // This is needed for compiling with Clang on Windows as well
 MSO_STRUCT_GUID(IUnknown, "00000000-0000-0000-C000-000000000046")
@@ -11,7 +12,6 @@ MSO_STRUCT_GUID(IUnknown, "00000000-0000-0000-C000-000000000046")
 #if !defined(MS_TARGET_POSIX)
 
 #include <compilerAdapters/declspecDefinitions.h>
-#include <platformAdapters/windowsFirst.h>
 #include <comBaseApi.h>
 #include <unknwn.h>
 
@@ -35,9 +35,6 @@ typedef long HRESULT;
 #else
 typedef int HRESULT;
 #endif
-using ULONG = unsigned long;
-using LONG = long;
-using BYTE = uint8_t;
 #ifndef __GNUC__
 #define STDMETHODCALLTYPE       __stdcall
 #else
@@ -49,9 +46,6 @@ using BYTE = uint8_t;
 #define STDMETHODIMP_(type)     type STDMETHODCALLTYPE
 #define STDMETHODIMPNOTHROW            COM_DECLSPEC_NOTHROW HRESULT STDMETHODCALLTYPE
 #define STDMETHODIMPNOTHROW_(type)     COM_DECLSPEC_NOTHROW type STDMETHODCALLTYPE
-
-#define TRUE 1
-#define FALSE 0
 
 #define S_OK    ((HRESULT)0L)
 #define S_FALSE ((HRESULT)1L)

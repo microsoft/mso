@@ -13,13 +13,13 @@ See MsoMemory.h for information about operator new.
 #ifdef __cplusplus
 
 #include <compilerAdapters/cppMacrosDebug.h>
-#include <debugAssertApi/debugAssertApi.h>
-#include <oacr.h>
 #include <compilerAdapters/functionDecorations.h>
 #include <core/smartPointerBase.h>
-#include <platformAdapters/windowsFirst.h>
-#include <memoryLeakScope/memoryLeakScope.h>
 #include <crash/verifyElseCrash.h>
+#include <debugAssertApi/debugAssertApi.h>
+#include <memoryLeakScope/memoryLeakScope.h>
+#include <oacr.h>
+#include <platformAdapters/types.h>
 // TODO: reconcile this #include <safeInt.h>
 
 #pragma push_macro("new")

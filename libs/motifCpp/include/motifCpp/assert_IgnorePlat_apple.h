@@ -11,7 +11,7 @@
 #ifndef MOTIFCPP_ASSERT_IGNOREPLAT_APPLE_H
 #define MOTIFCPP_ASSERT_IGNOREPLAT_APPLE_H
 
-#include <cstdint>
+#include <platformAdapters/types.h>
 
 #if DEBUG
 // Forward decl, this is because including mbuassert.h brings in macro definitions such as

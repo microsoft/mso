@@ -8,18 +8,15 @@
 #ifndef LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
 #define LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
 
-#if defined(MS_TARGET_POSIX)
-  typedef unsigned short WORD;
-  typedef unsigned long DWORD;
-#else
+#ifdef MS_TARGET_WIN
 
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif
+#endif // !NOMINMAX
 
 #include <winsock2.h>
 #include <windows.h>
 
-#endif // defined(MS_TARGET_POSIX)
+#endif // MS_TARGET_WIN
 
 #endif // LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
