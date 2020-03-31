@@ -42,7 +42,7 @@ stages:
               script: |
                 call git config --global user.email "62199986+rnsdkbot@users.noreply.github.com"
                 call git config --global user.name "React-Native SDK Bot"
-                call git remote set-url origin git@github.com:microsoft/continuity.git
+                call git remote set-url origin git@github.com:microsoft/Mso.git
 
           - script: yarn install --frozen-lockfile
             displayName: Install yarn packages
