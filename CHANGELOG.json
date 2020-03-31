@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 31 Mar 2020 17:24:58 GMT",
+      "tag": "@microsoft/mso_v0.0.1",
+      "version": "0.0.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a PR CI loop definition which builds and tests all windows platforms/architectures.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Mar 2020 16:41:24 GMT",
       "tag": "@microsoft/mso_v0.0.1",
       "version": "0.0.1",
