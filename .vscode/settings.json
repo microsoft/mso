@@ -1,0 +1,16 @@
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": true,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.wordWrapColumn": 120,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  }
+}
