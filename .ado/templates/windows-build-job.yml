@@ -59,7 +59,7 @@ jobs:
     - task: BatchScript@1
       displayName: Setup Visual C++ Environment
       inputs:
-        filename: vcenv.bat
+        filename: .ado\vcenv.bat
         modifyEnvironment: true
 
     - task: CMake@1
