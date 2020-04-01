@@ -1,8 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add Apple builds and tests to PR and Build loops.",
-  "packageName": "@microsoft/mso",
-  "email": "afoxman@microsoft.com",
-  "dependentChangeType": "none",
-  "date": "2020-03-31T23:50:00.507Z"
-}
