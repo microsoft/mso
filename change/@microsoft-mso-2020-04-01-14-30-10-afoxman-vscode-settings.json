@@ -1,8 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add VSCode settings which match some of the clang-format rules.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "none",
-  "date": "2020-04-01T21:30:10.523Z"
-}

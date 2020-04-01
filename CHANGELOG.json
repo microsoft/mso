@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Wed, 01 Apr 2020 21:58:08 GMT",
+      "tag": "@microsoft/mso_v0.0.4",
+      "version": "0.0.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "Add VSCode settings which match some of the clang-format rules.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Apr 2020 14:58:01 GMT",
       "tag": "@microsoft/mso_v0.0.4",
       "version": "0.0.4",
