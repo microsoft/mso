@@ -212,8 +212,8 @@
 
 #if defined(__GNUC__)
 
-#define MSOCPPAPI_(t)     extern "C++" t
-#define MSOAPI_(t)       MSOEXTERN_C t
+#define MSOCPPAPI_(t) extern "C++" t
+#define MSOAPI_(t) MSOEXTERN_C t
 
 #elif !defined(__clang__)
 
@@ -236,4 +236,4 @@
 
 #endif
 
-#endif  // !COMPILERADAPTERS_FUNCTIONDECORATIONS_H
+#endif // !COMPILERADAPTERS_FUNCTIONDECORATIONS_H

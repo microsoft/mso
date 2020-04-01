@@ -13,7 +13,7 @@ Unit tests for classes in the ObjectSwarm.h
 #include <test/testCheck.h>
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
-//class.
+// class.
 
 MSO_STRUCT_GUID(IFixedSwarmSample1, "AA2EB60A-06DD-486F-AC9B-DBF1DDE21408")
 struct DECLSPEC_NOVTABLE IFixedSwarmSample1 : IUnknown
@@ -135,192 +135,186 @@ public:
 
 TEST_CLASS (ObjectFixedSwarmTest)
 {
-	TEST_METHOD(ObjectFixedSwarm_NoMemberInit)
-	{
-		using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
-		Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
-		TestAssert::IsFalse(swarm1.IsEmpty());
+  TEST_METHOD(ObjectFixedSwarm_NoMemberInit)
+  {
+    using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
+    Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
+    TestAssert::IsFalse(swarm1.IsEmpty());
 
-		using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2>;
-		Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
-		TestAssert::IsFalse(swarm2.IsEmpty());
+    using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2>;
+    Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
+    TestAssert::IsFalse(swarm2.IsEmpty());
 
-		using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
-		Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
-		TestAssert::IsFalse(swarm3.IsEmpty());
-	}
+    using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
+    Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
+    TestAssert::IsFalse(swarm3.IsEmpty());
+  }
 
-	TEST_METHOD(ObjectFixedSwarm_NoMemberRefCount)
-	{
-		using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
-		Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
-		TestAssert::IsFalse(swarm1.IsEmpty());
-		
-		Debug(TestAssert::AreEqual(1u, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(1u, swarm1->WeakRefCount()));
+  TEST_METHOD(ObjectFixedSwarm_NoMemberRefCount)
+  {
+    using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
+    Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
+    TestAssert::IsFalse(swarm1.IsEmpty());
 
-		Mso::TCntPtr<Swarm1> swarm11 = swarm1;
-		Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(1u, swarm1->WeakRefCount()));
+    Debug(TestAssert::AreEqual(1u, swarm1->RefCount()));
+    Debug(TestAssert::AreEqual(1u, swarm1->WeakRefCount()));
 
-		Mso::WeakPtr<Swarm1> weakSwarm1 = swarm1;
-		Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
+    Mso::TCntPtr<Swarm1> swarm11 = swarm1;
+    Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
+    Debug(TestAssert::AreEqual(1u, swarm1->WeakRefCount()));
 
-		Mso::WeakPtr<Swarm1> weakSwarm11 = swarm1;
-		Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(3u, swarm1->WeakRefCount()));
-	}
+    Mso::WeakPtr<Swarm1> weakSwarm1 = swarm1;
+    Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
+    Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
 
-	TEST_METHOD(ObjectFixedSwarm_GetMember)
-	{
-		using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
-		Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
-		TestAssert::IsFalse(swarm3.IsEmpty());
+    Mso::WeakPtr<Swarm1> weakSwarm11 = swarm1;
+    Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
+    Debug(TestAssert::AreEqual(3u, swarm1->WeakRefCount()));
+  }
 
-		FixedSwarmMemberSample1* sample1 = swarm3->Get<0>();
-		TestAssert::IsNull(sample1);
+  TEST_METHOD(ObjectFixedSwarm_GetMember)
+  {
+    using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
+    Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
+    TestAssert::IsFalse(swarm3.IsEmpty());
 
-		FixedSwarmMemberSample2* sample2 = swarm3->Get<1>();
-		TestAssert::IsNull(sample2);
+    FixedSwarmMemberSample1* sample1 = swarm3->Get<0>();
+    TestAssert::IsNull(sample1);
 
-		FixedSwarmMemberSample3* sample3 = swarm3->Get<2>();
-		TestAssert::IsNull(sample3);
-	}
+    FixedSwarmMemberSample2* sample2 = swarm3->Get<1>();
+    TestAssert::IsNull(sample2);
 
-	TEST_METHOD(ObjectFixedSwarm_OneMember)
-	{
-		using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
-		bool created = false;
-		bool deleted = false;
+    FixedSwarmMemberSample3* sample3 = swarm3->Get<2>();
+    TestAssert::IsNull(sample3);
+  }
 
-		{
-			Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
+  TEST_METHOD(ObjectFixedSwarm_OneMember)
+  {
+    using Swarm1 = Mso::FixedSwarm<FixedSwarmMemberSample1>;
+    bool created = false;
+    bool deleted = false;
 
-			{
-				swarm1->MakeMember<0>(created, deleted);
-				Mso::TCntPtr<IFixedSwarmSample1> member0 = swarm1->Get<0>();
-				TestAssert::IsFalse(member0.IsEmpty());
-				TestAssert::IsTrue(created);
-				TestAssert::IsFalse(deleted);
+    {
+      Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
 
-				Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
-				Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
-			}
+      {
+        swarm1->MakeMember<0>(created, deleted);
+        Mso::TCntPtr<IFixedSwarmSample1> member0 = swarm1->Get<0>();
+        TestAssert::IsFalse(member0.IsEmpty());
+        TestAssert::IsTrue(created);
+        TestAssert::IsFalse(deleted);
 
-			TestAssert::IsFalse(deleted);
-			Debug(TestAssert::AreEqual(1u, swarm1->RefCount()));
-			Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
-		}
+        Debug(TestAssert::AreEqual(2u, swarm1->RefCount()));
+        Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
+      }
 
-		TestAssert::IsTrue(deleted);
-	}
+      TestAssert::IsFalse(deleted);
+      Debug(TestAssert::AreEqual(1u, swarm1->RefCount()));
+      Debug(TestAssert::AreEqual(2u, swarm1->WeakRefCount()));
+    }
 
-	TEST_METHOD(ObjectFixedSwarm_ThreeMembers)
-	{
-		using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
-		bool created = false;
-		bool deleted = false;
+    TestAssert::IsTrue(deleted);
+  }
 
-		{
-			Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
+  TEST_METHOD(ObjectFixedSwarm_ThreeMembers)
+  {
+    using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
+    bool created = false;
+    bool deleted = false;
 
-			{
-				swarm3->MakeMember<0>(created, deleted);
-				Mso::TCntPtr<IFixedSwarmSample1> member0 = swarm3->Get<0>();
-				TestAssert::IsFalse(member0.IsEmpty());
-				Debug(TestAssert::AreEqual(2u, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(2u, swarm3->WeakRefCount()));
+    {
+      Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
 
-				swarm3->MakeMember<1>();
-				Mso::TCntPtr<IFixedSwarmSample2> member1 = swarm3->Get<1>();
-				TestAssert::IsFalse(member1.IsEmpty());
-				Debug(TestAssert::AreEqual(3u, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(3u, swarm3->WeakRefCount()));
+      {
+        swarm3->MakeMember<0>(created, deleted);
+        Mso::TCntPtr<IFixedSwarmSample1> member0 = swarm3->Get<0>();
+        TestAssert::IsFalse(member0.IsEmpty());
+        Debug(TestAssert::AreEqual(2u, swarm3->RefCount()));
+        Debug(TestAssert::AreEqual(2u, swarm3->WeakRefCount()));
 
-				swarm3->MakeMember<2>();
-				Mso::TCntPtr<FixedSwarmMemberSample3> member2 = swarm3->Get<2>();
-				TestAssert::IsFalse(member2.IsEmpty());
-				Debug(TestAssert::AreEqual(4u, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(4u, swarm3->WeakRefCount()));
-			}
+        swarm3->MakeMember<1>();
+        Mso::TCntPtr<IFixedSwarmSample2> member1 = swarm3->Get<1>();
+        TestAssert::IsFalse(member1.IsEmpty());
+        Debug(TestAssert::AreEqual(3u, swarm3->RefCount()));
+        Debug(TestAssert::AreEqual(3u, swarm3->WeakRefCount()));
 
-			TestAssert::IsFalse(deleted);
-			Debug(TestAssert::AreEqual(1u, swarm3->RefCount()));
-			// Each object +1 for weak reference count, +1 weak reference if strong ref count != 0.
-			Debug(TestAssert::AreEqual(4u, swarm3->WeakRefCount()));
-		}
+        swarm3->MakeMember<2>();
+        Mso::TCntPtr<FixedSwarmMemberSample3> member2 = swarm3->Get<2>();
+        TestAssert::IsFalse(member2.IsEmpty());
+        Debug(TestAssert::AreEqual(4u, swarm3->RefCount()));
+        Debug(TestAssert::AreEqual(4u, swarm3->WeakRefCount()));
+      }
 
-		TestAssert::IsTrue(deleted);
-	}
+      TestAssert::IsFalse(deleted);
+      Debug(TestAssert::AreEqual(1u, swarm3->RefCount()));
+      // Each object +1 for weak reference count, +1 weak reference if strong ref count != 0.
+      Debug(TestAssert::AreEqual(4u, swarm3->WeakRefCount()));
+    }
 
-	TEST_METHOD(ObjectFixedSwarm_WeakPtr)
-	{
-		using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
-		bool created = false;
-		bool deleted = false;
+    TestAssert::IsTrue(deleted);
+  }
 
-		Mso::WeakPtr<IFixedSwarmSample1> weakMember0;
-		Mso::WeakPtr<FixedSwarmMemberSample2> weakMember1;
-		Mso::WeakPtr<IFixedSwarmSample3> weakMember2;
+  TEST_METHOD(ObjectFixedSwarm_WeakPtr)
+  {
+    using Swarm3 = Mso::FixedSwarm<FixedSwarmMemberSample1, FixedSwarmMemberSample2, FixedSwarmMemberSample3>;
+    bool created = false;
+    bool deleted = false;
 
-		{
-			Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
-			swarm3->MakeMember<0>(created, deleted);
-			swarm3->MakeMember<1>();
-			swarm3->MakeMember<2>();
+    Mso::WeakPtr<IFixedSwarmSample1> weakMember0;
+    Mso::WeakPtr<FixedSwarmMemberSample2> weakMember1;
+    Mso::WeakPtr<IFixedSwarmSample3> weakMember2;
 
-			weakMember0 = swarm3->GetWeakPtr<0>();
-			weakMember1 = swarm3->GetWeakPtr<1>();
-			weakMember2 = swarm3->GetWeakPtr<2>();
+    {
+      Mso::TCntPtr<Swarm3> swarm3 = Mso::Make<Swarm3>();
+      swarm3->MakeMember<0>(created, deleted);
+      swarm3->MakeMember<1>();
+      swarm3->MakeMember<2>();
 
-			TestAssert::IsFalse(weakMember0.IsExpired());
-			TestAssert::IsFalse(weakMember1.IsExpired());
-			TestAssert::IsFalse(weakMember2.IsExpired());
+      weakMember0 = swarm3->GetWeakPtr<0>();
+      weakMember1 = swarm3->GetWeakPtr<1>();
+      weakMember2 = swarm3->GetWeakPtr<2>();
 
-			TestAssert::AreEqual(1, weakMember0.GetStrongPtr()->GetValue1());
-			TestAssert::AreEqual(2, weakMember1.GetStrongPtr()->GetValue2());
-			TestAssert::AreEqual(3, weakMember2.GetStrongPtr()->GetValue3());
-		}
+      TestAssert::IsFalse(weakMember0.IsExpired());
+      TestAssert::IsFalse(weakMember1.IsExpired());
+      TestAssert::IsFalse(weakMember2.IsExpired());
 
-		TestAssert::IsTrue(weakMember0.IsExpired());
-		TestAssert::IsTrue(weakMember1.IsExpired());
-		TestAssert::IsTrue(weakMember2.IsExpired());
+      TestAssert::AreEqual(1, weakMember0.GetStrongPtr()->GetValue1());
+      TestAssert::AreEqual(2, weakMember1.GetStrongPtr()->GetValue2());
+      TestAssert::AreEqual(3, weakMember2.GetStrongPtr()->GetValue3());
+    }
 
-		TestAssert::IsNull(weakMember0.GetStrongPtr().Get());
-		TestAssert::IsNull(weakMember1.GetStrongPtr().Get());
-		TestAssert::IsNull(weakMember2.GetStrongPtr().Get());
-	}
+    TestAssert::IsTrue(weakMember0.IsExpired());
+    TestAssert::IsTrue(weakMember1.IsExpired());
+    TestAssert::IsTrue(weakMember2.IsExpired());
 
-	TEST_METHOD(ObjectFixedSwarm_ConstructorThrows)
-	{
-		using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample3, FixedSwarmMemberSample4Throw>;
+    TestAssert::IsNull(weakMember0.GetStrongPtr().Get());
+    TestAssert::IsNull(weakMember1.GetStrongPtr().Get());
+    TestAssert::IsNull(weakMember2.GetStrongPtr().Get());
+  }
 
-		Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
-		swarm2->MakeMember<0>();
-		TestAssert::ExpectException<std::runtime_error>([&]()
-		{
-			swarm2->MakeMember<1>();
-		});
+  TEST_METHOD(ObjectFixedSwarm_ConstructorThrows)
+  {
+    using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample3, FixedSwarmMemberSample4Throw>;
 
-		Debug(TestAssert::AreEqual(1u, swarm2->RefCount()));
-		Debug(TestAssert::AreEqual(2u, swarm2->WeakRefCount()));
-	}
+    Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
+    swarm2->MakeMember<0>();
+    TestAssert::ExpectException<std::runtime_error>([&]() { swarm2->MakeMember<1>(); });
 
-	TEST_METHOD(ObjectFixedSwarm_InitializeThrows)
-	{
-		using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample3, FixedSwarmMemberSample5InitThrow>;
+    Debug(TestAssert::AreEqual(1u, swarm2->RefCount()));
+    Debug(TestAssert::AreEqual(2u, swarm2->WeakRefCount()));
+  }
 
-		Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
-		swarm2->MakeMember<0>();
-		TestAssert::ExpectException<std::runtime_error>([&]()
-		{
-			swarm2->MakeMember<1>();
-		});
+  TEST_METHOD(ObjectFixedSwarm_InitializeThrows)
+  {
+    using Swarm2 = Mso::FixedSwarm<FixedSwarmMemberSample3, FixedSwarmMemberSample5InitThrow>;
 
-		Debug(TestAssert::AreEqual(1u, swarm2->RefCount()));
-		Debug(TestAssert::AreEqual(2u, swarm2->WeakRefCount()));
-	}
+    Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
+    swarm2->MakeMember<0>();
+    TestAssert::ExpectException<std::runtime_error>([&]() { swarm2->MakeMember<1>(); });
+
+    Debug(TestAssert::AreEqual(1u, swarm2->RefCount()));
+    Debug(TestAssert::AreEqual(2u, swarm2->WeakRefCount()));
+  }
 
 #if defined(DEBUG) && defined(TEST_BAD_INHERITANCE1)
   TESTMETHOD_REQUIRES_SEH(ObjectFixedSwarm_BadInheritance1)

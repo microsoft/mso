@@ -82,8 +82,8 @@ protected:
   }
 
 private:
-	mutable std::atomic<uint32_t> m_ref;
-MSO_PRAGMA_WARNING( suppress : 4820 ) // 4 bytes padding added after data member
+  mutable std::atomic<uint32_t> m_ref;
+  MSO_PRAGMA_WARNING(suppress : 4820) // 4 bytes padding added after data member
 };
 
 /**

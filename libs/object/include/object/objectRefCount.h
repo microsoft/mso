@@ -122,13 +122,11 @@ struct DefaultRefCountedDeleter
   algorithm. The struct can be changed to a namespace if in future we need many strategies in different files.
 */
 namespace RefCountStrategy {
-	using Simple = SimpleRefCountPolicy<DefaultRefCountedDeleter, MakeAllocator>;
-	struct SimpleNoQuery;
-	struct NoRefCount;
-	struct NoRefCountNoQuery;
-}
-
-
+using Simple = SimpleRefCountPolicy<DefaultRefCountedDeleter, MakeAllocator>;
+struct SimpleNoQuery;
+struct NoRefCount;
+struct NoRefCountNoQuery;
+} // namespace RefCountStrategy
 
 /**
   std::shared_ptr<T> is large - it's 2 pointers.

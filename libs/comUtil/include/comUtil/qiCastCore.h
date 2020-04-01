@@ -65,7 +65,8 @@ Mso::TCntPtr<TTarget> qi_cast(const TSource* piSource, const IID& riid = __uuido
 }
 
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable:4995) // VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as #pragma deprecated"
+MSO_PRAGMA_WARNING(disable : 4995) // VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as
+                                   // #pragma deprecated"
 
 /**
   qi_cast_or_crash<Type>(source, optional riid)

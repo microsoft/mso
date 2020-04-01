@@ -35,8 +35,10 @@ share the same reference counter.
 #pragma pack(push, _CRT_PACKING)
 
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable: 4625) // copy constructor could not be generated because a base class copy constructor is inaccessible or deleted
-MSO_PRAGMA_WARNING(disable: 4626) // assignment operator could not be generated because a base class assignment operator is inaccessible or deleted
+MSO_PRAGMA_WARNING(disable : 4625) // copy constructor could not be generated because a base class copy constructor is
+                                   // inaccessible or deleted
+MSO_PRAGMA_WARNING(disable : 4626) // assignment operator could not be generated because a base class assignment
+                                   // operator is inaccessible or deleted
 
 #pragma push_macro("new")
 #undef new

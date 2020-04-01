@@ -15,13 +15,13 @@
 // 4472: 'pointer_safety' is a native enum: add an access specifier (private/public) to declare a managed enum
 // 4996: 'wmemcpy': This function or variable may be unsafe. Consider using wmemcpy_s instead
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable: 4091 4472 4996)
+MSO_PRAGMA_WARNING(disable : 4091 4472 4996)
 #include <memory>
 MSO_PRAGMA_WARNING(pop)
 
 // 4996: 'wmemcpy': This function or variable may be unsafe. Consider using wmemcpy_s instead
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable: 4996)
+MSO_PRAGMA_WARNING(disable : 4996)
 #include <utility>
 MSO_PRAGMA_WARNING(pop)
 

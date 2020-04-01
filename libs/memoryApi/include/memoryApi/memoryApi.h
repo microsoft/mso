@@ -28,160 +28,156 @@ See MsoMemory.h for information about operator new.
 #undef New
 #include <memory>
 
-namespace Mso {
-	namespace Memory {
-		namespace Details {
-			template <typename T>
-			struct Emplacer
-			{
-				template <typename... Args>
-				static void Place(_Inout_updates_bytes_all_(sizeof(T)) void* mem, Args&&... args) noexcept
-				{
-					new (mem) T(std::forward<Args>(args)...);
-				}
-			};
+namespace Mso { namespace Memory {
+namespace Details {
+template <typename T>
+struct Emplacer
+{
+  template <typename... Args>
+  static void Place(_Inout_updates_bytes_all_(sizeof(T)) void* mem, Args&&... args) noexcept
+  {
+    new (mem) T(std::forward<Args>(args)...);
+  }
+};
 
-			template <typename T, size_t N>
-			struct Emplacer < T[N] >
-			{
-				template <typename... Args>
-				static void Place(void* mem, Args&&... args)
-				{
-					new (mem) T[N]
-					{
-						std::forward<Args>(args)...
-					};
-				}
-			};
+template <typename T, size_t N>
+struct Emplacer<T[N]>
+{
+  template <typename... Args>
+  static void Place(void* mem, Args&&... args)
+  {
+    new (mem) T[N]{std::forward<Args>(args)...};
+  }
+};
 
-			template <typename T, typename Enable = void>
-			struct Destructor
-			{
-				static void Destruct(T&) noexcept { /* noop */ }
-			};
+template <typename T, typename Enable = void>
+struct Destructor
+{
+  static void Destruct(T&) noexcept
+  { /* noop */
+  }
+};
 
-			template <typename T>
-			struct Destructor < T,
-				typename std::enable_if<std::is_destructible<T>::value && !std::is_pod<T>::value>::type >
-			{
-				static void Destruct(T& obj) noexcept
-				{
-					UNREFERENCED_PARAMETER(obj);
-					obj.~T();
-				}
-			};
-		} // Details
+template <typename T>
+struct Destructor<T, typename std::enable_if<std::is_destructible<T>::value && !std::is_pod<T>::value>::type>
+{
+  static void Destruct(T& obj) noexcept
+  {
+    UNREFERENCED_PARAMETER(obj);
+    obj.~T();
+  }
+};
+} // namespace Details
 
-		/**
-		Mso::Memory::AllocFlags
-		*/
-		namespace AllocFlags {
-			enum Enum : unsigned int
-			{
-				// check this memory during shutdown leak detection
-				ShutdownLeak = 0x0001,
+/**
+Mso::Memory::AllocFlags
+*/
+namespace AllocFlags {
+enum Enum : unsigned int
+{
+  // check this memory during shutdown leak detection
+  ShutdownLeak = 0x0001,
 
-				// ignore this memory during leak detection
-				IgnoreLeak = 0x0002,
+  // ignore this memory during leak detection
+  IgnoreLeak = 0x0002,
 
-				// track this memory using memory marking / idle time leak detection
-				MarkingLeak = 0x0004,
-			};
-		}
+  // track this memory using memory marking / idle time leak detection
+  MarkingLeak = 0x0004,
+};
+}
 
-		/**
-		Return a new allocation of the requested size (cb)
-		Returns nullptr on failure
-		*/
-		LIBLET_PUBLICAPI_EX("win", "android") _Ret_maybenull_ _Post_writable_byte_size_(cb) void* AllocateEx(size_t cb, DWORD allocFlags) noexcept;
+/**
+Return a new allocation of the requested size (cb)
+Returns nullptr on failure
+*/
+LIBLET_PUBLICAPI_EX("win", "android")
+_Ret_maybenull_ _Post_writable_byte_size_(cb) void* AllocateEx(size_t cb, DWORD allocFlags) noexcept;
 
-		/**
-		Return a new allocation of the requested size (cb)
-		Returns nullptr on failure
-		*/
-    inline _Ret_maybenull_ _Post_writable_byte_size_(cb) void* Allocate(size_t cb) noexcept
-		{
-			return Mso::Memory::AllocateEx(cb, 0);
-		}
+/**
+Return a new allocation of the requested size (cb)
+Returns nullptr on failure
+*/
+inline _Ret_maybenull_ _Post_writable_byte_size_(cb) void* Allocate(size_t cb) noexcept
+{
+  return Mso::Memory::AllocateEx(cb, 0);
+}
 
-		/**
-		Reallocate an existing allocation to a new size
-		Returns nullptr on failure
-		TODO: Do we need ReallocateEx? Only if allocFlags grows.
-		*/
-		LIBLET_PUBLICAPI_EX("win", "android") _Ret_maybenull_ void* Reallocate(_Inout_ void** ppv, size_t cb) noexcept;
+/**
+Reallocate an existing allocation to a new size
+Returns nullptr on failure
+TODO: Do we need ReallocateEx? Only if allocFlags grows.
+*/
+LIBLET_PUBLICAPI_EX("win", "android") _Ret_maybenull_ void* Reallocate(_Inout_ void** ppv, size_t cb) noexcept;
 
-		template<typename T>
-		_Ret_maybenull_ T* Reallocate(T* pT, size_t cb) noexcept
-		{
-			return reinterpret_cast<T*>(Reallocate(reinterpret_cast<void**>(&pT), cb));
-		}
+template <typename T>
+_Ret_maybenull_ T* Reallocate(T* pT, size_t cb) noexcept
+{
+  return reinterpret_cast<T*>(Reallocate(reinterpret_cast<void**>(&pT), cb));
+}
 
-		/**
-		Return the allocation size of a given pointer
-		*/
-		LIBLET_PUBLICAPI_EX("win", "android") size_t AllocationSize(_In_opt_ const void* pv) noexcept;
+/**
+Return the allocation size of a given pointer
+*/
+LIBLET_PUBLICAPI_EX("win", "android") size_t AllocationSize(_In_opt_ const void* pv) noexcept;
 
-		/**
-		Release a previously allocated block of memory
-		*/
-		LIBLET_PUBLICAPI_EX("win", "android") void Free(_Pre_maybenull_ _Post_invalid_ void* pv) noexcept;
+/**
+Release a previously allocated block of memory
+*/
+LIBLET_PUBLICAPI_EX("win", "android") void Free(_Pre_maybenull_ _Post_invalid_ void* pv) noexcept;
 
-		/**
-		Disambiguator used to ensure a throwing new
-		new (Mso::Memory::throwNew) Zoo();
-		*/
-		OACR_WARNING_SUPPRESS(SPECIFY_SELECTANY, "Not needed for marker type")
-		static const struct throwNew_t
-		{
-			throwNew_t() noexcept = default;
-		} throwNew;
+/**
+Disambiguator used to ensure a throwing new
+new (Mso::Memory::throwNew) Zoo();
+*/
+OACR_WARNING_SUPPRESS(SPECIFY_SELECTANY, "Not needed for marker type")
+static const struct throwNew_t
+{
+  throwNew_t() noexcept = default;
+} throwNew;
 
-		/**
-		Disambiguator used to ensure a crashing new
-		new (Mso::Memory::failFast) Zoo();
-		*/
-		OACR_WARNING_SUPPRESS(SPECIFY_SELECTANY, "Not needed for marker type")
-		static const struct failFast_t
-		{
-			failFast_t() noexcept = default;
-		} failFast;
+/**
+Disambiguator used to ensure a crashing new
+new (Mso::Memory::failFast) Zoo();
+*/
+OACR_WARNING_SUPPRESS(SPECIFY_SELECTANY, "Not needed for marker type")
+static const struct failFast_t
+{
+  failFast_t() noexcept = default;
+} failFast;
 
-		/**
-		Construct a object of type `T` stored at `mem`.
+/**
+Construct a object of type `T` stored at `mem`.
 
-		Arguments are forwarded to constructor of `T`.
-		*/
-		template <typename T, typename... Args>
-		static void Place(__inout_bcount(sizeof(T)) void* mem, Args&&... args)
-		{
-			Details::Emplacer<T>::Place(mem, std::forward<Args>(args)...);
-		}
+Arguments are forwarded to constructor of `T`.
+*/
+template <typename T, typename... Args>
+static void Place(__inout_bcount(sizeof(T)) void* mem, Args&&... args)
+{
+  Details::Emplacer<T>::Place(mem, std::forward<Args>(args)...);
+}
 
-		/**
-		Manually destruct an object of type `T`.
-		*/
-		template <typename T,
-			typename = typename std::enable_if<!std::is_array<T>::value>::type>
-			static void Destruct(T& obj) noexcept
-		{
-			Details::Destructor<T>::Destruct(obj);
-		}
+/**
+Manually destruct an object of type `T`.
+*/
+template <typename T, typename = typename std::enable_if<!std::is_array<T>::value>::type>
+static void Destruct(T& obj) noexcept
+{
+  Details::Destructor<T>::Destruct(obj);
+}
 
-		/**
-		Manually destruct a `T[N]`.
+/**
+Manually destruct a `T[N]`.
 
-		Destructs contents of the array in reverse order.
-		*/
-		template <typename T, size_t N>
-		static void Destruct(T(&obj)[N]) noexcept
-		{
-			size_t i = N;
-			while (i--)
-				Destruct(obj[i]);
-		}
-	} // Memory
-} // Mso
+Destructs contents of the array in reverse order.
+*/
+template <typename T, size_t N>
+static void Destruct(T (&obj)[N]) noexcept
+{
+  size_t i = N;
+  while (i--)
+    Destruct(obj[i]);
+}
+}} // namespace Mso::Memory
 
 template <typename T>
 struct Destructor<T, typename std::enable_if<std::is_destructible<T>::value && !std::is_pod<T>::value>::type>
@@ -302,7 +298,8 @@ static void Destruct(T (&obj)[N]) noexcept
   while (i--)
     Destruct(obj[i]);
 }
-}} // namespace Mso::Memory
+}
+} // namespace Mso::Memory
 
 namespace Mso { namespace Memory { namespace FailFast {
 /**
@@ -337,30 +334,26 @@ static const struct MarkingLeak_t
 
 }}} // namespace Mso::Memory::NoThrow
 
-namespace Mso {
-	namespace Memory {
-		namespace Throw {
+namespace Mso { namespace Memory { namespace Throw {
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable:4100)
-			/**
-			Mso::Memory::Throw::New<T>(args)
+MSO_PRAGMA_WARNING(disable : 4100)
+/**
+Mso::Memory::Throw::New<T>(args)
 
-			Allocates object T by passing args to its constructor.
-			*/
-			template <typename T, typename ...TArgs>
-			OACR_WARNING_SUPPRESS( NULL_ON_NON_POINTER, "false positive" )
-			_Ret_notnull_ T* New(TArgs&&... t)
-			{
-				Debug(Mso::Memory::AutoShutdownLeakScope scope);
-				T* pT = new(std::nothrow) T(std::forward<TArgs>(t)...);
-				if (pT == nullptr)
-					throw std::bad_alloc();
-				return pT;
-			}
+Allocates object T by passing args to its constructor.
+*/
+template <typename T, typename... TArgs>
+OACR_WARNING_SUPPRESS(NULL_ON_NON_POINTER, "false positive")
+_Ret_notnull_ T* New(TArgs&&... t)
+{
+  Debug(Mso::Memory::AutoShutdownLeakScope scope);
+  T* pT = new (std::nothrow) T(std::forward<TArgs>(t)...);
+  if (pT == nullptr)
+    throw std::bad_alloc();
+  return pT;
+}
 MSO_PRAGMA_WARNING(pop)
-		} // Throw
-	} // Memory
-} // Mso
+}}} // namespace Mso::Memory::Throw
 
 namespace Mso {
 /**

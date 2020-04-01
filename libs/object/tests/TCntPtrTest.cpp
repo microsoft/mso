@@ -38,11 +38,11 @@ public:
   {
   }
 
-	virtual ~SimpleClass() = default;
+  virtual ~SimpleClass() = default;
 
-	virtual void AddRef() const noexcept override
-	{
-		OACR_ASSUME_NOTHROW_BEGIN
+  virtual void AddRef() const noexcept override
+  {
+    OACR_ASSUME_NOTHROW_BEGIN
 
     m_onRefCountChanged(/*incremented*/ true);
 
@@ -80,60 +80,69 @@ private:
 class UnkSimpleClass : public IUnkSimple
 {
 public:
-	UnkSimpleClass(RefCountChangedCallback&& onRefCountChanged)
-		: m_refCount(0)
-		, m_onRefCountChanged(std::move(onRefCountChanged))
-	{
-	}
+  UnkSimpleClass(RefCountChangedCallback&& onRefCountChanged)
+      : m_refCount(0), m_onRefCountChanged(std::move(onRefCountChanged))
+  {
+  }
 
-	virtual ~UnkSimpleClass() = default;
+  virtual ~UnkSimpleClass() = default;
 
-	_Success_(return == S_OK)
-	STDMETHOD(QueryInterface)(const GUID& /*riid*/, _Outptr_ void** /*ppvObject*/) noexcept override
-	{
-		return E_NOINTERFACE;
-	}
+  _Success_(return == S_OK)
+      STDMETHOD(QueryInterface)(const GUID& /*riid*/, _Outptr_ void** /*ppvObject*/) noexcept override
+  {
+    return E_NOINTERFACE;
+  }
 
-	STDMETHOD_(ULONG, AddRef)() noexcept override
-	{
-		OACR_ASSUME_NOTHROW_BEGIN
-		m_onRefCountChanged(/*incremented*/true);
-		OACR_ASSUME_NOTHROW_END
-		++m_refCount;
-		return 1;
-	}
+  STDMETHOD_(ULONG, AddRef)() noexcept override
+  {
+    OACR_ASSUME_NOTHROW_BEGIN
+    m_onRefCountChanged(/*incremented*/ true);
+    OACR_ASSUME_NOTHROW_END
+    ++m_refCount;
+    return 1;
+  }
 
-	STDMETHOD_(ULONG, Release)() noexcept override
-	{
-		OACR_ASSUME_NOTHROW_BEGIN
-		m_onRefCountChanged(/*incremented*/false);
-		OACR_ASSUME_NOTHROW_END
-		if (--m_refCount == 0)
-		{
-			delete this;
-		}
+  STDMETHOD_(ULONG, Release)() noexcept override
+  {
+    OACR_ASSUME_NOTHROW_BEGIN
+    m_onRefCountChanged(/*incremented*/ false);
+    OACR_ASSUME_NOTHROW_END
+    if (--m_refCount == 0)
+    {
+      delete this;
+    }
 
-		return 1;
-	}
+    return 1;
+  }
 
-	virtual void DoSomething() noexcept override
-	{
-	}
+  virtual void DoSomething() noexcept override {}
 
-	void ClassDoSomething() noexcept
-	{
-		OACR_USE_PTR(this);  // simulates access to 'this' for OACR build
-	}
+  void ClassDoSomething() noexcept
+  {
+    OACR_USE_PTR(this); // simulates access to 'this' for OACR build
+  }
 
 private:
   mutable std::atomic<uint32_t> m_refCount;
   RefCountChangedCallback m_onRefCountChanged;
 };
 
-inline static std::wstring ToString(UnkSimpleClass* /*q*/) { return L""; }
-inline static std::wstring ToString(SimpleClass* /*q*/) { return L""; }
-inline static std::wstring ToString(const UnkSimpleClass* /*q*/) { return L""; }
-inline static std::wstring ToString(const SimpleClass* /*q*/) { return L""; }
+inline static std::wstring ToString(UnkSimpleClass* /*q*/)
+{
+  return L"";
+}
+inline static std::wstring ToString(SimpleClass* /*q*/)
+{
+  return L"";
+}
+inline static std::wstring ToString(const UnkSimpleClass* /*q*/)
+{
+  return L"";
+}
+inline static std::wstring ToString(const SimpleClass* /*q*/)
+{
+  return L"";
+}
 
 class AggregatedObject : public Mso::UnknownObject<IUnkSimple, IUnkSample>
 {

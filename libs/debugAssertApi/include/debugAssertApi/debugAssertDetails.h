@@ -20,19 +20,25 @@
 /**
 Mappings for core Debug asserts.
 */
-MSO_PRAGMA_WARNING(suppress:4005) // macro redefinition :(
-#define AssertTag(f, tag)                             AssertAnnotatedSzNTagImpl(f, L## #f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", #f)
-#define AssertSzTag(f, sz, tag)                       AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", AssertDetails_SzCast(sz))
-#define AssertSz1Tag(f, sz, a, tag)                   AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a)
-#define AssertSz2Tag(f, sz, a, b, tag)                AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b)
-#define AssertSz3Tag(f, sz, a, b, c, tag)             AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c)
-#define AssertSz4Tag(f, sz, a, b, c, d, tag)          AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c, d)
-#define AssertSz5Tag(f, sz, a, b, c, d, e, tag)       AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c, d, e)
+MSO_PRAGMA_WARNING(suppress : 4005) // macro redefinition :(
+#define AssertTag(f, tag) \
+  AssertAnnotatedSzNTagImpl(f, L## #f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", #f)
+#define AssertSzTag(f, sz, tag) \
+  AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", AssertDetails_SzCast(sz))
+#define AssertSz1Tag(f, sz, a, tag) AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a)
+#define AssertSz2Tag(f, sz, a, b, tag) AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b)
+#define AssertSz3Tag(f, sz, a, b, c, tag) \
+  AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c)
+#define AssertSz4Tag(f, sz, a, b, c, d, tag) \
+  AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c, d)
+#define AssertSz5Tag(f, sz, a, b, c, d, e, tag) \
+  AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a, b, c, d, e)
 
-#define FAssertDoTag(f, tag)                          FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L## #f, "%s", #f)
-#define FAssertDoSzTag(f, sz, tag)                    FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, "%s", AssertDetails_SzCast(sz))
-#define FAssertDoSz1Tag(f, sz, a, tag)                FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, sz, a)
-#define FAssertDoSz2Tag(f, sz, a, b, tag)             FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, sz, a, b)
+#define FAssertDoTag(f, tag) FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L## #f, "%s", #f)
+#define FAssertDoSzTag(f, sz, tag) \
+  FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, "%s", AssertDetails_SzCast(sz))
+#define FAssertDoSz1Tag(f, sz, a, tag) FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, sz, a)
+#define FAssertDoSz2Tag(f, sz, a, b, tag) FAssertDoSzNTagImpl(f, tag, __FILE__, __LINE__, L##sz, sz, a, b)
 
 /**
 Return values from MsoAssertSzTagProc(Inline)(2)

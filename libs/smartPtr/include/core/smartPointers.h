@@ -34,12 +34,13 @@ struct TDeleteHelper
 template <typename T>
 class TOwnerPtr : public THolder<T*, TDeleteHelper<T*>>
 {
-	typedef THolder<T*, TDeleteHelper<T*>> Super;
+  typedef THolder<T*, TDeleteHelper<T*>> Super;
+
 public:
-	TOwnerPtr() noexcept {}
-	/*explicit*/ TOwnerPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>)
-	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>)
+  TOwnerPtr() noexcept {}
+  /*explicit*/ TOwnerPtr(T* pT) noexcept : Super(pT) {}
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>)
+  IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>)
 
 public:
   TOwnerPtr() noexcept {}
@@ -90,12 +91,13 @@ struct TArrayHelper
 template <typename T>
 class TArrayHolder : public THolder<T*, TArrayHelper<T*>>
 {
-	typedef THolder<T*, TArrayHelper<T*>> Super;
+  typedef THolder<T*, TArrayHelper<T*>> Super;
+
 public:
-	TArrayHolder() noexcept {}
-	/*explicit*/ TArrayHolder(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder)
-	IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder)
+  TArrayHolder() noexcept {}
+  /*explicit*/ TArrayHolder(T* pT) noexcept : Super(pT) {}
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder)
+  IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder)
 
 public:
   TArrayHolder() noexcept {}
@@ -150,10 +152,10 @@ class TOwnerIPtr : public THolder<T*, TFreeHelper<T*>>
   typedef THolder<T*, TFreeHelper<T*>> Super;
 
 public:
-	TOwnerIPtr() noexcept {}
-	/*explicit*/ TOwnerIPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr)
-	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr)
+  TOwnerIPtr() noexcept {}
+  /*explicit*/ TOwnerIPtr(T* pT) noexcept : Super(pT) {}
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr)
+  IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr)
 
 private:
   DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerIPtr);
@@ -185,10 +187,10 @@ class TDestroyPtr : public THolder<T*, TDestroyHelper<T*>>
   typedef THolder<T*, TDestroyHelper<T*>> Super;
 
 public:
-	TDestroyPtr() noexcept {}
-	explicit TDestroyPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr)
-	IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr)
+  TDestroyPtr() noexcept {}
+  explicit TDestroyPtr(T* pT) noexcept : Super(pT) {}
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr)
+  IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr)
 
 private:
   DECLARE_COPYCONSTR_AND_ASSIGNMENT(TDestroyPtr);

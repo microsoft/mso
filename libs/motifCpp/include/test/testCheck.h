@@ -141,7 +141,7 @@ struct TerminateHandlerRestorer
 };
 
 MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable:4611) // interaction between '_setjmp' and C++ object destruction is non-portable
+MSO_PRAGMA_WARNING(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 template <class Fn>
 inline bool ExpectTerminateCore(const Fn& fn)
 {

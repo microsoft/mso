@@ -14,8 +14,7 @@ namespace FunctorTestsCommon {
 #pragma GCC diagnostic ignored "-Wreorder"
 #endif
 
-class TestData
-	: public Mso::RefCountedObjectNoVTable<TestData>
+class TestData : public Mso::RefCountedObjectNoVTable<TestData>
 {
   using Super = Mso::RefCountedObjectNoVTable<TestData>;
 

@@ -213,22 +213,22 @@ static const DWORD EXCEPTION_CPLUSPLUS = static_cast<DWORD>(0xE06D7363);
 
 inline DWORD FilterCrashExceptions(DWORD exceptionCode) noexcept
 {
-	if ((exceptionCode == EXCEPTION_BREAKPOINT)              // allow exceptions to get to the debugger
-		|| (exceptionCode == EXCEPTION_SINGLE_STEP)             // allow exceptions to get to the debugger
-		|| (exceptionCode == EXCEPTION_GUARD_PAGE)              // allow to crash on memory page access violation
-		|| (exceptionCode == EXCEPTION_STACK_OVERFLOW))        // allow to crash on stack overflow
-	{
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-	if (exceptionCode == EXCEPTION_CPLUSPLUS)  // log C++ exception and pass it through
-	{
-		TestAssert::Fail(L"Test function did not crash, but exception is thrown!");
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-	return EXCEPTION_EXECUTE_HANDLER;
+  if ((exceptionCode == EXCEPTION_BREAKPOINT) // allow exceptions to get to the debugger
+      || (exceptionCode == EXCEPTION_SINGLE_STEP) // allow exceptions to get to the debugger
+      || (exceptionCode == EXCEPTION_GUARD_PAGE) // allow to crash on memory page access violation
+      || (exceptionCode == EXCEPTION_STACK_OVERFLOW)) // allow to crash on stack overflow
+  {
+    return EXCEPTION_CONTINUE_SEARCH;
+  }
+  if (exceptionCode == EXCEPTION_CPLUSPLUS) // log C++ exception and pass it through
+  {
+    TestAssert::Fail(L"Test function did not crash, but exception is thrown!");
+    return EXCEPTION_CONTINUE_SEARCH;
+  }
+  return EXCEPTION_EXECUTE_HANDLER;
 }
 
-template<typename Fn>
+template <typename Fn>
 inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
   __try
@@ -277,27 +277,22 @@ private:
 template <class Fn>
 inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
-	static sigjmp_buf buf{};
+  static sigjmp_buf buf{};
 
-	// Set sigaction and save the previous action to be restored in the end of
-	// function.
-	CrashState crashState{
-		[](int /*signal*/, siginfo_t */*si*/, void */*arg*/)
-		{
-			longjmp(buf, 1);
-		}
-	};
+  // Set sigaction and save the previous action to be restored in the end of
+  // function.
+  CrashState crashState{[](int /*signal*/, siginfo_t* /*si*/, void* /*arg*/) { longjmp(buf, 1); }};
 
-	// setjmp originally returns 0, and when longjmp is called it returns 1.
-	if (!setjmp(buf))
-	{
-		fn();
-		return true; // must not be executed if fn() caused crash and the longjmp is executed.
-	}
-	else
-	{
-		return true; // executed if longjmp is executed in the SigAction handler.
-	}
+  // setjmp originally returns 0, and when longjmp is called it returns 1.
+  if (!setjmp(buf))
+  {
+    fn();
+    return true; // must not be executed if fn() caused crash and the longjmp is executed.
+  }
+  else
+  {
+    return true; // executed if longjmp is executed in the SigAction handler.
+  }
 }
 
 #endif

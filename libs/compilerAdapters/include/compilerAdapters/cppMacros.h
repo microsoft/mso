@@ -9,17 +9,17 @@
 #define COMPILERADAPTERS_CPPMACROS_H
 
 /**
-	Warning management
+    Warning management
 */
 #ifdef __GNUC__
 #define MSO_PRAGMA_WARNING(x)
-#define __pragma(x) 
+#define __pragma(x)
 #else // !__GNUC__
 #define MSO_PRAGMA_WARNING(x) __pragma(warning(x))
 #endif // __GNUC__
 
 /**
-	Broadly used macros
+    Broadly used macros
 */
 #ifndef FImplies
 #define FImplies(a, b) (!(a) || (b))

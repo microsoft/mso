@@ -46,7 +46,7 @@ struct ILibletMemoryMarking
 struct IMsoMemHeap;
 LIBLET_PUBLICAPI_EX("android", "win")
 MSOAPI_(BOOL)
-    FMemHeapMsoSaveBeHost(void* pinst, LPARAM lParam, const void* pvBlock, LONG_PTR cb, IMsoMemHeap* pmmh) MSONOEXCEPT;
+FMemHeapMsoSaveBeHost(void* pinst, LPARAM lParam, const void* pvBlock, LONG_PTR cb, IMsoMemHeap* pmmh) MSONOEXCEPT;
 LIBLET_PUBLICAPI_EX("android", "win") MSOAPI_(void) MsoCheckShutdownLeaks() noexcept;
 LIBLET_PUBLICAPI_EX("win") MSOAPI_(void) HeapEnableLeakTracking(bool isEnabled);
 LIBLET_PUBLICAPI_EX("win") MSOAPI_(void) MsoBeforeThreadTerminatesThreaded(DWORD mainThreadId) noexcept;
