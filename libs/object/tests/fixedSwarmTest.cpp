@@ -166,20 +166,20 @@ TEST_CLASS(ObjectFixedSwarmTest)
 		Mso::TCntPtr<Swarm1> swarm1 = Mso::Make<Swarm1>();
 		TestAssert::IsFalse(swarm1.IsEmpty());
 		
-		Debug(TestAssert::AreEqual(1, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(1, swarm1->WeakRefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(1, swarm1->RefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(1, swarm1->WeakRefCount()));
 
 		Mso::TCntPtr<Swarm1> swarm11 = swarm1;
-		Debug(TestAssert::AreEqual(2, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(1, swarm1->WeakRefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->RefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(1, swarm1->WeakRefCount()));
 
 		Mso::WeakPtr<Swarm1> weakSwarm1 = swarm1;
-		Debug(TestAssert::AreEqual(2, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(2, swarm1->WeakRefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->RefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->WeakRefCount()));
 
 		Mso::WeakPtr<Swarm1> weakSwarm11 = swarm1;
-		Debug(TestAssert::AreEqual(2, swarm1->RefCount()));
-		Debug(TestAssert::AreEqual(3, swarm1->WeakRefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->RefCount()));
+		Debug(TestAssert::AreEqual<uint32_t>(3, swarm1->WeakRefCount()));
 	}
 
 	TEST_METHOD(ObjectFixedSwarm_GetMember)
@@ -214,13 +214,13 @@ TEST_CLASS(ObjectFixedSwarmTest)
 				TestAssert::IsTrue(created);
 				TestAssert::IsFalse(deleted);
 
-				Debug(TestAssert::AreEqual(2, swarm1->RefCount()));
-				Debug(TestAssert::AreEqual(2, swarm1->WeakRefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->WeakRefCount()));
 			}
 
 			TestAssert::IsFalse(deleted);
-			Debug(TestAssert::AreEqual(1, swarm1->RefCount()));
-			Debug(TestAssert::AreEqual(2, swarm1->WeakRefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, swarm1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, swarm1->WeakRefCount()));
 		}
 
 		TestAssert::IsTrue(deleted);
@@ -239,26 +239,26 @@ TEST_CLASS(ObjectFixedSwarmTest)
 				swarm3->MakeMember<0>(created, deleted);
 				Mso::TCntPtr<IFixedSwarmSample1> member0 = swarm3->Get<0>();
 				TestAssert::IsFalse(member0.IsEmpty());
-				Debug(TestAssert::AreEqual(2, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(2, swarm3->WeakRefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(2, swarm3->RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(2, swarm3->WeakRefCount()));
 
 				swarm3->MakeMember<1>();
 				Mso::TCntPtr<IFixedSwarmSample2> member1 = swarm3->Get<1>();
 				TestAssert::IsFalse(member1.IsEmpty());
-				Debug(TestAssert::AreEqual(3, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(3, swarm3->WeakRefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(3, swarm3->RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(3, swarm3->WeakRefCount()));
 
 				swarm3->MakeMember<2>();
 				Mso::TCntPtr<FixedSwarmMemberSample3> member2 = swarm3->Get<2>();
 				TestAssert::IsFalse(member2.IsEmpty());
-				Debug(TestAssert::AreEqual(4, swarm3->RefCount()));
-				Debug(TestAssert::AreEqual(4, swarm3->WeakRefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(4, swarm3->RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(4, swarm3->WeakRefCount()));
 			}
 
 			TestAssert::IsFalse(deleted);
-			Debug(TestAssert::AreEqual(1, swarm3->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, swarm3->RefCount()));
 			// Each object +1 for weak reference count, +1 weak reference if strong ref count != 0.
-			Debug(TestAssert::AreEqual(4, swarm3->WeakRefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(4, swarm3->WeakRefCount()));
 		}
 
 		TestAssert::IsTrue(deleted);

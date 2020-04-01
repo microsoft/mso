@@ -15,7 +15,7 @@
 #define MSO_PRAGMA_WARNING(x)
 #define __pragma(x) 
 #else // !__GNUC__
-#define MSO_PRAGMA_WARNING(x) __pragma(#x)
+#define MSO_PRAGMA_WARNING(x) __pragma(warning(x))
 #endif // __GNUC__
 
 /**

@@ -1163,11 +1163,11 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<UnknownSample1> unknown1 = Mso::Make<UnknownSample1>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
 			TestAssert::AreEqual(1, base1->GetValue1());
-			Debug(TestAssert::AreEqual(2, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->RefCount()));
 		}
 		TestAssert::IsTrue(deleted);
 	}
@@ -1178,11 +1178,11 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<UnknownSample11> unknown1 = Mso::Make<UnknownSample11>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
 			TestAssert::AreEqual(1, base1->GetValue1());
-			Debug(TestAssert::AreEqual(2, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->RefCount()));
 		}
 		TestAssert::IsTrue(deleted);
 	}
@@ -1193,15 +1193,15 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<UnknownSample2> unknown1 = Mso::Make<UnknownSample2>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
 			TestAssert::AreEqual(1, base1->GetValue1());
-			Debug(TestAssert::AreEqual(2, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample2> base2 = unknown1;
 			TestAssert::AreEqual(2, base2->GetValue2());
-			Debug(TestAssert::AreEqual(3, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(3, unknown1->RefCount()));
 		}
 		TestAssert::IsTrue(deleted);
 	}
@@ -1212,19 +1212,19 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
 			TestAssert::AreEqual(1, base1->GetValue1());
-			Debug(TestAssert::AreEqual(2, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample2> base2 = unknown1;
 			TestAssert::AreEqual(2, base2->GetValue2());
-			Debug(TestAssert::AreEqual(3, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(3, unknown1->RefCount()));
 
 			Mso::TCntPtr<UnknownSample3> unknown2 = qi_cast<UnknownSample3>(base2.Get());
 			TestAssert::AreEqual(2, unknown2->GetValue2());
-			Debug(TestAssert::AreEqual(4, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(4, unknown1->RefCount()));
 		}
 		TestAssert::IsTrue(deleted);
 	}
@@ -1235,14 +1235,14 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<UnknownSample4> unknown1 = Mso::Make<UnknownSample4>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->GetWeakRef().RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->GetWeakRef().RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
-			Debug(TestAssert::AreEqual(2, unknown1->GetWeakRef().RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->GetWeakRef().RefCount()));
 
 			Mso::ObjectWeakRef* obj1weakRef = query_cast<Mso::ObjectWeakRef*>(base1.Get());
 			TestAssert::IsNotNull(obj1weakRef);
-			Debug(TestAssert::AreEqual(2, obj1weakRef->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, obj1weakRef->RefCount()));
 		}
 		TestAssert::IsTrue(deleted);
 	}
@@ -1585,20 +1585,20 @@ TEST_CLASS(UnknownObjectTest)
 		{
 			Mso::TCntPtr<AgileSample1> unknown1 = Mso::Make<AgileSample1>(/*ref*/deleted);
 			TestAssert::AreEqual(1, unknown1->GetValue1());
-			Debug(TestAssert::AreEqual(1, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(1, unknown1->RefCount()));
 
 			Mso::TCntPtr<IBaseSample1> base1 = unknown1;
 			TestAssert::AreEqual(1, base1->GetValue1());
-			Debug(TestAssert::AreEqual(2, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(2, unknown1->RefCount()));
 
 #if defined(MS_TARGET_WINDOWS)
 			Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
 			TestAssert::IsNotNull(marshal1.Get(), L"IMarshal must not be null.");
-			Debug(TestAssert::AreEqual(3, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(3, unknown1->RefCount()));
 			
 			Mso::TCntPtr<IAgileObject> agile1 = qi_cast<IAgileObject>(base1.Get());
 			TestAssert::IsNotNull(agile1.Get(), L"IAgileObject must not be null.");
-			Debug(TestAssert::AreEqual(4, unknown1->RefCount()));
+			Debug(TestAssert::AreEqual<uint32_t>(4, unknown1->RefCount()));
 #endif
 		}
 		TestAssert::IsTrue(deleted);
@@ -1617,20 +1617,20 @@ TEST_CLASS(UnknownObjectTest)
 			{
 				Mso::TCntPtr<AgileSample2> agile1 = Mso::Make<AgileSample2>(/*ref*/deleted);
 				TestAssert::AreEqual(1, agile1->GetValue1());
-				Debug(TestAssert::AreEqual(1, agile1->GetWeakRef().RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(1, agile1->GetWeakRef().RefCount()));
 
 				Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
 				TestAssert::AreEqual(1, base1->GetValue1());
-				Debug(TestAssert::AreEqual(2, agile1->GetWeakRef().RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(2, agile1->GetWeakRef().RefCount()));
 
 #if !defined(__clang__) && !defined(__GNUC__)
 				Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
 				TestAssert::IsNotNull(marshal1.Get(), L"IMarshal must not be null.");
-				Debug(TestAssert::AreEqual(3, agile1->GetWeakRef().RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(3, agile1->GetWeakRef().RefCount()));
 
 				Mso::TCntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(marshal1.Get());
 				TestAssert::IsNotNull(agileObj1.Get(), L"IAgileObject must not be null.");
-				Debug(TestAssert::AreEqual(4, agile1->GetWeakRef().RefCount()));
+				Debug(TestAssert::AreEqual<uint32_t>(4, agile1->GetWeakRef().RefCount()));
 #endif
 
 				weakAgile = agile1;

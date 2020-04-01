@@ -218,7 +218,7 @@ inline DWORD FilterCrashExceptions(DWORD exceptionCode) noexcept
 }
 
 template<typename Fn>
-inline bool ExpectCrashCore(const Fn& fn, const WCHAR* message)
+inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
 	__try
 	{
