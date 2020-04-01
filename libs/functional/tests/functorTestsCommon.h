@@ -9,6 +9,11 @@ Common code for functor (Functor, SmallFunctor) unit tests.
 
 namespace FunctorTestsCommon {
 
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreorder"
+#endif
+
 class TestData
 	: public Mso::RefCountedObjectNoVTable<TestData>
 {
@@ -40,6 +45,10 @@ private:
 	int& m_addRefCalls;
 	int& m_releaseCalls;
 };
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 struct StaticMethod
 {

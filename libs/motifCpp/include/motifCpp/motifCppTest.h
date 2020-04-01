@@ -260,14 +260,14 @@ private:
 
 // Returns true if crash (segmentation fault happened)
 template <class Fn>
-inline bool ExpectCrashCore(const Fn& fn, const WCHAR* message)
+inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
 	static sigjmp_buf buf{};
 
 	// Set sigaction and save the previous action to be restored in the end of
 	// function.
 	CrashState crashState{
-		[](int signal, siginfo_t *si, void *arg)
+		[](int /*signal*/, siginfo_t */*si*/, void */*arg*/)
 		{
 			longjmp(buf, 1);
 		}

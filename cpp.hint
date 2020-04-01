@@ -41,6 +41,7 @@
 #define MSOAPI_(type)
 #define MSOCPPAPI_(t)
 #define MSONOEXCEPT
+#define MSO_PRAGMA_WARNING(x)
 #define namespace
 #define OACR_CAPTURE_CALLS_FILE_LINE(tag)
 #define OACR_WARNING_DISABLE(cWarning, comment)

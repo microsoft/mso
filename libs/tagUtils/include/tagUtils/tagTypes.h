@@ -42,7 +42,7 @@ constexpr inline MsoReserveTag MsoReserve() noexcept
 
 #else
 
-#if __OBJC__
+#if __OBJC__ || defined(__GNUC__)
 #define UNTAGGED ('0' << 24 | '0' << 16 | '0' << 8 | '0')
 #else
 #define UNTAGGED '0000'

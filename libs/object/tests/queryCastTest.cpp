@@ -103,7 +103,7 @@ public:
 	virtual int GetValue1() override { return 1; }
 };
 
-DEFINE_STRING_GUID(MyTestGuid1, "65ADDF73-B4EE-4E36-AB61-FEEA1F01A169");
+DEFINE_STRING_GUID(MyTestGuid1, "65ADDF73-B4EE-4E36-AB61-FEEA1F01A169")
 
 struct DECLSPEC_NOVTABLE IQueryCastNoGuid1
 {

@@ -175,18 +175,18 @@ constexpr GUID StringToGuid(const GuidString& g) noexcept
 {
 	return
 	{
-		static_cast<unsigned int>((H2U[g[0]] << 28) | (H2U[g[1]] << 24) | (H2U[g[2]] << 20) | (H2U[g[3]] << 16) | (H2U[g[4]] << 12) | (H2U[g[5]] << 8) | (H2U[g[6]] << 4) | H2U[g[7]]),
-		static_cast<unsigned short>((H2U[g[9]] << 12) | (H2U[g[10]] << 8) | (H2U[g[11]] << 4) | H2U[g[12]]),
-		static_cast<unsigned short>((H2U[g[14]] << 12) | (H2U[g[15]] << 8) | (H2U[g[16]] << 4) | H2U[g[17]]),
+		static_cast<unsigned int>((H2U[(int)g[0]] << 28) | (H2U[(int)g[1]] << 24) | (H2U[(int)g[2]] << 20) | (H2U[(int)g[3]] << 16) | (H2U[(int)g[4]] << 12) | (H2U[(int)g[5]] << 8) | (H2U[(int)g[6]] << 4) | H2U[(int)g[7]]),
+		static_cast<unsigned short>((H2U[(int)g[9]] << 12) | (H2U[(int)g[10]] << 8) | (H2U[(int)g[11]] << 4) | H2U[(int)g[12]]),
+		static_cast<unsigned short>((H2U[(int)g[14]] << 12) | (H2U[(int)g[15]] << 8) | (H2U[(int)g[16]] << 4) | H2U[(int)g[17]]),
 		{
-			static_cast<unsigned char>((H2U[g[19]] << 4) | H2U[g[20]]),
-			static_cast<unsigned char>((H2U[g[21]] << 4) | H2U[g[22]]),
-			static_cast<unsigned char>((H2U[g[24]] << 4) | H2U[g[25]]),
-			static_cast<unsigned char>((H2U[g[26]] << 4) | H2U[g[27]]),
-			static_cast<unsigned char>((H2U[g[28]] << 4) | H2U[g[29]]),
-			static_cast<unsigned char>((H2U[g[30]] << 4) | H2U[g[31]]),
-			static_cast<unsigned char>((H2U[g[32]] << 4) | H2U[g[33]]),
-			static_cast<unsigned char>((H2U[g[34]] << 4) | H2U[g[35]])
+			static_cast<unsigned char>((H2U[(int)g[19]] << 4) | H2U[(int)g[20]]),
+			static_cast<unsigned char>((H2U[(int)g[21]] << 4) | H2U[(int)g[22]]),
+			static_cast<unsigned char>((H2U[(int)g[24]] << 4) | H2U[(int)g[25]]),
+			static_cast<unsigned char>((H2U[(int)g[26]] << 4) | H2U[(int)g[27]]),
+			static_cast<unsigned char>((H2U[(int)g[28]] << 4) | H2U[(int)g[29]]),
+			static_cast<unsigned char>((H2U[(int)g[30]] << 4) | H2U[(int)g[31]]),
+			static_cast<unsigned char>((H2U[(int)g[32]] << 4) | H2U[(int)g[33]]),
+			static_cast<unsigned char>((H2U[(int)g[34]] << 4) | H2U[(int)g[35]])
 		}
 	};
 }

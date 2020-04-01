@@ -13,12 +13,14 @@
 #define LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
 #include <cstdarg>
 #include <cstdint>
+#include <compilerAdapters/cppMacros.h>
+#include <compilerAdapters/cppMacrosDebug.h>
 #include <debugAssertApi/debugAssertApi.h>
 
 /**
 Mappings for core Debug asserts.
 */
-#pragma warning(suppress:4005) // macro redefinition :(
+MSO_PRAGMA_WARNING(suppress:4005) // macro redefinition :(
 #define AssertTag(f, tag)                             AssertAnnotatedSzNTagImpl(f, L## #f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", #f)
 #define AssertSzTag(f, sz, tag)                       AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", AssertDetails_SzCast(sz))
 #define AssertSz1Tag(f, sz, a, tag)                   AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a)
@@ -60,7 +62,7 @@ __pragma(warning(suppress:4472)) enum class AssertResult : uint32_t
 #endif // C++
 
 // TODO: move this abstraction into compilerAdapters? Except it depends on windows - hmm
-#if defined(__clang__) || defined(__cplusplus_cli) || defined(__INTELLISENSE__)
+#if defined(__clang__) || defined(__GNUC__) || defined(__cplusplus_cli) || defined(__INTELLISENSE__)
 #define AssertBreak(wzMsg) __debugbreak()
 #elif defined(_DBGRAISEASSERTIONFAILURE_)
 #define AssertBreak(wzMsg) \

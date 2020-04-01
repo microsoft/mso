@@ -64,8 +64,8 @@ Mso::TCntPtr< TTarget > qi_cast( const TSource *piSource, const IID &riid = __uu
 	return qi_cast< TTarget, TSource* >( piSourceNonConst, riid );
 }
 
-#pragma warning(push)
-#pragma warning(disable:4995) // VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as #pragma deprecated"
+MSO_PRAGMA_WARNING(push)
+MSO_PRAGMA_WARNING(disable:4995) // VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as #pragma deprecated"
 
 /**
 	qi_cast_or_crash<Type>(source, optional riid)
@@ -95,7 +95,7 @@ Mso::TCntPtr< TTarget > qi_cast_or_crash( const TSource *piSource, const IID &ri
 	return target;
 }
 
-#pragma warning(pop)
+MSO_PRAGMA_WARNING(pop)
 
 /**
 	simpleqi_cast<Type>(source, optional riid)

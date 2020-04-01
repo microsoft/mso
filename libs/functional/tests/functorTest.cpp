@@ -100,11 +100,13 @@ static int TestFreeFunction_Subtract(int i) noexcept
 	return g_freeFunctionState;
 }
 
+#if 0
 static void TestFreeFunction_Throw(int i)
 {
 	if (i < 0)
 		throw std::runtime_error("test");
 }
+#endif
 
 TestClassComponent(FunctorTest, Mso.Functor)
 TEST_CLASS(FunctorTest)
@@ -513,7 +515,7 @@ TEST_CLASS(FunctorTest)
 		Mso::Functor<int(int)> f1 = ([](int) noexcept -> int
 		{
 			OACR_NOEXCEPT_MAYTERMINATE;
-			#pragma warning(suppress:4297) // Suppress warning about throwing in noexcept function.
+			MSO_PRAGMA_WARNING(suppress:4297) // Suppress warning about throwing in noexcept function.
 			throw std::runtime_error("Test error");
 		});
 		TestCheckTerminate(f1(5));
@@ -1770,7 +1772,7 @@ TEST_CLASS(FunctorNoexceptTest)
 		Mso::Functor<int(int) noexcept> f1 = ([](int) noexcept -> int
 		{
 			OACR_NOEXCEPT_MAYTERMINATE;
-			#pragma warning(suppress:4297) // Suppress warning about throwing in noexcept function.
+			MSO_PRAGMA_WARNING(suppress:4297) // Suppress warning about throwing in noexcept function.
 			throw std::runtime_error("Test error");
 		});
 		TestCheckTerminate(f1(5));

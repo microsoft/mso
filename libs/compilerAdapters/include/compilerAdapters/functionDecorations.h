@@ -207,7 +207,14 @@
 // Don't use any of these macros, they are being eliminated
 // The definitions are a mess to prevent removed macros from sneaking back in
 
-#if defined(__cplusplus) && !defined(__clang__)
+#if defined(__cplusplus)
+
+#if defined(__GNUC__)
+
+#define MSOCPPAPI_(t)     extern "C++" t
+#define MSOAPI_(t)       MSOEXTERN_C t
+
+#elif !defined(__clang__)
 
 /* SSS_WARNINGS_OFF */
 #define MSOCPPAPI_(t)     extern "C++" __declspec(nothrow) t __cdecl
@@ -227,3 +234,5 @@
 #endif
 
 #endif
+
+#endif  // !COMPILERADAPTERS_FUNCTIONDECORATIONS_H

@@ -33,13 +33,13 @@ Here we provide a number of helper templates to implement QueryCast for a type:
 - QueryCastList - Calls QueryCastTraits for all provided types.
 */
 
-#pragma warning(push)
+MSO_PRAGMA_WARNING(push)
 // Disable warnings 4625 and 4626 because templates below may have or may not have default copy constructor and
 // copy assignment operator depending on the template type parameter. We do not want just to delete them because
 // they could be useful in some scenarios when generated.
-#pragma warning(disable: 4625) // copy constructor could not be generated because a base class copy constructor is inaccessible or deleted
-#pragma warning(disable: 4626) // assignment operator could not be generated because a base class assignment operator is inaccessible or deleted
-#pragma warning(disable: 4995) // 'IsDebuggerPresent': name was marked as #pragma deprecated. It is part of VerifyElseCrash macro.
+MSO_PRAGMA_WARNING(disable: 4625) // copy constructor could not be generated because a base class copy constructor is inaccessible or deleted
+MSO_PRAGMA_WARNING(disable: 4626) // assignment operator could not be generated because a base class assignment operator is inaccessible or deleted
+MSO_PRAGMA_WARNING(disable: 4995) // 'IsDebuggerPresent': name was marked as #pragma deprecated. It is part of VerifyElseCrash macro.
 
 namespace Mso {
 
@@ -280,7 +280,7 @@ public:
 		return StaticCastHelper<TTarget>::template CastFirst<ThisType, TBase0, TBases...>(this);
 	}
 
-#pragma warning(suppress: 4265) // class has virtual functions, but destructor is not virtual
+MSO_PRAGMA_WARNING(suppress: 4265) // class has virtual functions, but destructor is not virtual
 };
 
 /**
@@ -374,4 +374,4 @@ TTarget query_cast(TSource&& source) noexcept
 	return Mso::Details::QueryCastConverter<TTarget>::QueryCast(std::forward<TSource>(source));
 }
 
-#pragma warning(pop)
+MSO_PRAGMA_WARNING(pop)

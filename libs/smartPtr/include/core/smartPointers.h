@@ -36,8 +36,8 @@ template <typename T> class TOwnerPtr : public THolder<T*, TDeleteHelper<T*>>
 public:
 	TOwnerPtr() noexcept {}
 	/*explicit*/ TOwnerPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>);
-	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>);
+	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>)
+	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>)
 
 	T* get() noexcept { return Super::Get(); }
 	const T* get() const noexcept { return Super::Get(); }
@@ -72,8 +72,8 @@ template <typename T> class TArrayHolder : public THolder<T*, TArrayHelper<T*>>
 public:
 	TArrayHolder() noexcept {}
 	/*explicit*/ TArrayHolder(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder);
-	IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder);
+	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder)
+	IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder)
 
 	T* get() noexcept { return Super::Get(); }
 	const T* get() const noexcept { return Super::Get(); }
@@ -109,8 +109,8 @@ template <typename T> class TOwnerIPtr : public THolder<T*, TFreeHelper<T*>>
 public:
 	TOwnerIPtr() noexcept {}
 	/*explicit*/ TOwnerIPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr);
-	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr);
+	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr)
+	IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr)
 
 private:
 	DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerIPtr);
@@ -141,8 +141,8 @@ template <typename T> class TDestroyPtr : public THolder<T*, TDestroyHelper<T*>>
 public:
 	TDestroyPtr() noexcept {}
 	explicit TDestroyPtr(T *pT) noexcept : Super(pT) {}
-	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr);
-	IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr);
+	IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr)
+	IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr)
 
 private:
 	DECLARE_COPYCONSTR_AND_ASSIGNMENT(TDestroyPtr);

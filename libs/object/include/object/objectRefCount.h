@@ -118,7 +118,7 @@ namespace RefCountStrategy {
 	struct SimpleNoQuery;
 	struct NoRefCount;
 	struct NoRefCountNoQuery;
-};
+}
 
 
 

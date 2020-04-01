@@ -87,7 +87,7 @@ namespace Mso {
 				// track this memory using memory marking / idle time leak detection
 				MarkingLeak = 0x0004,
 			};
-		};
+		}
 
 		/**
 		Return a new allocation of the requested size (cb)
@@ -227,8 +227,8 @@ static const struct MarkingLeak_t
 namespace Mso {
 	namespace Memory {
 		namespace Throw {
-#pragma warning(push)
-#pragma warning(disable:4100)
+MSO_PRAGMA_WARNING(push)
+MSO_PRAGMA_WARNING(disable:4100)
 			/**
 			Mso::Memory::Throw::New<T>(args)
 
@@ -244,7 +244,7 @@ namespace Mso {
 					throw std::bad_alloc();
 				return pT;
 			}
-#pragma warning(pop)
+MSO_PRAGMA_WARNING(pop)
 		} // Throw
 	} // Memory
 } // Mso

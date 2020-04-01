@@ -323,19 +323,19 @@ namespace TaggingUtilities
 		@return a pointer to a null-terminated character buffer
 		@deprecated prefer c_str() instead
 		*/
-		_Ret_z_ T const * const GetPCWSTR() const noexcept
+		_Ret_z_ T const * GetPCWSTR() const noexcept
 		{ return this->c_str(); }
 
 		/**
 		@return a pointer to a null-terminated character buffer
 		*/
-		_Ret_z_ T const * const c_str() const noexcept
+		_Ret_z_ T const * c_str() const noexcept
 		{ return m_szTag; }
 
 		/**
 		@return a pointer to a null-terminated character buffer
 		*/
-		_Ret_z_ operator T const * const() const noexcept
+		_Ret_z_ operator T const * () const noexcept
 		{ return this->c_str(); }
 
 	private:
@@ -344,7 +344,7 @@ namespace TaggingUtilities
 
 	using WzTag = TagHolder<wchar_t>;
 	using SzTag = TagHolder<char>;
-};
+}
 
 #endif // __cplusplus
 

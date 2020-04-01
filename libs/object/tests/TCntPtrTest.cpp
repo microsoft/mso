@@ -39,6 +39,8 @@ public:
 	{
 	}
 
+	virtual ~SimpleClass() = default;
+
 	virtual void AddRef() const noexcept override
 	{
 		OACR_ASSUME_NOTHROW_BEGIN
@@ -87,6 +89,8 @@ public:
 	{
 	}
 
+	virtual ~UnkSimpleClass() = default;
+
 	_Success_(return == S_OK)
 	STDMETHOD(QueryInterface)(const GUID& /*riid*/, _Outptr_ void** /*ppvObject*/) noexcept override
 	{
@@ -129,10 +133,10 @@ private:
 	RefCountChangedCallback m_onRefCountChanged;
 };
 
-inline static std::wstring ToString(UnkSimpleClass* q) { return L""; }
-inline static std::wstring ToString(SimpleClass* q) { return L""; }
-inline static std::wstring ToString(const UnkSimpleClass* q) { return L""; }
-inline static std::wstring ToString(const SimpleClass* q) { return L""; }
+inline static std::wstring ToString(UnkSimpleClass* /*q*/) { return L""; }
+inline static std::wstring ToString(SimpleClass* /*q*/) { return L""; }
+inline static std::wstring ToString(const UnkSimpleClass* /*q*/) { return L""; }
+inline static std::wstring ToString(const SimpleClass* /*q*/) { return L""; }
 
 class AggregatedObject : public Mso::UnknownObject<IUnkSimple, IUnkSample>
 {

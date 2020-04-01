@@ -16,6 +16,7 @@
 // use the macros we provide.
 //=============================================================================
 
+#include <compilerAdapters/cppMacros.h>
 #include <motifCpp/assert_motifApi.h>
 #include <csetjmp>
 #include <csignal>
@@ -156,8 +157,8 @@ struct TerminateHandlerRestorer
 	std::terminate_handler Handler;
 };
 
-#pragma warning(push)
-#pragma warning(disable:4611) // interaction between '_setjmp' and C++ object destruction is non-portable
+MSO_PRAGMA_WARNING(push)
+MSO_PRAGMA_WARNING(disable:4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 template <class Fn>
 inline bool ExpectTerminateCore(const Fn& fn)
 {
@@ -182,7 +183,7 @@ inline bool ExpectTerminateCore(const Fn& fn)
 		return true; // executed if longjmp is executed in the terminate handler.
 	}
 }
-#pragma warning(pop)
+MSO_PRAGMA_WARNING(pop)
 
 template <class Fn>
 inline void ExpectTerminate(const Fn& fn, const WCHAR* message = L"")

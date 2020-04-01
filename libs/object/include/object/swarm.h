@@ -34,9 +34,9 @@ share the same reference counter.
 
 #pragma pack(push, _CRT_PACKING)
 
-#pragma warning(push)
-#pragma warning(disable: 4625) // copy constructor could not be generated because a base class copy constructor is inaccessible or deleted
-#pragma warning(disable: 4626) // assignment operator could not be generated because a base class assignment operator is inaccessible or deleted
+MSO_PRAGMA_WARNING(push)
+MSO_PRAGMA_WARNING(disable: 4625) // copy constructor could not be generated because a base class copy constructor is inaccessible or deleted
+MSO_PRAGMA_WARNING(disable: 4626) // assignment operator could not be generated because a base class assignment operator is inaccessible or deleted
 
 #pragma push_macro("new")
 #undef new
@@ -575,5 +575,5 @@ bool operator!=(std::nullptr_t, const SwarmMemberPtr<T, KnownSameSwarm>& right) 
 
 #pragma pop_macro("new")
 
-#pragma warning(pop)
+MSO_PRAGMA_WARNING(pop)
 #pragma pack(pop)

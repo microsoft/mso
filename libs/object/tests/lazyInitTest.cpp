@@ -251,22 +251,22 @@ TEST_CLASS(LazyInitTests)
 		TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
 	}
 
-inline static std::wstring ToString(CountedType* q) noexcept
+inline static std::wstring ToString(CountedType* /*q*/) noexcept
 {
 	return L"CountedType";
 }
 
-inline static std::wstring ToString(ICountedType* q) noexcept
+inline static std::wstring ToString(ICountedType* /*q*/) noexcept
 {
 	return L"ICountedType";
 }
 
-inline static std::wstring ToString(UnknownType* q) noexcept
+inline static std::wstring ToString(UnknownType* /*q*/) noexcept
 {
 	return L"UnknownType";
 }
 
-inline static std::wstring ToString(IUnknownType* q) noexcept
+inline static std::wstring ToString(IUnknownType* /*q*/) noexcept
 {
 	return L"IUnknownType";
 }
