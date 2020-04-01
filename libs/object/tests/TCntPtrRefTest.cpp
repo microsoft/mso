@@ -29,23 +29,23 @@ class SimpleTestRef : public Mso::TRefCountedImpl<ISimple>
   void DoSomething() override {}
 };
 
-inline static std::wstring ToString(ISimple* q)
+inline static std::wstring ToString(ISimple* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(ISimple** q)
+inline static std::wstring ToString(ISimple** /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(const ISimple* q)
+inline static std::wstring ToString(const ISimple* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(ISimple* const* q)
+inline static std::wstring ToString(ISimple* const* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(const Mso::TCntPtr<ISimple>* q)
+inline static std::wstring ToString(const Mso::TCntPtr<ISimple>* /*q*/)
 {
   return L"";
 }
