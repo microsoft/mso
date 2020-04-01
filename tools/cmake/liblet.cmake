@@ -4,10 +4,10 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 # Store the liblet.cmake file directory in a variable
-set(LIBLET_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR})  
+set(LIBLET_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 ###########################################
-# Input parameters 
+# Input parameters
 ###########################################
 
 # Set the target platform we compile code for.
@@ -31,7 +31,7 @@ option(MSO_ENABLE_INCLUDES_CHECKS "Enable checking of include files" ON)
 message(STATUS "Enable includes checks: ${MSO_ENABLE_INCLUDES_CHECKS}")
 
 ###########################################
-# Compiler settings 
+# Compiler settings
 ###########################################
 
 # require C++14
@@ -43,6 +43,13 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  set(WIN_TARGET_ARCH $ENV{VSCMD_ARG_TGT_ARCH})
+  if(${WIN_TARGET_ARCH} STREQUAL "")
+    message(FATAL_ERROR "Error: environment variable VSCMD_ARG_TGT_ARCH is not set (require for Windows builds)")
+  endif()
 endif()
 
 function(liblet LIBLET_TARGET)
@@ -303,12 +310,6 @@ function(_liblet_set_platform_definitions TARGET)
   if (CMAKE_CXX_STANDARD EQUAL 17)
     target_compile_definitions(${TARGET} PRIVATE _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
   endif()
-
-  target_compile_options(${TARGET}
-    PRIVATE
-      $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-      $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -pedantic -Werror -Wno-noexcept-type -Wno-invalid-offsetof --warn-no-deprecated-declarations>
-  )
 endfunction()
 
 function(_liblet_verify_includes LIBLET_TARGET LIBLET_INCLUDES)
@@ -364,9 +365,9 @@ function(_liblet_find_all_targets OUT_TARGET_LIST)
       list(APPEND DIR_LIST "${CURRENT_SUBDIRS}")
     endif()
   endwhile()
-  
+
   # return the targets in the variable named ${outname}
-  set(${OUT_TARGET_LIST} "${TARGETS}" PARENT_SCOPE) 
+  set(${OUT_TARGET_LIST} "${TARGETS}" PARENT_SCOPE)
 endfunction()
 
 function(_liblet_detect_dependency_cycles_internal TARGET STACK)
@@ -409,7 +410,7 @@ endfunction()
 function(liblet_detect_dependency_cycles)
   _liblet_find_all_targets(MY_ALL_TARGETS)
   message("All targets: ${MY_ALL_TARGETS}")
- 
+
   foreach(MY_TARGET IN LISTS MY_ALL_TARGETS)
     if(MY_TARGET)
       _liblet_detect_dependency_cycles_internal("${MY_TARGET}" "${MY_TARGET}")
