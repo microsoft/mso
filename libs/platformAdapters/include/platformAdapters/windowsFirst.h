@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 /**
-	Header to properly include windows.h
+  Header to properly include windows.h
 */
 #pragma once
 #ifndef LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H

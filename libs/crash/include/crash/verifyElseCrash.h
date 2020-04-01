@@ -18,29 +18,19 @@ DECLSPEC_NORETURN void CrashWithRecovery(uint32_t tag) noexcept;
 
 // Asserts first so the dev can easily attach. If already attached, it does not assert
 // because bringing up the assert dialog can cause more code to run (OM:278842).
-#define VerifyElseCrashSzTag(f, sz, tag) \
-	Statement( \
-		if (!(f)) \
-		{ \
-			AssertSz1Tag(DisableVecAssert(), "Fatal error: %s", (sz), (tag)); \
-			CrashWithRecovery(tag); \
-		} \
-	)
+#define VerifyElseCrashSzTag(f, sz, tag)                              \
+  Statement(if (!(f)) {                                               \
+    AssertSz1Tag(DisableVecAssert(), "Fatal error: %s", (sz), (tag)); \
+    CrashWithRecovery(tag);                                           \
+  })
 
-#define VerifySucceededElseCrashTag(hr, tag) \
-	Statement( \
-		const HRESULT _vec_hr_ = (hr); \
-		if (FAILED(_vec_hr_)) \
-		{ \
-			AssertSzTag(DisableVecAssert(), "Failed: " #hr, tag); \
-			CrashWithRecovery(/*static_cast<int32_t>(_vec_hr_), */tag); \
-		})
+#define VerifySucceededElseCrashTag(hr, tag)                       \
+  Statement(const HRESULT _vec_hr_ = (hr); if (FAILED(_vec_hr_)) { \
+    AssertSzTag(DisableVecAssert(), "Failed: " #hr, tag);          \
+    CrashWithRecovery(/*static_cast<int32_t>(_vec_hr_), */ tag);   \
+  })
 
-#define VerifyAllocElseCrashTag(ptr, tag) \
-	Statement( \
-		if (!(ptr)) \
-			CrashWithRecovery(tag); \
-	)
+#define VerifyAllocElseCrashTag(ptr, tag) Statement(if (!(ptr)) CrashWithRecovery(tag);)
 
 #define CrashWithRecoveryOnOOM() CrashWithRecovery(0)
 

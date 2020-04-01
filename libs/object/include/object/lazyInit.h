@@ -35,63 +35,64 @@ namespace Mso { namespace Object {
 template <class TObject, class TInterface = TObject>
 class LazyInit final
 {
-	static_assert(std::is_base_of<Mso::IRefCounted, TInterface>::value || std::is_base_of<IUnknown, TInterface>::value,
-		"The type must be derived from Mso::IRefCounted or IUnknown.");
+  static_assert(
+      std::is_base_of<Mso::IRefCounted, TInterface>::value || std::is_base_of<IUnknown, TInterface>::value,
+      "The type must be derived from Mso::IRefCounted or IUnknown.");
 
 public:
-	DECLARE_COPYCONSTR_AND_ASSIGNMENT(LazyInit);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(LazyInit);
 
-	explicit LazyInit() noexcept = default;
+  explicit LazyInit() noexcept = default;
 
-	~LazyInit() noexcept
-	{
-		Release();
-	}
+  ~LazyInit() noexcept
+  {
+    Release();
+  }
 
-	template <class... TArgs>
-	TInterface& Get(TArgs&&... args) noexcept
-	{
-		bool unused{ false };
-		return Get(unused, std::forward<TArgs>(args)...);
-	}
+  template <class... TArgs>
+  TInterface& Get(TArgs&&... args) noexcept
+  {
+    bool unused{false};
+    return Get(unused, std::forward<TArgs>(args)...);
+  }
 
-	template <class... TArgs>
-	TInterface& Get(bool& created, TArgs&&... args) noexcept
-	{
-		created = false;
-		auto instance{ m_instance.load(std::memory_order_acquire) };
-		if (!instance)
-		{
-			auto newInstance{ Mso::Make<TObject, TInterface>(std::forward<TArgs>(args)...) };
-			if (m_instance.compare_exchange_strong(instance, newInstance.Get()))
-			{
-				// The current thread won the race.
-				// Ensure that a pointer with a reference count of 1 is stored.
-				instance = newInstance.Detach();
-				created = true;
-			}
-		}
+  template <class... TArgs>
+  TInterface& Get(bool& created, TArgs&&... args) noexcept
+  {
+    created = false;
+    auto instance{m_instance.load(std::memory_order_acquire)};
+    if (!instance)
+    {
+      auto newInstance{Mso::Make<TObject, TInterface>(std::forward<TArgs>(args)...)};
+      if (m_instance.compare_exchange_strong(instance, newInstance.Get()))
+      {
+        // The current thread won the race.
+        // Ensure that a pointer with a reference count of 1 is stored.
+        instance = newInstance.Detach();
+        created = true;
+      }
+    }
 
-		return *instance;
-	}
+    return *instance;
+  }
 
-	bool IsInitialized() const noexcept
-	{
-		return m_instance.load(std::memory_order_acquire) != nullptr;
-	}
+  bool IsInitialized() const noexcept
+  {
+    return m_instance.load(std::memory_order_acquire) != nullptr;
+  }
 
-	void Release() noexcept
-	{
-		auto instance{ m_instance.exchange(nullptr) };
-		if (instance)
-		{
-			// Release the reference count added in Create().
-			instance->Release();
-		}
-	}
+  void Release() noexcept
+  {
+    auto instance{m_instance.exchange(nullptr)};
+    if (instance)
+    {
+      // Release the reference count added in Create().
+      instance->Release();
+    }
+  }
 
 private:
-	std::atomic<TInterface*> m_instance{ nullptr };
+  std::atomic<TInterface*> m_instance{nullptr};
 };
 
 }} // namespace Mso::Object

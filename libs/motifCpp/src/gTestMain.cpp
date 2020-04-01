@@ -3,7 +3,7 @@
 
 #include <motifCpp/gTestAdapter.h>
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   Mso::UnitTests::GTest::RegisterUnitTests();
   ::testing::InitGoogleTest(&argc, argv);

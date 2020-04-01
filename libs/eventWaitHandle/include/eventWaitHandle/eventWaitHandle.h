@@ -9,28 +9,27 @@
 #include <compilerAdapters/functionDecorations.h>
 #include <chrono>
 
-namespace Mso {
-namespace Async {
+namespace Mso { namespace Async {
 
 //! Shared event wait handle interface used by ManualResetEvent and AutoResetEvent.
 //! Since, ManualResetEvent and AutoResetEvent are most commonly used between different threads, we used
 //! shared ownership based on ref counting to ensure proper lifetime of the synchronization events.
 struct IEventWaitHandle : Mso::IRefCounted
 {
-	virtual void Set() const noexcept = 0;
-	virtual void Reset() const noexcept = 0;
-	virtual void Wait() const noexcept = 0;
-	virtual bool WaitFor(const std::chrono::milliseconds& waitDuration) const noexcept = 0;
+  virtual void Set() const noexcept = 0;
+  virtual void Reset() const noexcept = 0;
+  virtual void Wait() const noexcept = 0;
+  virtual bool WaitFor(const std::chrono::milliseconds& waitDuration) const noexcept = 0;
 };
 
 //! State of the IEventWaitHandle.
 enum class EventWaitHandleState : int32_t
 {
-	//! Threads are blocked when calling Wait() or WaitFor() methods.
-	NotSet,
+  //! Threads are blocked when calling Wait() or WaitFor() methods.
+  NotSet,
 
-	//! Threads are allowed to proceed or getting unblocked when calling Wait() or WaitFor() methods.
-	IsSet,
+  //! Threads are allowed to proceed or getting unblocked when calling Wait() or WaitFor() methods.
+  IsSet,
 };
 
 //! Notifies one or more waiting threads that an event has occurred. This class cannot be inherited.
@@ -56,59 +55,55 @@ enum class EventWaitHandleState : int32_t
 class ManualResetEvent final
 {
 public:
-	//! Creates new ManualResetEvent with the non-signaling state.
-	ManualResetEvent() noexcept : ManualResetEvent { EventWaitHandleState::NotSet }
-	{
-	}
+  //! Creates new ManualResetEvent with the non-signaling state.
+  ManualResetEvent() noexcept : ManualResetEvent{EventWaitHandleState::NotSet} {}
 
-	//! Creates new ManualResetEvent with the requested signaling state.
-	LIBLET_PUBLICAPI explicit ManualResetEvent(EventWaitHandleState state) noexcept;
+  //! Creates new ManualResetEvent with the requested signaling state.
+  LIBLET_PUBLICAPI explicit ManualResetEvent(EventWaitHandleState state) noexcept;
 
-	//! Creates new ManualResetEvent with the provided handle.
-	ManualResetEvent(IEventWaitHandle& handle) noexcept : m_handle { &handle }
-	{
-	}
+  //! Creates new ManualResetEvent with the provided handle.
+  ManualResetEvent(IEventWaitHandle& handle) noexcept : m_handle{&handle} {}
 
-	ManualResetEvent(const ManualResetEvent&) = default;
-	ManualResetEvent& operator=(const ManualResetEvent&) = default;
+  ManualResetEvent(const ManualResetEvent&) = default;
+  ManualResetEvent& operator=(const ManualResetEvent&) = default;
 
-	//! No move semantic
-	ManualResetEvent(ManualResetEvent&&) = delete;
-	ManualResetEvent& operator=(ManualResetEvent&&) = delete;
+  //! No move semantic
+  ManualResetEvent(ManualResetEvent&&) = delete;
+  ManualResetEvent& operator=(ManualResetEvent&&) = delete;
 
-	//! Sets the state of the event to signaled, which allows one or more waiting threads to proceed.
-	void Set() const noexcept
-	{
-		m_handle->Set();
-	}
+  //! Sets the state of the event to signaled, which allows one or more waiting threads to proceed.
+  void Set() const noexcept
+  {
+    m_handle->Set();
+  }
 
-	//! Sets the state of the event to non-signaled state, which causes waiting threads to block.
-	void Reset() const noexcept
-	{
-		m_handle->Reset();
-	}
+  //! Sets the state of the event to non-signaled state, which causes waiting threads to block.
+  void Reset() const noexcept
+  {
+    m_handle->Reset();
+  }
 
-	//! Blocks thread indefinitely and waits for the event signaling state.
-	void Wait() const noexcept
-	{
-		m_handle->Wait();
-	}
+  //! Blocks thread indefinitely and waits for the event signaling state.
+  void Wait() const noexcept
+  {
+    m_handle->Wait();
+  }
 
-	//! Blocks thread for waitDuration time and waits for the event signaling state.
-	template <typename TRep, typename TPeriod>
-	bool WaitFor(const std::chrono::duration<TRep, TPeriod>& waitDuration) const noexcept
-	{
-		return m_handle->WaitFor(std::chrono::duration_cast<std::chrono::milliseconds>(waitDuration));
-	}
+  //! Blocks thread for waitDuration time and waits for the event signaling state.
+  template <typename TRep, typename TPeriod>
+  bool WaitFor(const std::chrono::duration<TRep, TPeriod>& waitDuration) const noexcept
+  {
+    return m_handle->WaitFor(std::chrono::duration_cast<std::chrono::milliseconds>(waitDuration));
+  }
 
-	//! Gets the internal event handle.
-	IEventWaitHandle& GetHandle() const noexcept
-	{
-		return *m_handle;
-	}
+  //! Gets the internal event handle.
+  IEventWaitHandle& GetHandle() const noexcept
+  {
+    return *m_handle;
+  }
 
 private:
-	Mso::TCntPtr<IEventWaitHandle> m_handle;
+  Mso::TCntPtr<IEventWaitHandle> m_handle;
 };
 
 //! Notifies a waiting thread that an event has occurred. This class cannot be inherited.
@@ -130,62 +125,57 @@ private:
 class AutoResetEvent final
 {
 public:
-	//! Creates new AutoResetEvent with the non-signaling state.
-	AutoResetEvent() noexcept : AutoResetEvent { EventWaitHandleState::NotSet }
-	{
-	}
+  //! Creates new AutoResetEvent with the non-signaling state.
+  AutoResetEvent() noexcept : AutoResetEvent{EventWaitHandleState::NotSet} {}
 
-	//! Creates new AutoResetEvent with the requested signaling state.
-	LIBLET_PUBLICAPI explicit AutoResetEvent(EventWaitHandleState state) noexcept;
+  //! Creates new AutoResetEvent with the requested signaling state.
+  LIBLET_PUBLICAPI explicit AutoResetEvent(EventWaitHandleState state) noexcept;
 
-	//! Creates new AutoResetEvent with the provided handle. Crash if handle is null.
-	AutoResetEvent(IEventWaitHandle& handle) noexcept : m_handle { &handle }
-	{
-	}
+  //! Creates new AutoResetEvent with the provided handle. Crash if handle is null.
+  AutoResetEvent(IEventWaitHandle& handle) noexcept : m_handle{&handle} {}
 
-	AutoResetEvent(const AutoResetEvent&) = default;
-	AutoResetEvent& operator=(const AutoResetEvent&) = default;
+  AutoResetEvent(const AutoResetEvent&) = default;
+  AutoResetEvent& operator=(const AutoResetEvent&) = default;
 
-	// No move semantic
-	AutoResetEvent(AutoResetEvent&&) = delete;
-	AutoResetEvent& operator=(AutoResetEvent&&) = delete;
+  // No move semantic
+  AutoResetEvent(AutoResetEvent&&) = delete;
+  AutoResetEvent& operator=(AutoResetEvent&&) = delete;
 
-	//! Sets the state of the event to signaled, which allows at most one waiting thread to proceed.
-	void Set() const noexcept
-	{
-		m_handle->Set();
-	}
+  //! Sets the state of the event to signaled, which allows at most one waiting thread to proceed.
+  void Set() const noexcept
+  {
+    m_handle->Set();
+  }
 
-	//! Sets the state of the event to non-signaled state, which causes waiting threads to block.
-	void Reset() const noexcept
-	{
-		m_handle->Reset();
-	}
+  //! Sets the state of the event to non-signaled state, which causes waiting threads to block.
+  void Reset() const noexcept
+  {
+    m_handle->Reset();
+  }
 
-	//! Blocks thread indefinitely and waits for the event signaling state.
-	void Wait() const noexcept
-	{
-		m_handle->Wait();
-	}
+  //! Blocks thread indefinitely and waits for the event signaling state.
+  void Wait() const noexcept
+  {
+    m_handle->Wait();
+  }
 
-	//! Blocks thread for waitDuration time and waits for the event signaling state.
-	template <typename TRep, typename TPeriod>
-	bool WaitFor(const std::chrono::duration<TRep, TPeriod>& waitDuration) const noexcept
-	{
-		return m_handle->WaitFor(std::chrono::duration_cast<std::chrono::milliseconds>(waitDuration));
-	}
+  //! Blocks thread for waitDuration time and waits for the event signaling state.
+  template <typename TRep, typename TPeriod>
+  bool WaitFor(const std::chrono::duration<TRep, TPeriod>& waitDuration) const noexcept
+  {
+    return m_handle->WaitFor(std::chrono::duration_cast<std::chrono::milliseconds>(waitDuration));
+  }
 
-	//! Gets the internal event handle.
-	IEventWaitHandle& GetHandle() const noexcept
-	{
-		return *m_handle;
-	}
+  //! Gets the internal event handle.
+  IEventWaitHandle& GetHandle() const noexcept
+  {
+    return *m_handle;
+  }
 
 private:
-	Mso::TCntPtr<IEventWaitHandle> m_handle;
+  Mso::TCntPtr<IEventWaitHandle> m_handle;
 };
 
-} // namespace Async
-} // namespace Mso
+}} // namespace Mso::Async
 
 #endif // LIBLET_DISPATCHQUEUE_EVENTWAITHANDLE_H
