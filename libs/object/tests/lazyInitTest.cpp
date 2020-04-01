@@ -252,622 +252,461 @@ TEST_CLASS (LazyInitTests)
     TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
   }
 
-  inline static std::wstring ToString(CountedType * /*q*/) noexcept
+  inline static std::wstring ToString(CountedType * q) noexcept
   {
     return L"CountedType";
   }
 
-  inline static std::wstring ToString(ICountedType * /*q*/) noexcept
+  inline static std::wstring ToString(ICountedType * q) noexcept
   {
     return L"ICountedType";
   }
 
-  inline static std::wstring ToString(UnknownType * /*q*/) noexcept
+  inline static std::wstring ToString(UnknownType * q) noexcept
   {
     return L"UnknownType";
   }
 
-  inline static std::wstring ToString(IUnknownType * /*q*/) noexcept {
-      TEST_METHOD(Get_CalledMultipleTimesForCountedType_ReturnsSameObject){Mso::Object::LazyInit<CountedType> instance;
-
-  const auto pointer{&(instance.Get())};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForCountedType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto pointer{&(instance.Get(1))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1, 'A')),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForCountedType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto pointer{&(instance.Get(1, 'A'))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1)),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
-}
-
-TEST_METHOD(Get_AfterReleaseForCountedType_ReturnsDifferentObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto callCount0{instance.Get().GetCallCount()};
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-
-  const auto callCount1{instance.Get().GetCallCount()};
-  TestAssert::AreEqual(
-      callCount0 + 1,
-      callCount1,
-      L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
-}
-
-TEST_METHOD(Get_InParallelForCountedType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-  std::array<CountedType*, 100> results;
-  std::array<std::thread, results.size()> threads;
-
-  for (size_t i{0}; i < results.size(); ++i)
+  inline static std::wstring ToString(IUnknownType * q) noexcept
   {
-    threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
+    return L"IUnknownType";
   }
 
-  for (auto& thread : threads)
+  TEST_METHOD(Get_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
   {
-    thread.join();
-  }
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
 
-  for (size_t i{0}; i < results.size(); ++i)
-  {
+    const auto pointer{&(instance.Get())};
     TestAssert::AreEqual(
-        (void*)results[i],
-        (void*)results[0]); // , L"Call '%zu' to Get() should return the same value as the first call.", i);
-  }
-}
-
-TEST_METHOD(IsInitialized_WithUninitializedObjectForCountedType_ReturnsFalse)
-{
-  const Mso::Object::LazyInit<CountedType> instance{};
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithInitializedObjectForCountedType_ReturnsTru)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  instance.Get();
-  TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithReleasedObjectForCountedType_ReturnsFalse)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  instance.Get();
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_WithUninitializedObjectForCountedType_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_InParallelForCountedType_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-  instance.Get();
-
-  std::array<std::thread, 100> threads;
-
-  for (size_t i{0}; i < threads.size(); ++i)
-  {
-    threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
-  }
-
-  for (auto& thread : threads)
-  {
-    thread.join();
-  }
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-inline static std::wstring ToString(CountedType* q) noexcept
-{
-  return L"CountedType";
-}
-
-inline static std::wstring ToString(ICountedType* q) noexcept
-{
-  return L"ICountedType";
-}
-
-inline static std::wstring ToString(UnknownType* q) noexcept
-{
-  return L"UnknownType";
-}
-
-inline static std::wstring ToString(IUnknownType* q) noexcept
-{
-  return L"IUnknownType";
-}
-
-TEST_METHOD(Get_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  const auto pointer{&(instance.Get())};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  const auto pointer{&(instance.Get(1))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1, 'A')),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  const auto pointer{&(instance.Get(1, 'A'))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1)),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
-}
-
-TEST_METHOD(Get_AfterReleaseForCountedTypeWithInterface_ReturnsDifferentObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto callCount0{instance.Get().GetCallCount()};
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-
-  const auto callCount1{instance.Get().GetCallCount()};
-  TestAssert::AreEqual(
-      callCount0 + 1,
-      callCount1,
-      L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
-}
-
-TEST_METHOD(Get_InParallelForCountedTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-  std::array<ICountedType*, 100> results;
-  std::array<std::thread, results.size()> threads;
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
-    threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
-  }
-
-  for (auto& thread : threads)
-  {
-    thread.join();
-  }
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
     TestAssert::AreEqual(
-        (void*)results[i],
-        (void*)results[0]); //, L"Call '%zu' to Get() should return the same value as the first call.", i);
-  }
-}
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
 
-TEST_METHOD(IsInitialized_WithUninitializedObjectForCountedTypeWithInterface_ReturnsFalse)
-{
-  const Mso::Object::LazyInit<CountedType, ICountedType> instance{};
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithInitializedObjectForCountedTypeWithInterface_ReturnsTru)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  instance.Get();
-  TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithReleasedObjectForCountedTypeWithInterface_ReturnsFalse)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  instance.Get();
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_WithUninitializedObjectForCountedTypeWithInterface_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_InParallelForCountedTypeWithInterface_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<CountedType, ICountedType> instance;
-  instance.Get();
-
-  std::array<std::thread, 100> threads;
-
-  for (size_t i{0}; i < threads.size(); ++i)
-  {
-    threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
+    TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
   }
 
-  for (auto& thread : threads)
+  TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
   {
-    thread.join();
-  }
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
 
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Get_CalledMultipleTimesForUnknownType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  const auto pointer{&(instance.Get())};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForUnknownType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  const auto pointer{&(instance.Get(1))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1, 'A')),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForUnknownType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  const auto pointer{&(instance.Get(1, 'A'))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1)),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
-}
-
-TEST_METHOD(Get_AfterReleaseForUnknownType_ReturnsDifferentObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto callCount0{instance.Get().GetCallCount()};
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-
-  const auto callCount1{instance.Get().GetCallCount()};
-  TestAssert::AreEqual(
-      callCount0 + 1,
-      callCount1,
-      L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
-}
-
-TEST_METHOD(Get_InParallelForUnknownType_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-  std::array<UnknownType*, 100> results;
-  std::array<std::thread, results.size()> threads;
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
-    threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
-  }
-
-  for (auto& thread : threads)
-  {
-    thread.join();
-  }
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
+    const auto pointer{&(instance.Get(1))};
     TestAssert::AreEqual(
-        (void*)results[i],
-        (void*)results[0]); // , L"Call '%zu' to Get() should return the same value as the first call.", i);
-  }
-}
-
-TEST_METHOD(IsInitialized_WithUninitializedObjectForUnknownType_ReturnsFalse)
-{
-  const Mso::Object::LazyInit<UnknownType> instance{};
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithInitializedObjectForUnknownType_ReturnsTru)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  instance.Get();
-  TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithReleasedObjectForUnknownType_ReturnsFalse)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  instance.Get();
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_WithUninitializedObjectForUnknownType_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_InParallelForUnknownType_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<UnknownType> instance;
-  instance.Get();
-
-  std::array<std::thread, 100> threads;
-
-  for (size_t i{0}; i < threads.size(); ++i)
-  {
-    threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
-  }
-
-  for (auto& thread : threads)
-  {
-    thread.join();
-  }
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Get_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  const auto pointer{&(instance.Get())};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  const auto pointer{&(instance.Get(1))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1, 'A')),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
-}
-
-TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  const auto pointer{&(instance.Get(1, 'A'))};
-  TestAssert::AreEqual(
-      (void*)&(instance.Get(1)),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the second time.");
-  TestAssert::AreEqual(
-      (void*)&(instance.Get()),
-      (void*)pointer,
-      L"Instance should always be the same when calling Get() the third time.");
-
-  TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
-  TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
-}
-
-TEST_METHOD(Get_AfterReleaseForUnknownTypeWithInterface_ReturnsDifferentObject)
-{
-  Mso::Object::LazyInit<CountedType> instance;
-
-  const auto callCount0{instance.Get().GetCallCount()};
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-
-  const auto callCount1{instance.Get().GetCallCount()};
-  TestAssert::AreEqual(
-      callCount0 + 1,
-      callCount1,
-      L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
-}
-
-TEST_METHOD(Get_InParallelForUnknownTypeWithInterface_ReturnsSameObject)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-  std::array<IUnknownType*, 100> results;
-  std::array<std::thread, results.size()> threads;
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
-    threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
-  }
-
-  for (auto& thread : threads)
-  {
-    thread.join();
-  }
-
-  for (size_t i{0}; i < results.size(); ++i)
-  {
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
     TestAssert::AreEqual(
-        (void*)results[i],
-        (void*)results[0]); // , L"Call '%zu' to Get() should return the same value as the first call.", i);
+        (void*)&(instance.Get(1, 'A')),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
   }
-}
 
-TEST_METHOD(IsInitialized_WithUninitializedObjectForUnknownTypeWithInterface_ReturnsFalse)
-{
-  const Mso::Object::LazyInit<UnknownType, IUnknownType> instance{};
-
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithInitializedObjectForUnknownTypeWithInterface_ReturnsTru)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  instance.Get();
-  TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
-}
-
-TEST_METHOD(IsInitialized_WithReleasedObjectForUnknownTypeWithInterface_ReturnsFalse)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  instance.Get();
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_WithUninitializedObjectForUnknownTypeWithInterface_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-
-  instance.Release();
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-
-TEST_METHOD(Release_InParallelForUnknownTypeWithInterface_SilentlySucceeds)
-{
-  Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
-  instance.Get();
-
-  std::array<std::thread, 100> threads;
-
-  for (size_t i{0}; i < threads.size(); ++i)
+  TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForCountedTypeWithInterface_ReturnsSameObject)
   {
-    threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+
+    const auto pointer{&(instance.Get(1, 'A'))};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get(1)),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
   }
 
-  for (auto& thread : threads)
+  TEST_METHOD(Get_AfterReleaseForCountedTypeWithInterface_ReturnsDifferentObject)
   {
-    thread.join();
+    Mso::Object::LazyInit<CountedType> instance;
+
+    const auto callCount0{instance.Get().GetCallCount()};
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+
+    const auto callCount1{instance.Get().GetCallCount()};
+    TestAssert::AreEqual(
+        callCount0 + 1,
+        callCount1,
+        L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
   }
 
-  TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
-}
-}
-;
+  TEST_METHOD(Get_InParallelForCountedTypeWithInterface_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+    std::array<ICountedType*, 100> results;
+    std::array<std::thread, results.size()> threads;
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      TestAssert::AreEqual(
+          (void*)results[i],
+          (void*)results[0]); //, L"Call '%zu' to Get() should return the same value as the first call.", i);
+    }
+  }
+
+  TEST_METHOD(IsInitialized_WithUninitializedObjectForCountedTypeWithInterface_ReturnsFalse)
+  {
+    const Mso::Object::LazyInit<CountedType, ICountedType> instance{};
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithInitializedObjectForCountedTypeWithInterface_ReturnsTru)
+  {
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+
+    instance.Get();
+    TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithReleasedObjectForCountedTypeWithInterface_ReturnsFalse)
+  {
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+
+    instance.Get();
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_WithUninitializedObjectForCountedTypeWithInterface_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_InParallelForCountedTypeWithInterface_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<CountedType, ICountedType> instance;
+    instance.Get();
+
+    std::array<std::thread, 100> threads;
+
+    for (size_t i{0}; i < threads.size(); ++i)
+    {
+      threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Get_CalledMultipleTimesForUnknownType_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    const auto pointer{&(instance.Get())};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
+  }
+
+  TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForUnknownType_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    const auto pointer{&(instance.Get(1))};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get(1, 'A')),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
+  }
+
+  TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForUnknownType_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    const auto pointer{&(instance.Get(1, 'A'))};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get(1)),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
+  }
+
+  TEST_METHOD(Get_AfterReleaseForUnknownType_ReturnsDifferentObject)
+  {
+    Mso::Object::LazyInit<CountedType> instance;
+
+    const auto callCount0{instance.Get().GetCallCount()};
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+
+    const auto callCount1{instance.Get().GetCallCount()};
+    TestAssert::AreEqual(
+        callCount0 + 1,
+        callCount1,
+        L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
+  }
+
+  TEST_METHOD(Get_InParallelForUnknownType_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+    std::array<UnknownType*, 100> results;
+    std::array<std::thread, results.size()> threads;
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      TestAssert::AreEqual(
+          (void*)results[i],
+          (void*)results[0]); // , L"Call '%zu' to Get() should return the same value as the first call.", i);
+    }
+  }
+
+  TEST_METHOD(IsInitialized_WithUninitializedObjectForUnknownType_ReturnsFalse)
+  {
+    const Mso::Object::LazyInit<UnknownType> instance{};
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithInitializedObjectForUnknownType_ReturnsTru)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    instance.Get();
+    TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithReleasedObjectForUnknownType_ReturnsFalse)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    instance.Get();
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_WithUninitializedObjectForUnknownType_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_InParallelForUnknownType_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<UnknownType> instance;
+    instance.Get();
+
+    std::array<std::thread, 100> threads;
+
+    for (size_t i{0}; i < threads.size(); ++i)
+    {
+      threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Get_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    const auto pointer{&(instance.Get())};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 0, L"Argument 0 should have the default value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
+  }
+
+  TEST_METHOD(GetWith1Parameter_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    const auto pointer{&(instance.Get(1))};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get(1, 'A')),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), '\0', L"Argument 1 should have the default value.");
+  }
+
+  TEST_METHOD(GetWith2Parameters_CalledMultipleTimesForUnknownTypeWithInterface_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    const auto pointer{&(instance.Get(1, 'A'))};
+    TestAssert::AreEqual(
+        (void*)&(instance.Get(1)),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the second time.");
+    TestAssert::AreEqual(
+        (void*)&(instance.Get()),
+        (void*)pointer,
+        L"Instance should always be the same when calling Get() the third time.");
+
+    TestAssert::AreEqual(pointer->GetArgument0(), 1, L"Argument 0 should have the specified value.");
+    TestAssert::AreEqual(pointer->GetArgument1(), 'A', L"Argument 1 should have the specified value.");
+  }
+
+  TEST_METHOD(Get_AfterReleaseForUnknownTypeWithInterface_ReturnsDifferentObject)
+  {
+    Mso::Object::LazyInit<CountedType> instance;
+
+    const auto callCount0{instance.Get().GetCallCount()};
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+
+    const auto callCount1{instance.Get().GetCallCount()};
+    TestAssert::AreEqual(
+        callCount0 + 1,
+        callCount1,
+        L"The call count from before calling Release() should be one less than the one after, thereby ensuring the expected number of objects were created.");
+  }
+
+  TEST_METHOD(Get_InParallelForUnknownTypeWithInterface_ReturnsSameObject)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+    std::array<IUnknownType*, 100> results;
+    std::array<std::thread, results.size()> threads;
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      threads[i] = std::thread([&](const size_t index) noexcept -> void { results[index] = &(instance.Get()); }, i);
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    for (size_t i{0}; i < results.size(); ++i)
+    {
+      TestAssert::AreEqual(
+          (void*)results[i],
+          (void*)results[0]); // , L"Call '%zu' to Get() should return the same value as the first call.", i);
+    }
+  }
+
+  TEST_METHOD(IsInitialized_WithUninitializedObjectForUnknownTypeWithInterface_ReturnsFalse)
+  {
+    const Mso::Object::LazyInit<UnknownType, IUnknownType> instance{};
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithInitializedObjectForUnknownTypeWithInterface_ReturnsTru)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    instance.Get();
+    TestAssert::IsTrue(instance.IsInitialized(), L"Instance should be initialized.");
+  }
+
+  TEST_METHOD(IsInitialized_WithReleasedObjectForUnknownTypeWithInterface_ReturnsFalse)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    instance.Get();
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_WithUninitializedObjectForUnknownTypeWithInterface_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+
+    instance.Release();
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+
+  TEST_METHOD(Release_InParallelForUnknownTypeWithInterface_SilentlySucceeds)
+  {
+    Mso::Object::LazyInit<UnknownType, IUnknownType> instance;
+    instance.Get();
+
+    std::array<std::thread, 100> threads;
+
+    for (size_t i{0}; i < threads.size(); ++i)
+    {
+      threads[i] = std::thread([&]() noexcept -> void { instance.Release(); });
+    }
+
+    for (auto& thread : threads)
+    {
+      thread.join();
+    }
+
+    TestAssert::IsFalse(instance.IsInitialized(), L"Instance should not be initialized after Release().");
+  }
+};

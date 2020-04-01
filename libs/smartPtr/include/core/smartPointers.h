@@ -39,12 +39,6 @@ class TOwnerPtr : public THolder<T*, TDeleteHelper<T*>>
 public:
   TOwnerPtr() noexcept {}
   /*explicit*/ TOwnerPtr(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>)
-  IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>)
-
-public:
-  TOwnerPtr() noexcept {}
-  /*explicit*/ TOwnerPtr(T* pT) noexcept : Super(pT) {}
   IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>);
   IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>);
 
@@ -92,12 +86,6 @@ template <typename T>
 class TArrayHolder : public THolder<T*, TArrayHelper<T*>>
 {
   typedef THolder<T*, TArrayHelper<T*>> Super;
-
-public:
-  TArrayHolder() noexcept {}
-  /*explicit*/ TArrayHolder(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder)
-  IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder)
 
 public:
   TArrayHolder() noexcept {}
