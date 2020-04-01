@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <oacr.h>
 #include <functional>
+#include <compilerAdapters/cppMacros.h>
 #include <object/IUnknownShim.h>
 #include <cstdarg>
 #include <csetjmp>
@@ -228,6 +229,9 @@ inline DWORD FilterCrashExceptions(DWORD exceptionCode) noexcept
   return EXCEPTION_EXECUTE_HANDLER;
 }
 
+MSO_PRAGMA_WARNING(push)
+MSO_PRAGMA_WARNING(disable : 4702)
+
 template <typename Fn>
 inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
@@ -243,6 +247,9 @@ inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
   // Fail(message == nullptr || message[0] == L'\0' ? L"Test function did not crash!" : message);
   return false;
 }
+
+MSO_PRAGMA_WARNING(pop)
+
 #else
 
 using SigAction = void (*)(int, siginfo_t*, void*);
