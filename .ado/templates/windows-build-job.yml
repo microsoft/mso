@@ -59,8 +59,7 @@ jobs:
     - task: BatchScript@1
       displayName: Setup Visual C++ Environment
       inputs:
-        filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
-        arguments: $(BuildPlatform) $(BuildWindowsSDK)
+        filename: vcenv.bat
         modifyEnvironment: true
 
     - task: CMake@1
