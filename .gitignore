@@ -33,7 +33,6 @@ _ReSharper*/
 *.opendb
 [Oo]utput/
 .vs/
-.vscode/
 
 # Ignore files related to CMake
 build/
