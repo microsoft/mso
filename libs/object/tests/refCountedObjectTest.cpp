@@ -14,632 +14,565 @@ Unit tests for classes in the msoRefCountedObject.h
 #include <test/testCheck.h>
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to see compilation error
-//#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this class.
+//#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
+//class.
 
 struct DECLSPEC_NOVTABLE IRefBaseSample1 : public Mso::IRefCounted
 {
-	virtual int GetValue1() = 0;
+  virtual int GetValue1() = 0;
 };
 
 struct DECLSPEC_NOVTABLE IRefBaseSample2 : public Mso::IRefCounted
 {
-	virtual int GetValue2() = 0;
+  virtual int GetValue2() = 0;
 };
 
 // Simple ref counted object that implements one IRefCounted based interface
-class RefCountSample1 final
-	: public Mso::RefCountedObject<IRefBaseSample1>
+class RefCountSample1 final : public Mso::RefCountedObject<IRefBaseSample1>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
 protected:
-	virtual ~RefCountSample1() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample1() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample1(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample1(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Simple ref counted object that implements two IRefCounted based interfaces
-class RefCountSample2 final
-	: public Mso::RefCountedObject<IRefBaseSample1, IRefBaseSample2>
+class RefCountSample2 final : public Mso::RefCountedObject<IRefBaseSample1, IRefBaseSample2>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual int GetValue2() noexcept override
-	{
-		return 2;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 2;
+  }
 
 protected:
-	virtual ~RefCountSample2() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample2() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample2(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample2(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Ref counted object that supports weak reference and implements one IRefCounted based interface.
-class RefCountSample3 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1>
+class RefCountSample3 final : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
 protected:
-	virtual ~RefCountSample3() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample3() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample3(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample3(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Ref counted object that supports weak reference and implements two IRefCounted based interfaces.
 class RefCountSample4 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1, IRefBaseSample2>
+    : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1, IRefBaseSample2>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual int GetValue2() noexcept override
-	{
-		return 2;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 2;
+  }
 
 protected:
-	virtual ~RefCountSample4() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample4() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample4(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample4(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Object that does not have ref count and implements one IRefCounted based interface.
-class RefCountSample5 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, IRefBaseSample1>
+class RefCountSample5 final : public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, IRefBaseSample1>
 {
 public:
-	RefCountSample5(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample5(bool& deleted) noexcept : m_deleted(deleted) {}
 
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual ~RefCountSample5() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample5() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Object that does not have ref count and implements two IRefCounted based interfaces.
 class RefCountSample6 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, IRefBaseSample1, IRefBaseSample2>
+    : public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, IRefBaseSample1, IRefBaseSample2>
 {
 public:
-	RefCountSample6(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample6(bool& deleted) noexcept : m_deleted(deleted) {}
 
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual int GetValue2() noexcept override
-	{
-		return 2;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 2;
+  }
 
-	virtual ~RefCountSample6() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample6() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Simple ref counted object without V-table
-class RefCountSample7 final
-	: public Mso::RefCountedObjectNoVTable<RefCountSample7>
+class RefCountSample7 final : public Mso::RefCountedObjectNoVTable<RefCountSample7>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
-	friend RefCountPolicy; // Allow it to call our destructor
+  friend MakePolicy; // To allow constructor to be private or protected.
+  friend RefCountPolicy; // Allow it to call our destructor
 
 public:
-	int GetValue1() noexcept
-	{
-		OACR_USE_PTR(this);
-		return 1;
-	}
+  int GetValue1() noexcept
+  {
+    OACR_USE_PTR(this);
+    return 1;
+  }
 
 protected:
-	~RefCountSample7() noexcept
-	{
-		m_deleted = true;
-	}
+  ~RefCountSample7() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample7(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample7(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // Object that supports weak ref and has no V-table
-class RefCountSample8 final
-	: public Mso::RefCountedObjectNoVTable<Mso::RefCountStrategy::WeakRef, RefCountSample8>
+class RefCountSample8 final : public Mso::RefCountedObjectNoVTable<Mso::RefCountStrategy::WeakRef, RefCountSample8>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
-	friend RefCountPolicy; // Allow it to call our destructor
+  friend MakePolicy; // To allow constructor to be private or protected.
+  friend RefCountPolicy; // Allow it to call our destructor
 
 public:
-	int GetValue1() noexcept
-	{
-		OACR_USE_PTR(this);
-		return 1;
-	}
+  int GetValue1() noexcept
+  {
+    OACR_USE_PTR(this);
+    return 1;
+  }
 
 protected:
-	~RefCountSample8() noexcept
-	{
-		m_deleted = true;
-	}
+  ~RefCountSample8() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample8(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample8(bool& deleted) noexcept : m_deleted(deleted) {}
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 /// Base class for RefCountedObject that implements one interface and has non-default constructors.
 class RefCountSample9Base : public IRefBaseSample1
 {
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return m_param0 + m_param1 + m_param2;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return m_param0 + m_param1 + m_param2;
+  }
 
 protected:
-	RefCountSample9Base() = default;
-	RefCountSample9Base(int param0) noexcept : m_param0(param0) {}
-	RefCountSample9Base(int param0, int param1) noexcept : m_param0(param0), m_param1(param1) {}
-	RefCountSample9Base(int param0, int param1, int param2) noexcept : m_param0(param0), m_param1(param1), m_param2(param2) {}
+  RefCountSample9Base() = default;
+  RefCountSample9Base(int param0) noexcept : m_param0(param0) {}
+  RefCountSample9Base(int param0, int param1) noexcept : m_param0(param0), m_param1(param1) {}
+  RefCountSample9Base(int param0, int param1, int param2) noexcept
+      : m_param0(param0), m_param1(param1), m_param2(param2)
+  {
+  }
 
 private:
-	int m_param0 = 0;
-	int m_param1 = 0;
-	int m_param2 = 0;
+  int m_param0 = 0;
+  int m_param1 = 0;
+  int m_param2 = 0;
 };
 
 /// Simple ref counted object inherited from RefCountSample9Base with non-default constructors.
-class RefCountSample91 final
-	: public Mso::RefCountedObject<RefCountSample9Base, IRefBaseSample2>
+class RefCountSample91 final : public Mso::RefCountedObject<RefCountSample9Base, IRefBaseSample2>
 {
-	using Super = RefCountedObjectType;
-	friend MakePolicy; // To allow constructor to be private or protected.
+  using Super = RefCountedObjectType;
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue2() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 1;
+  }
 
 protected:
-	virtual ~RefCountSample91() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample91() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample91(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample91(bool& deleted) noexcept : m_deleted(deleted) {}
 
-	RefCountSample91(bool& deleted, int param0) noexcept
-		: Super(param0)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample91(bool& deleted, int param0) noexcept : Super(param0), m_deleted(deleted) {}
 
-	RefCountSample91(bool& deleted, int param0, int param1) noexcept
-		: Super(param0, param1)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample91(bool& deleted, int param0, int param1) noexcept : Super(param0, param1), m_deleted(deleted) {}
 
-	RefCountSample91(bool& deleted, int param0, int param1, int param2) noexcept
-		: Super(param0, param1, param2)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample91(bool& deleted, int param0, int param1, int param2) noexcept
+      : Super(param0, param1, param2), m_deleted(deleted)
+  {
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 /// Object with a weak reference inherited from RefCountSample9Base with non-default constructors.
 class RefCountSample92 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, RefCountSample9Base, IRefBaseSample2>
+    : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, RefCountSample9Base, IRefBaseSample2>
 {
-	using Super = RefCountedObjectType;
-	friend MakePolicy; // To allow constructor to be private or protected.
+  using Super = RefCountedObjectType;
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue2() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 1;
+  }
 
 protected:
-	virtual ~RefCountSample92() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample92() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	RefCountSample92(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample92(bool& deleted) noexcept : m_deleted(deleted) {}
 
-	RefCountSample92(bool& deleted, int param0) noexcept
-		: Super(param0)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample92(bool& deleted, int param0) noexcept : Super(param0), m_deleted(deleted) {}
 
-	RefCountSample92(bool& deleted, int param0, int param1) noexcept
-		: Super(param0, param1)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample92(bool& deleted, int param0, int param1) noexcept : Super(param0, param1), m_deleted(deleted) {}
 
-	RefCountSample92(bool& deleted, int param0, int param1, int param2) noexcept
-		: Super(param0, param1, param2)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample92(bool& deleted, int param0, int param1, int param2) noexcept
+      : Super(param0, param1, param2), m_deleted(deleted)
+  {
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 /// Object without reference counting and inherited from RefCountSample9Base with non-default constructors.
 class RefCountSample93 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, RefCountSample9Base, IRefBaseSample2>
+    : public Mso::RefCountedObject<Mso::RefCountStrategy::NoRefCount, RefCountSample9Base, IRefBaseSample2>
 {
-	using Super = RefCountedObjectType;
+  using Super = RefCountedObjectType;
 
 public:
-	RefCountSample93(bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-	}
+  RefCountSample93(bool& deleted) noexcept : m_deleted(deleted) {}
 
-	RefCountSample93(bool& deleted, int param0) noexcept
-		: Super(param0)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample93(bool& deleted, int param0) noexcept : Super(param0), m_deleted(deleted) {}
 
-	RefCountSample93(bool& deleted, int param0, int param1) noexcept
-		: Super(param0, param1)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample93(bool& deleted, int param0, int param1) noexcept : Super(param0, param1), m_deleted(deleted) {}
 
-	RefCountSample93(bool& deleted, int param0, int param1, int param2) noexcept
-		: Super(param0, param1, param2)
-		, m_deleted(deleted)
-	{
-	}
+  RefCountSample93(bool& deleted, int param0, int param1, int param2) noexcept
+      : Super(param0, param1, param2), m_deleted(deleted)
+  {
+  }
 
-	virtual int GetValue2() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 1;
+  }
 
-	virtual ~RefCountSample93() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~RefCountSample93() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 struct AsyncDeleter
 {
-	template <typename TObject>
-	static void Delete(TObject* obj) noexcept
-	{
-		// Destroy object asynchronously
-		obj->SetAsyncDestroy();
-		try
-		{
-			// Ideally we want to show here how to use dispatch queues, but we cannot add DispatchQueue liblet dependency here.
-			std::thread([obj]() noexcept { TObject::RefCountPolicy::template Delete(obj); }).detach();
-		}
-		catch (...)
-		{
-			VerifyElseCrashTag(false, 0x01003707 /* tag_bad2h */);
-		}
-	}
+  template <typename TObject>
+  static void Delete(TObject* obj) noexcept
+  {
+    // Destroy object asynchronously
+    obj->SetAsyncDestroy();
+    try
+    {
+      // Ideally we want to show here how to use dispatch queues, but we cannot add DispatchQueue liblet dependency
+      // here.
+      std::thread([obj]() noexcept { TObject::RefCountPolicy::template Delete(obj); }).detach();
+    }
+    catch (...)
+    {
+      VerifyElseCrashTag(false, 0x01003707 /* tag_bad2h */);
+    }
+  }
 };
 
 MSO_STRUCT_GUID(ITestAsyncDestroy, "18cd4582-2a30-4cdb-94c7-cf8d310101b8")
 struct ITestAsyncDestroy
 {
-	virtual void SetAsyncDestroy() noexcept = 0;
+  virtual void SetAsyncDestroy() noexcept = 0;
 };
 
 // To test custom DestroyThis method
 class RefCountSample101 final
-	: public Mso::RefCountedObject<Mso::SimpleRefCountPolicy<AsyncDeleter>, IRefBaseSample1, ITestAsyncDestroy>
+    : public Mso::RefCountedObject<Mso::SimpleRefCountPolicy<AsyncDeleter>, IRefBaseSample1, ITestAsyncDestroy>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual void SetAsyncDestroy() noexcept override
-	{
-		m_isAsyncDestroy = true;
-	}
+  virtual void SetAsyncDestroy() noexcept override
+  {
+    m_isAsyncDestroy = true;
+  }
 
 protected:
-	virtual ~RefCountSample101() noexcept
-	{
-		m_deleted.Set();
-	}
+  virtual ~RefCountSample101() noexcept
+  {
+    m_deleted.Set();
+  }
 
 private:
-	RefCountSample101(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
-		: m_deleted(deleted)
-		, m_isAsyncDestroy(isAsyncDestroy)
-	{
-	}
+  RefCountSample101(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
+      : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
+  {
+  }
 
 private:
-	Mso::Async::ManualResetEvent m_deleted;
-	bool& m_isAsyncDestroy;
+  Mso::Async::ManualResetEvent m_deleted;
+  bool& m_isAsyncDestroy;
 };
 
 // To test custom DestroyThis method
 class RefCountSample102 final
-	: public Mso::RefCountedObject<Mso::WeakRefCountPolicy<AsyncDeleter>, IRefBaseSample1, ITestAsyncDestroy>
+    : public Mso::RefCountedObject<Mso::WeakRefCountPolicy<AsyncDeleter>, IRefBaseSample1, ITestAsyncDestroy>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
-	virtual void SetAsyncDestroy() noexcept override
-	{
-		m_isAsyncDestroy = true;
-	}
+  virtual void SetAsyncDestroy() noexcept override
+  {
+    m_isAsyncDestroy = true;
+  }
 
 protected:
-	virtual ~RefCountSample102() noexcept
-	{
-		m_deleted.Set();
-	}
+  virtual ~RefCountSample102() noexcept
+  {
+    m_deleted.Set();
+  }
 
 private:
-	RefCountSample102(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
-		: m_deleted(deleted)
-		, m_isAsyncDestroy(isAsyncDestroy)
-	{
-	}
+  RefCountSample102(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
+      : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
+  {
+  }
 
 private:
-	Mso::Async::ManualResetEvent m_deleted;
-	bool& m_isAsyncDestroy;
+  Mso::Async::ManualResetEvent m_deleted;
+  bool& m_isAsyncDestroy;
 };
 
 // To test custom DestroyThis method
 class RefCountSample103 final
-	: public Mso::RefCountedObjectNoVTable<Mso::SimpleRefCountPolicy<AsyncDeleter>, RefCountSample103>
+    : public Mso::RefCountedObjectNoVTable<Mso::SimpleRefCountPolicy<AsyncDeleter>, RefCountSample103>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
-	friend RefCountPolicy; // Allow it to call our destructor.
+  friend MakePolicy; // To allow constructor to be private or protected.
+  friend RefCountPolicy; // Allow it to call our destructor.
 
 public:
-	int GetValue1() noexcept
-	{
-		OACR_USE_PTR(this);
-		return 1;
-	}
+  int GetValue1() noexcept
+  {
+    OACR_USE_PTR(this);
+    return 1;
+  }
 
-	void SetAsyncDestroy() noexcept
-	{
-		m_isAsyncDestroy = true;
-	}
+  void SetAsyncDestroy() noexcept
+  {
+    m_isAsyncDestroy = true;
+  }
 
 protected:
-	~RefCountSample103() noexcept
-	{
-		m_deleted.Set();
-	}
+  ~RefCountSample103() noexcept
+  {
+    m_deleted.Set();
+  }
 
 private:
-	RefCountSample103(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
-		: m_deleted(deleted)
-		, m_isAsyncDestroy(isAsyncDestroy)
-	{
-	}
+  RefCountSample103(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
+      : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
+  {
+  }
 
 private:
-	Mso::Async::ManualResetEvent m_deleted;
-	bool& m_isAsyncDestroy;
+  Mso::Async::ManualResetEvent m_deleted;
+  bool& m_isAsyncDestroy;
 };
 
 // To test custom DestroyThis method
 class RefCountSample104 final
-	: public Mso::RefCountedObjectNoVTable<Mso::WeakRefCountPolicy<AsyncDeleter>, RefCountSample104>
+    : public Mso::RefCountedObjectNoVTable<Mso::WeakRefCountPolicy<AsyncDeleter>, RefCountSample104>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
-	friend RefCountPolicy; // Allow it to call our destructor.
+  friend MakePolicy; // To allow constructor to be private or protected.
+  friend RefCountPolicy; // Allow it to call our destructor.
 
 public:
-	int GetValue1() noexcept
-	{
-		OACR_USE_PTR(this);
-		return 1;
-	}
+  int GetValue1() noexcept
+  {
+    OACR_USE_PTR(this);
+    return 1;
+  }
 
-	void SetAsyncDestroy() noexcept
-	{
-		m_isAsyncDestroy = true;
-	}
+  void SetAsyncDestroy() noexcept
+  {
+    m_isAsyncDestroy = true;
+  }
 
 protected:
-	~RefCountSample104() noexcept
-	{
-		m_deleted.Set();
-	}
+  ~RefCountSample104() noexcept
+  {
+    m_deleted.Set();
+  }
 
 private:
-	RefCountSample104(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
-		: m_deleted(deleted)
-		, m_isAsyncDestroy(isAsyncDestroy)
-	{
-	}
+  RefCountSample104(const Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
+      : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
+  {
+  }
 
 private:
-	Mso::Async::ManualResetEvent m_deleted;
-	bool& m_isAsyncDestroy;
+  Mso::Async::ManualResetEvent m_deleted;
+  bool& m_isAsyncDestroy;
 };
 
 class SomeVirtualClass
 {
 public:
-	virtual ~SomeVirtualClass() = default;
+  virtual ~SomeVirtualClass() = default;
 
-	int x;
-	int y;
+  int x;
+  int y;
 };
 
 #ifdef TEST_BAD_INHERITANCE1
 // !!! Mso::RefCountedObject must be always the first one in the inheritance !!!
 class BadRefCountedObject1 final
-	: public SomeVirtualClass
-	, public Mso::RefCountedObject<IRefBaseSample1>
+    : public SomeVirtualClass
+    , public Mso::RefCountedObject<IRefBaseSample1>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	DECLARE_COPYCONSTR_AND_ASSIGNMENT(BadRefCountedObject1);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(BadRefCountedObject1);
 
-	virtual int GetValue1() override
-	{
-		return 1;
-	}
+  virtual int GetValue1() override
+  {
+    return 1;
+  }
 
 private:
-	BadRefCountedObject1() = default;
+  BadRefCountedObject1() = default;
 };
 #endif
 
 #ifdef TEST_BAD_INHERITANCE2
 // !!! Mso::RefCountedObject must be always the first one in the inheritance !!!
 class BadRefCountedObject2 final
-	: public SomeVirtualClass
-	, public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1>
+    : public SomeVirtualClass
+    , public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IRefBaseSample1>
 {
-	friend MakePolicy; // To allow constructor to be private or protected.
+  friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-	virtual int GetValue1() override
-	{
-		return 1;
-	}
+  virtual int GetValue1() override
+  {
+    return 1;
+  }
 
 private:
-	BadRefCountedObject2() = default;
-
+  BadRefCountedObject2() = default;
 };
 #endif
 
-TEST_CLASS(RefCountedObjectTest)
+TEST_CLASS (RefCountedObjectTest)
 {
 	TEST_METHOD(RefCountedObject_SimpleRefCount)
 	{
@@ -955,26 +888,23 @@ TEST_CLASS(RefCountedObjectTest)
 	}
 
 #if defined(DEBUG) && defined(TEST_BAD_INHERITANCE1)
-	TESTMETHOD_REQUIRES_SEH(RefCountedObject_BadInheritance1)
-	{
-		TestAssert::ExpectVEC([&]() noexcept
-		{
-			// This code must not compile, but if we remove the static assert from ObjectRefCount.h then we must have VEC here.
-			// You will see a memory leak here because we cannot destroy object correctly.
-			Mso::Make<BadRefCountedObject1>();
-		});
-	}
+  TESTMETHOD_REQUIRES_SEH(RefCountedObject_BadInheritance1)
+  {
+    TestAssert::ExpectVEC([&]() noexcept {
+      // This code must not compile, but if we remove the static assert from ObjectRefCount.h then we must have VEC
+      // here. You will see a memory leak here because we cannot destroy object correctly.
+      Mso::Make<BadRefCountedObject1>();
+    });
+  }
 #endif
 
 #if defined(DEBUG) && defined(TEST_BAD_INHERITANCE2)
-	TESTMETHOD_REQUIRES_SEH(RefCountedObject_BadInheritance2)
-	{
-		TestAssert::ExpectVEC([&]() noexcept
-		{
-			// You will see a memory leak here because we cannot destroy object correctly.
-			Mso::Make<BadRefCountedObject2>();
-		});
-	}
+  TESTMETHOD_REQUIRES_SEH(RefCountedObject_BadInheritance2)
+  {
+    TestAssert::ExpectVEC([&]() noexcept {
+      // You will see a memory leak here because we cannot destroy object correctly.
+      Mso::Make<BadRefCountedObject2>();
+    });
+  }
 #endif
-
 };

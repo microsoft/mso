@@ -12,138 +12,128 @@ Unit tests for classes in the ObjectSwarm.h
 #include <test/skipSEHUT.h>
 #include <test/testCheck.h>
 
-//#define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this class.
+//#define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
+//class.
 
 MSO_STRUCT_GUID(IFixedSwarmSample1, "AA2EB60A-06DD-486F-AC9B-DBF1DDE21408")
 struct DECLSPEC_NOVTABLE IFixedSwarmSample1 : IUnknown
 {
-	virtual int GetValue1() = 0;
+  virtual int GetValue1() = 0;
 };
 
 struct DECLSPEC_NOVTABLE IFixedSwarmSample2 : Mso::IRefCounted
 {
-	virtual int GetValue2() = 0;
+  virtual int GetValue2() = 0;
 };
 
 struct DECLSPEC_NOVTABLE IFixedSwarmSample3 : Mso::IRefCounted
 {
-	virtual int GetValue3() = 0;
+  virtual int GetValue3() = 0;
 };
 
-class FixedSwarmMemberSample1 final
-	: public Mso::UnknownObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample1>
+class FixedSwarmMemberSample1 final : public Mso::UnknownObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample1>
 {
 public:
-	FixedSwarmMemberSample1(bool& created, bool& deleted) noexcept
-		: m_deleted(deleted)
-	{
-		created = true;
-	}
+  FixedSwarmMemberSample1(bool& created, bool& deleted) noexcept : m_deleted(deleted)
+  {
+    created = true;
+  }
 
-	virtual int GetValue1() noexcept override
-	{
-		return 1;
-	}
+  virtual int GetValue1() noexcept override
+  {
+    return 1;
+  }
 
 protected:
-	virtual ~FixedSwarmMemberSample1() noexcept
-	{
-		m_deleted = true;
-	}
+  virtual ~FixedSwarmMemberSample1() noexcept
+  {
+    m_deleted = true;
+  }
 
 private:
-	bool& m_deleted;
+  bool& m_deleted;
 };
 
 // We can add to FixedSwarm IRefCounted objects
-class FixedSwarmMemberSample2 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample2>
+class FixedSwarmMemberSample2 final : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample2>
 {
 public:
-	virtual int GetValue2() noexcept override
-	{
-		return 2;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 2;
+  }
 };
 
-class FixedSwarmMemberSample3 final
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample3>
+class FixedSwarmMemberSample3 final : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample3>
 {
 public:
-	virtual int GetValue3() noexcept override
-	{
-		return 3;
-	}
+  virtual int GetValue3() noexcept override
+  {
+    return 3;
+  }
 };
 
-class FixedSwarmMemberSampleBase
-	: public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample2>
+class FixedSwarmMemberSampleBase : public Mso::RefCountedObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample2>
 {
 public:
-	FixedSwarmMemberSampleBase() noexcept
-	{
-	}
+  FixedSwarmMemberSampleBase() noexcept {}
 
-	virtual int GetValue2() noexcept override
-	{
-		return 2;
-	}
+  virtual int GetValue2() noexcept override
+  {
+    return 2;
+  }
 
 protected:
-	virtual ~FixedSwarmMemberSampleBase() noexcept
-	{
-	}
+  virtual ~FixedSwarmMemberSampleBase() noexcept {}
 };
 
-class FixedSwarmMemberSample4Throw
-	: public FixedSwarmMemberSampleBase
+class FixedSwarmMemberSample4Throw : public FixedSwarmMemberSampleBase
 {
 public:
-	using MakePolicy = Mso::MakePolicy::ThrowCtor;
+  using MakePolicy = Mso::MakePolicy::ThrowCtor;
 
-	FixedSwarmMemberSample4Throw()
-	{
-		throw std::runtime_error("Test");
-	}
+  FixedSwarmMemberSample4Throw()
+  {
+    throw std::runtime_error("Test");
+  }
 };
 
-class FixedSwarmMemberSample5InitThrow
-	: public FixedSwarmMemberSampleBase
+class FixedSwarmMemberSample5InitThrow : public FixedSwarmMemberSampleBase
 {
 public:
-	using MakePolicy = Mso::MakePolicy::ThrowCtorAndInitializeThis;
+  using MakePolicy = Mso::MakePolicy::ThrowCtorAndInitializeThis;
 
-	void InitializeThis()
-	{
-		UNREFERENCED_OACR(this);
-		throw std::runtime_error("Test");
-	}
+  void InitializeThis()
+  {
+    UNREFERENCED_OACR(this);
+    throw std::runtime_error("Test");
+  }
 };
 
 #ifdef TEST_BAD_INHERITANCE1
 class SomeVirtualClass
 {
 public:
-	virtual ~SomeVirtualClass() = default;
+  virtual ~SomeVirtualClass() = default;
 
-	int x;
-	int y;
+  int x;
+  int y;
 };
 
 // !!! Mso::UnknownObject must be always the first one in the inheritance !!!
 class BadFixedSwarmMember1 final
-	: public SomeVirtualClass
-	, public Mso::UnknownObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample1>
+    : public SomeVirtualClass
+    , public Mso::UnknownObject<Mso::RefCountStrategy::WeakRef, IFixedSwarmSample1>
 {
 public:
-	virtual int GetValue1() override
-	{
-		return 1;
-	}
+  virtual int GetValue1() override
+  {
+    return 1;
+  }
 };
 #endif
 
-TEST_CLASS(ObjectFixedSwarmTest)
+TEST_CLASS (ObjectFixedSwarmTest)
 {
 	TEST_METHOD(ObjectFixedSwarm_NoMemberInit)
 	{
@@ -333,16 +323,14 @@ TEST_CLASS(ObjectFixedSwarmTest)
 	}
 
 #if defined(DEBUG) && defined(TEST_BAD_INHERITANCE1)
-	TESTMETHOD_REQUIRES_SEH(ObjectFixedSwarm_BadInheritance1)
-	{
-		using Swarm2 = Mso::FixedSwarm<BadFixedSwarmMember1, FixedSwarmMemberSample2>;
-		Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
-		TestAssert::ExpectVEC([&]() noexcept
-		{
-			// You will see a memory leak here because we cannot destroy object correctly.
-			swarm2->MakeMember<0>();
-		});
-	}
+  TESTMETHOD_REQUIRES_SEH(ObjectFixedSwarm_BadInheritance1)
+  {
+    using Swarm2 = Mso::FixedSwarm<BadFixedSwarmMember1, FixedSwarmMemberSample2>;
+    Mso::TCntPtr<Swarm2> swarm2 = Mso::Make<Swarm2>();
+    TestAssert::ExpectVEC([&]() noexcept {
+      // You will see a memory leak here because we cannot destroy object correctly.
+      swarm2->MakeMember<0>();
+    });
+  }
 #endif
-
 };

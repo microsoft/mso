@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 /**
-	Some globally useful debug-only macros
+  Some globally useful debug-only macros
 */
 #pragma once
 #ifndef COMPILERADAPTERS_CPPMACROSDEBUG_H
@@ -16,11 +16,11 @@
 #if DEBUG
 #define FILELINEPARAMSCOREUNUSED const char*, uint32_t
 #define FILELINEPARAMSUNUSED , FILELINEPARAMSCOREUNUSED
-#define FILELINEPARAMSOPTCORE const char* szFile = __FILE__, uint32_t iLine = __LINE__
+#define FILELINEPARAMSOPTCORE const char *szFile = __FILE__, uint32_t iLine = __LINE__
 #define FILELINEPARAMSOPT , FILELINEPARAMSOPTCORE
 #define FILELINEPARAMSOPTUNUSEDCORE const char* = __FILE__, uint32_t = __LINE__
 #define FILELINEPARAMSOPTUNUSED , FILELINEPARAMSOPTUNUSEDCORE
-#define FILELINEPARAMSCORE const char* szFile, uint32_t iLine
+#define FILELINEPARAMSCORE const char *szFile, uint32_t iLine
 #define FILELINEPARAMS , FILELINEPARAMSCORE
 #define FILELINEVARSCORE szFile, iLine
 #define FILELINEVARS , FILELINEVARSCORE
@@ -51,7 +51,7 @@
 #if DEBUG
 #define Debug(e) e
 #define DebugOnly(e) e
-#define DebugElse(s, t)	s
+#define DebugElse(s, t) s
 #define DebugList(e) (e),
 #define DebugParam(e) , e
 #define DebugFill(pb, cb) (memset((pb), 0xCC, (cb)))
@@ -59,7 +59,7 @@
 #define Debug(e)
 #define DebugOnly(e)
 #define DebugElse(s, t) t
-#define DebugList(e) 
+#define DebugList(e)
 #define DebugParam(e)
 #define DebugFill(pb, cb) (1)
 #endif
@@ -75,14 +75,17 @@
 
 /**
    MsoDebugBreak can be used inside expressions.
-	Otherwise code should use __debugbreak() directly.
+  Otherwise code should use __debugbreak() directly.
 */
 #ifdef DEBUG
-__inline int32_t MsoDebugBreak(void) 
+__inline int32_t MsoDebugBreak(void)
 #ifdef __cplusplus
-noexcept
+    noexcept
 #endif // __cplusplus
-	{ __debugbreak(); return 0; }
+{
+  __debugbreak();
+  return 0;
+}
 #else
 #define MsoDebugBreak() (0)
 #endif

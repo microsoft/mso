@@ -14,8 +14,7 @@ namespace Mso { namespace UnitTests { namespace GTest {
 struct GTestFixture : ::testing::Test
 {
   explicit GTestFixture(const TestClassInfo& classInfo, const TestMethodInfo& methodInfo)
-    : m_methodInfo { methodInfo }
-    , m_test { classInfo.CreateTest() }
+      : m_methodInfo{methodInfo}, m_test{classInfo.CreateTest()}
   {
   }
 
@@ -24,26 +23,18 @@ struct GTestFixture : ::testing::Test
     m_methodInfo.Invoke(*m_test);
   }
 
-  static void SetUpTestSuite()
-  {
-  }
+  static void SetUpTestSuite() {}
 
-  static void TearDownTestSuite()
-  {
-  }
+  static void TearDownTestSuite() {}
 
-  void SetUp() override
-  {
-  }
+  void SetUp() override {}
 
-  void TearDown() override
-  {
-  }
+  void TearDown() override {}
 
-  private:
-    const TestMethodInfo& m_methodInfo;
-    std::unique_ptr<TestClass> m_test;
-  };
+private:
+  const TestMethodInfo& m_methodInfo;
+  std::unique_ptr<TestClass> m_test;
+};
 
 inline void RegisterUnitTests()
 {
@@ -52,13 +43,15 @@ inline void RegisterUnitTests()
     for (const TestMethodInfo* methodInfo : classInfo->MethodInfos())
     {
       ::testing::RegisterTest(
-         /*test_suite_name:*/classInfo->ClassName(),
-         /*test_name:*/methodInfo->MethodName(),
-         /*type_param:*/nullptr,
-         /*value_param:*/nullptr,
-         /*file:*/classInfo->FileName(),
-         /*line:*/methodInfo->SourceLine(),
-         /*factory:*/[classInfo, methodInfo]() { return new GTestFixture { *classInfo, *methodInfo }; });
+          /*test_suite_name:*/ classInfo->ClassName(),
+          /*test_name:*/ methodInfo->MethodName(),
+          /*type_param:*/ nullptr,
+          /*value_param:*/ nullptr,
+          /*file:*/ classInfo->FileName(),
+          /*line:*/ methodInfo->SourceLine(),
+          /*factory:*/ [classInfo, methodInfo]() {
+            return new GTestFixture{*classInfo, *methodInfo};
+          });
     }
   }
 }

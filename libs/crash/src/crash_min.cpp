@@ -11,28 +11,28 @@
 
 void CrashWithRecovery(uint32_t /*tag*/) noexcept
 {
-	*((volatile int*)0) = 1;
-	__builtin_trap();
+  *((volatile int*)0) = 1;
+  __builtin_trap();
 }
 
 #else
 
 int CrashHandler(const EXCEPTION_POINTERS* excPtr, uint32_t tag) noexcept
 {
-	excPtr->ExceptionRecord->ExceptionCode = tag;
-	return EXCEPTION_CONTINUE_SEARCH;
+  excPtr->ExceptionRecord->ExceptionCode = tag;
+  return EXCEPTION_CONTINUE_SEARCH;
 }
 
 void CrashWithRecovery(uint32_t tag) noexcept
 {
-	__try
-	{
-		*((int*)0) = 1;
-	}
-	__except (CrashHandler(GetExceptionInformation(), tag))
-	{
-	}
-	__fastfail(tag);
+  __try
+  {
+    *((int*)0) = 1;
+  }
+  __except (CrashHandler(GetExceptionInformation(), tag))
+  {
+  }
+  __fastfail(tag);
 }
 
 #endif

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 /**
-	CRT based implementation for Mso::Memory
+  CRT based implementation for Mso::Memory
 */
 #include <core/memoryApi.h>
 #include <platformadapters/windowsfirst.h>
@@ -12,8 +12,7 @@
 
 MSOAPI_(BOOL) MsoCheckHeap(void) noexcept
 {
-	return ::_heapchk() == _HEAPOK;
+  return ::_heapchk() == _HEAPOK;
 }
 
 #endif // DEBUG
-

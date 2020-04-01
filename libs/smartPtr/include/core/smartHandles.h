@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 /**
-	Helper classes for managing handles
+  Helper classes for managing handles
 */
 #pragma once
 #ifndef LIBLET_CORE_SMARTHANDLES_H
@@ -16,22 +16,22 @@
 namespace Mso {
 
 /**
-	Manages a HANDLE
+  Manages a HANDLE
 */
 struct HandleHelper
-	{
-	static void Free(HANDLE h) noexcept 
-		{ 
-		::CloseHandle(h);
-		}
-	};
+{
+  static void Free(HANDLE h) noexcept
+  {
+    ::CloseHandle(h);
+  }
+};
 
 /**
-	HANDLE holder
+  HANDLE holder
 */
 typedef THolder<HANDLE, HandleHelper> HandleHolder;
 
-} // Mso
+} // namespace Mso
 
 #endif // __cplusplus
 

@@ -2,46 +2,35 @@
 // Licensed under the MIT license.
 
 /**
-	Empty implementation for memoryleakscope
+  Empty implementation for memoryleakscope
 
-	DO NOT INCLUDE THIS HEADER - LINK WITH THE LOB
-	(unless you need to link in pass0 e.g. msoprep\legacy)
+  DO NOT INCLUDE THIS HEADER - LINK WITH THE LOB
+  (unless you need to link in pass0 e.g. msoprep\legacy)
 */
 #include <memoryLeakScope/memoryLeakScope.h>
 
 #ifdef DEBUG
 
-namespace Mso {
-namespace Memory {
+namespace Mso { namespace Memory {
 
 bool IsInShutdownLeakScope() noexcept
 {
-	return false;
+  return false;
 }
 
-void EnterShutdownLeakScope(unsigned int /*framesToSkip*/) noexcept
-{
-}
+void EnterShutdownLeakScope(unsigned int /*framesToSkip*/) noexcept {}
 
-void LeaveShutdownLeakScope() noexcept
-{
-}
+void LeaveShutdownLeakScope() noexcept {}
 
 bool IsInIgnoreLeakScope() noexcept
 {
-	return false;
+  return false;
 }
 
-void EnterIgnoreLeakScope(unsigned int /*framesToSkip*/) noexcept
-{
-}
+void EnterIgnoreLeakScope(unsigned int /*framesToSkip*/) noexcept {}
 
-void LeaveIgnoreLeakScope() noexcept
-{
-}
+void LeaveIgnoreLeakScope() noexcept {}
 
-} // Memory
-} // Mso
+}} // namespace Mso::Memory
 
 #endif // DEBUG
-
