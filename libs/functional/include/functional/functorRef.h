@@ -17,7 +17,7 @@
 //! stored as a field in an object.
 //!
 //! Mso::FunctorRef has the following semantics:
-//! 
+//!
 //! - Only keeps a reference to the function object.
 //! - Never copies or moves the provided function object.
 //! - Does not do a heap allocation and has size of two pointers (one is
@@ -29,10 +29,10 @@
 //!   unlike std::function<>.
 //! - Supports optional semantic by allowing to be initialized with nullptr, and
 //!   then to be checked for non-null by the explicit bool operator.
-//! 
+//!
 //! The Mso::FunctorRef only supports noexcept function objects.
 //! Use Mso::FunctorRefThrow for throwing function objects.
-//! 
+//!
 //! In case if you want to store function object or transfer its ownership, you can use:
 //! - Mso::Functor that is an Mso::TCntPtr to a ref counted heap-allocated object.
 //! - Mso::SmallFunctor that uses in-place storage.
@@ -45,7 +45,7 @@
 //!   virtual MyObject FindInCache(const Mso::FunctorRef<bool(MyObject&)>& predicate) = 0;
 //!
 //! This method can be called as following:
-//! 
+//!
 //!   myCache->FindInCache([this](MyObject& obj) noexcept {	return this->CheckObj(obj); });
 //!
 //! Note that we can simply pass lambda as a parameter because we allow use of
@@ -115,91 +115,91 @@ using FunctorRefStorage = std::aligned_storage<sizeof(uintptr_t) * 2, 8>::type;
 
 } // namespace Details
 
- //! Reference to a non-throwing function object.
+//! Reference to a non-throwing function object.
 template <typename TResult, typename... TArgs>
 class FunctorRef<TResult(TArgs...)>
 #if !defined(__cpp_noexcept_function_type) && (_HAS_NOEXCEPT_FUNCTION_TYPES != 1)
-final
+    final
 #endif
 {
 public:
-	//! Creates an empty FunctorRef
-	_Allow_implicit_ctor_ FunctorRef(std::nullptr_t) noexcept
-	{
-	}
+  //! Creates an empty FunctorRef
+  _Allow_implicit_ctor_ FunctorRef(std::nullptr_t) noexcept {}
 
-	//! Creates a non-empty FunctorRef
-	template <typename T>
-	_Allow_implicit_ctor_ FunctorRef(T&& func) noexcept
-	{
-		using WrapperType = FunctorRefWrapper<std::remove_reference_t<T>>;
+  //! Creates a non-empty FunctorRef
+  template <typename T>
+  _Allow_implicit_ctor_ FunctorRef(T&& func) noexcept
+  {
+    using WrapperType = FunctorRefWrapper<std::remove_reference_t<T>>;
 
-		// Make sure that WrapperType storage requirements match the FunctorRefStorage.
-		static_assert(sizeof(WrapperType) <= sizeof(Details::FunctorRefStorage),
-			"WrapperType is too big to fit in FunctorRefStorage.");
-		static_assert(std::alignment_of<WrapperType>::value <= std::alignment_of<Details::FunctorRefStorage>::value,
-			"WrapperType alignment does not match to FunctorRefStorage.");
+    // Make sure that WrapperType storage requirements match the FunctorRefStorage.
+    static_assert(
+        sizeof(WrapperType) <= sizeof(Details::FunctorRefStorage),
+        "WrapperType is too big to fit in FunctorRefStorage.");
+    static_assert(
+        std::alignment_of<WrapperType>::value <= std::alignment_of<Details::FunctorRefStorage>::value,
+        "WrapperType alignment does not match to FunctorRefStorage.");
 
-		::new (std::addressof(m_storage)) WrapperType{&func};
-	}
+    ::new (std::addressof(m_storage)) WrapperType{&func};
+  }
 
-	//! Delete copy and move constructors and assignment operators.
-	DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRef);
+  //! Delete copy and move constructors and assignment operators.
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRef);
 
-	//! Calls referenced function object.
-	//! Crash if referenced function object is nullptr.
-	TResult operator()(TArgs... args) const noexcept
-	{
-		// It's important that we don't use '&&' on TArgs here. Since TArgs is a class
-		// template parameter, the '&&' would force each argument to become an rvalue
-		// (or, subject to ref-collapsing, an lvalue ref) which could prevent us from
-		// being able to correctly invoke the underlying function object. With
-		// that said, it is important that the wrapper's 'Invoke' uses '&&' to prevent
-		// a second copy of any non-ref-qualified parameter since a copy would already
-		// have been made here.
+  //! Calls referenced function object.
+  //! Crash if referenced function object is nullptr.
+  TResult operator()(TArgs... args) const noexcept
+  {
+    // It's important that we don't use '&&' on TArgs here. Since TArgs is a class
+    // template parameter, the '&&' would force each argument to become an rvalue
+    // (or, subject to ref-collapsing, an lvalue ref) which could prevent us from
+    // being able to correctly invoke the underlying function object. With
+    // that said, it is important that the wrapper's 'Invoke' uses '&&' to prevent
+    // a second copy of any non-ref-qualified parameter since a copy would already
+    // have been made here.
 
-		VerifyElseCrashSzTag(*this, "FunctorRef must not be empty", 0x025d9804 /* tag_cxz6e */);
-		return reinterpret_cast<const IFunctorRef*>(std::addressof(m_storage))->Invoke(std::forward<TArgs>(args)...);
-	}
+    VerifyElseCrashSzTag(*this, "FunctorRef must not be empty", 0x025d9804 /* tag_cxz6e */);
+    return reinterpret_cast<const IFunctorRef*>(std::addressof(m_storage))->Invoke(std::forward<TArgs>(args)...);
+  }
 
-	//! True if wrapped function object is not nullptr.
-	explicit operator bool() const noexcept
-	{
-		return *reinterpret_cast<const uintptr_t*>(std::addressof(m_storage)) != 0;
-	}
-
-private:
-	//! The interface to be implemented by FunctorRefWrapper<T>.
-	struct IFunctorRef
-	{
-		virtual TResult Invoke(TArgs&&...) const noexcept = 0;
-	};
-
-	//! A wrapper for a function object reference.
-	//! We do not call destructor for this class because it does not need to free any resources.
-	template <typename T>
-	struct FunctorRefWrapper final : IFunctorRef
-	{
-		FunctorRefWrapper(T* func) noexcept : m_func(func) {}
-		DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefWrapper);
-		~FunctorRefWrapper() = delete;
-
-		TResult Invoke(TArgs&&... args) const noexcept override
-		{
-			// If you see OACR warning "Nothrow Func Throws" here then it means that the
-			// provided lambda or function object's operator() are not marked as noexcept.
-
-			// We use const_cast to enable support for mutable lambdas
-			return (*const_cast<FunctorRefWrapper*>(this)->m_func)(std::forward<TArgs>(args)...);
-		}
-
-	private:
-		T* m_func;
-	};
+  //! True if wrapped function object is not nullptr.
+  explicit operator bool() const noexcept
+  {
+    return *reinterpret_cast<const uintptr_t*>(std::addressof(m_storage)) != 0;
+  }
 
 private:
-	// Storage for 2 pointers: v_table + reference
-	Details::FunctorRefStorage m_storage { 0 };
+  //! The interface to be implemented by FunctorRefWrapper<T>.
+  struct IFunctorRef
+  {
+    virtual TResult Invoke(TArgs&&...) const noexcept = 0;
+  };
+
+  //! A wrapper for a function object reference.
+  //! We do not call destructor for this class because it does not need to free any resources.
+  template <typename T>
+  struct FunctorRefWrapper final : IFunctorRef
+  {
+    FunctorRefWrapper(T* func) noexcept : m_func(func) {}
+    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefWrapper);
+    ~FunctorRefWrapper() = delete;
+
+    TResult Invoke(TArgs&&... args) const noexcept override
+    {
+      // If you see OACR warning "Nothrow Func Throws" here then it means that the
+      // provided lambda or function object's operator() are not marked as noexcept.
+
+      // We use const_cast to enable support for mutable lambdas
+      return (*const_cast<FunctorRefWrapper*>(this)->m_func)(std::forward<TArgs>(args)...);
+    }
+
+  private:
+    T* m_func;
+  };
+
+private:
+  // Storage for 2 pointers: v_table + reference
+  Details::FunctorRefStorage m_storage{0};
 };
 
 #if defined(__cpp_noexcept_function_type) || (_HAS_NOEXCEPT_FUNCTION_TYPES == 1)
@@ -210,7 +210,7 @@ template <typename TResult, typename... TArgs>
 class FunctorRef<TResult(TArgs...) noexcept> : public FunctorRef<TResult(TArgs...)>
 {
 public:
-	using FunctorRef<TResult(TArgs...)>::FunctorRef;
+  using FunctorRef<TResult(TArgs...)>::FunctorRef;
 };
 
 #endif
@@ -220,88 +220,88 @@ template <typename TResult, typename... TArgs>
 class FunctorRefThrow<TResult(TArgs...)> final
 {
 public:
-	//! Creates an empty FunctorRefThrow
-	_Allow_implicit_ctor_ FunctorRefThrow(std::nullptr_t) noexcept
-	{
-	}
+  //! Creates an empty FunctorRefThrow
+  _Allow_implicit_ctor_ FunctorRefThrow(std::nullptr_t) noexcept {}
 
-	//! Creates an non-empty FunctorRefThrow
-	template <typename T>
-	_Allow_implicit_ctor_ FunctorRefThrow(T&& func) noexcept
-	{
-		using WrapperType = FunctorRefThrowWrapper<std::remove_reference_t<T>>;
+  //! Creates an non-empty FunctorRefThrow
+  template <typename T>
+  _Allow_implicit_ctor_ FunctorRefThrow(T&& func) noexcept
+  {
+    using WrapperType = FunctorRefThrowWrapper<std::remove_reference_t<T>>;
 
-		// Make sure that WrapperType storage requirements match the FunctorRefStorage.
-		static_assert(sizeof(WrapperType) <= sizeof(Details::FunctorRefStorage),
-			"WrapperType is too big to fit in FunctorRefStorage.");
-		static_assert(std::alignment_of<WrapperType>::value <= std::alignment_of<Details::FunctorRefStorage>::value,
-			"WrapperType alignment does not match to FunctorRefStorage.");
+    // Make sure that WrapperType storage requirements match the FunctorRefStorage.
+    static_assert(
+        sizeof(WrapperType) <= sizeof(Details::FunctorRefStorage),
+        "WrapperType is too big to fit in FunctorRefStorage.");
+    static_assert(
+        std::alignment_of<WrapperType>::value <= std::alignment_of<Details::FunctorRefStorage>::value,
+        "WrapperType alignment does not match to FunctorRefStorage.");
 
-		::new (std::addressof(m_storage)) WrapperType{&func};
-	}
+    ::new (std::addressof(m_storage)) WrapperType{&func};
+  }
 
-	//! Delete copy and move constructors and assignment operators.
-	DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrow);
+  //! Delete copy and move constructors and assignment operators.
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrow);
 
-	//! Calls referenced function object.
-	//! Crash if referenced function object is nullptr.
-	TResult operator()(TArgs... args) const
-	{
-		// It's important that we don't use '&&' on TArgs here. Since TArgs is a class
-		// template parameter, the '&&' would force each argument to become an rvalue
-		// (or, subject to ref-collapsing, an lvalue ref) which could prevent us from
-		// being able to correctly invoke the underlying function object. With
-		// that said, it is important that the wrapper's 'Invoke' uses '&&' to prevent
-		// a second copy of any non-ref-qualified parameter since a copy would already
-		// have been made here.
+  //! Calls referenced function object.
+  //! Crash if referenced function object is nullptr.
+  TResult operator()(TArgs... args) const
+  {
+    // It's important that we don't use '&&' on TArgs here. Since TArgs is a class
+    // template parameter, the '&&' would force each argument to become an rvalue
+    // (or, subject to ref-collapsing, an lvalue ref) which could prevent us from
+    // being able to correctly invoke the underlying function object. With
+    // that said, it is important that the wrapper's 'Invoke' uses '&&' to prevent
+    // a second copy of any non-ref-qualified parameter since a copy would already
+    // have been made here.
 
-		VerifyElseCrashSzTag(*this, "FunctorRefThrow must not be empty", 0x025d9805 /* tag_cxz6f */);
-		return reinterpret_cast<const IFunctorRefThrow*>(std::addressof(m_storage))->Invoke(std::forward<TArgs>(args)...);
-	}
+    VerifyElseCrashSzTag(*this, "FunctorRefThrow must not be empty", 0x025d9805 /* tag_cxz6f */);
+    return reinterpret_cast<const IFunctorRefThrow*>(std::addressof(m_storage))->Invoke(std::forward<TArgs>(args)...);
+  }
 
-	//! True if wrapped function object is not nullptr.
-	explicit operator bool() const noexcept
-	{
-		return *reinterpret_cast<const uintptr_t*>(std::addressof(m_storage)) != 0;
-	}
-
-private:
-	//! The interface to be implemented by FunctorRefThrowWrapper<T>.
-	struct IFunctorRefThrow
-	{
-		virtual TResult Invoke(TArgs&&...) const = 0;
-	};
-
-	//! A wrapper for a function object reference.
-	//! We do not call destructor for this class because it does not need to free any resources.
-	template <typename T>
-	struct FunctorRefThrowWrapper final : IFunctorRefThrow
-	{
-		FunctorRefThrowWrapper(T* func) noexcept : m_func(func) {}
-		DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrowWrapper);
-		~FunctorRefThrowWrapper() = delete;
-
-		TResult Invoke(TArgs&&... args) const override
-		{
-			OACR_POSSIBLE_THROW;
-			// We use const_cast to enable support for mutable lambdas
-			return (*const_cast<FunctorRefThrowWrapper*>(this)->m_func)(std::forward<TArgs>(args)...);
-		}
-
-	private:
-		T* m_func;
-	};
+  //! True if wrapped function object is not nullptr.
+  explicit operator bool() const noexcept
+  {
+    return *reinterpret_cast<const uintptr_t*>(std::addressof(m_storage)) != 0;
+  }
 
 private:
-	// Storage for 2 pointers: v_table + reference
-	Details::FunctorRefStorage m_storage { 0 };
+  //! The interface to be implemented by FunctorRefThrowWrapper<T>.
+  struct IFunctorRefThrow
+  {
+    virtual TResult Invoke(TArgs&&...) const = 0;
+  };
+
+  //! A wrapper for a function object reference.
+  //! We do not call destructor for this class because it does not need to free any resources.
+  template <typename T>
+  struct FunctorRefThrowWrapper final : IFunctorRefThrow
+  {
+    FunctorRefThrowWrapper(T* func) noexcept : m_func(func) {}
+    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrowWrapper);
+    ~FunctorRefThrowWrapper() = delete;
+
+    TResult Invoke(TArgs&&... args) const override
+    {
+      OACR_POSSIBLE_THROW;
+      // We use const_cast to enable support for mutable lambdas
+      return (*const_cast<FunctorRefThrowWrapper*>(this)->m_func)(std::forward<TArgs>(args)...);
+    }
+
+  private:
+    T* m_func;
+  };
+
+private:
+  // Storage for 2 pointers: v_table + reference
+  Details::FunctorRefStorage m_storage{0};
 };
 
 /// Aliases for the most common function object type "void()".
 using VoidFunctorRef = FunctorRef<void()>;
 using VoidFunctorRefThrow = FunctorRefThrow<void()>;
 
-}
+} // namespace Mso
 
 #pragma pop_macro("new")
 

@@ -19,7 +19,7 @@
 
 #ifndef _BYTE_DEFINED
 #define _BYTE_DEFINED
-typedef unsigned char BYTE;//__clang__ : conflict with libc++17 byte definition
+typedef unsigned char BYTE; //__clang__ : conflict with libc++17 byte definition
 #endif // !_BYTE_DEFINED
 
 #ifndef _WORD_DEFINED
@@ -39,7 +39,7 @@ typedef unsigned int UINT;
 
 #ifndef _LONG_DEFINED
 #define _LONG_DEFINED
-typedef int32_t LONG; //MS_TARGET_APPLE LONG as a Windows type must stay 32-bit even in 64-bit code
+typedef int32_t LONG; // MS_TARGET_APPLE LONG as a Windows type must stay 32-bit even in 64-bit code
 #endif // !_LONG_DEFINED
 
 #ifndef _ULONG_DEFINED
@@ -49,7 +49,7 @@ typedef uint32_t ULONG;
 
 #ifndef _BOOL_DEFINED
 #define _BOOL_DEFINED
-typedef int32_t BOOL; //MS_TARGET_APPLE
+typedef int32_t BOOL; // MS_TARGET_APPLE
 #define TRUE 1
 #define FALSE 0
 #endif // !_BOOL_DEFINED
@@ -71,7 +71,7 @@ typedef UINT_PTR WPARAM;
 
 #ifndef _DWORD_DEFINED
 #define _DWORD_DEFINED
-typedef uint32_t DWORD; //MS_TARGET_APPLE DWORD as a Windows type must stay 32-bit even in 64-bit code
+typedef uint32_t DWORD; // MS_TARGET_APPLE DWORD as a Windows type must stay 32-bit even in 64-bit code
 #endif // !_DWORD_DEFINED
 
 #ifndef _LPARAM_DEFINED

@@ -12,14 +12,16 @@
 
 namespace Mso {
 
-    class IgnoreAllAssertsPlatformImpl {};
+class IgnoreAllAssertsPlatformImpl
+{
+};
 
-    class IgnoreAssertPlatformImpl
-    {
-    public:
-        IgnoreAssertPlatformImpl(uint32_t) {}
-    };
+class IgnoreAssertPlatformImpl
+{
+public:
+  IgnoreAssertPlatformImpl(uint32_t) {}
+};
 
-} // Mso
+} // namespace Mso
 
 #endif // MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H

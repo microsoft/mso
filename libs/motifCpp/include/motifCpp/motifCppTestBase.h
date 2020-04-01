@@ -8,19 +8,18 @@ typedef wchar_t WCHAR;
 class MotifCppTestBase
 {
 public:
-	MotifCppTestBase()
-	{}
+  MotifCppTestBase() {}
 
-	~MotifCppTestBase()
-	{
-		TestClassTeardown();
-	}
+  ~MotifCppTestBase()
+  {
+    TestClassTeardown();
+  }
 
-	virtual void TestClassSetup() {}
+  virtual void TestClassSetup() {}
 
-	virtual void TestClassTeardown() {}
+  virtual void TestClassTeardown() {}
 
-	virtual void Setup() {}
+  virtual void Setup() {}
 
-	virtual void Teardown() {}
+  virtual void Teardown() {}
 };

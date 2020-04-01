@@ -7,9 +7,7 @@
 class LibletAwareMemLeakDetection : public MotifCppTestBase
 {
 protected:
-  void InitLiblets() noexcept
-  {}
+  void InitLiblets() noexcept {}
 
-  void UninitLiblets() noexcept
-  {}
+  void UninitLiblets() noexcept {}
 };

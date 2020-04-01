@@ -4,4 +4,3 @@
 #include <motifcpp/motifcpptest.h>
 
 ImplementTestModule();
-
