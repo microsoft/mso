@@ -51,14 +51,14 @@ jobs:
         workingDirectory: $(Pipeline.Workspace)
         cmakeArgs: --install $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration) --prefix tests --component tests
 
-    - script: eventWaitHandle_tests
+    - script: ./eventWaitHandle_tests
       displayName: Tests - Event Wait Handle
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
-    - script: functional_tests
+    - script: ./functional_tests
       displayName: Tests - Functional
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
-    - script: object_tests
+    - script: ./object_tests
       displayName: Tests - Object
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
