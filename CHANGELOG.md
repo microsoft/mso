@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Tue, 31 Mar 2020 23:36:20 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Apr 2020 14:58:01 GMT and should not be manually modified.
 
+## 0.0.4
+Wed, 01 Apr 2020 14:58:01 GMT
+
+### Patches
+
+- Formatted code with ClangFormat (vmorozov@microsoft.com)
 ## 0.0.3
 Tue, 31 Mar 2020 23:36:20 GMT
 
