@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Thu, 02 Apr 2020 00:22:48 GMT",
+      "tag": "@microsoft/mso_v0.0.4",
+      "version": "0.0.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "Move away from using a toolchain file on Windows (setting the compiler explicitly isn't a great idea). Push settings into the CI loops and the CMake logic instead.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Apr 2020 21:58:08 GMT",
       "tag": "@microsoft/mso_v0.0.4",
       "version": "0.0.4",

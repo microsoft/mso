@@ -1,8 +1,0 @@
-{
-  "type": "none",
-  "comment": "Move away from using a toolchain file on Windows (setting the compiler explicitly isn't a great idea). Push settings into the CI loops and the CMake logic instead.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "none",
-  "date": "2020-04-01T22:09:29.342Z"
-}
