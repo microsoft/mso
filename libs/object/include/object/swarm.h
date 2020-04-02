@@ -8,11 +8,12 @@ share the same reference counter.
 
 #pragma once
 
+#include <memory>
+
 #include <compilerAdapters/compilerWarnings.h>
 #include <object/objectWithWeakRef.h>
 #include <object/queryCast.h>
 #include <object/weakPtr.h>
-#include <memory>
 
 //
 // Swarm is a collection of a ref counted objects that share the same reference counting.
@@ -35,11 +36,8 @@ share the same reference counter.
 
 #pragma pack(push, _CRT_PACKING)
 
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4625) // copy constructor could not be generated because a base class copy constructor is
-                                   // inaccessible or deleted
-MSO_PRAGMA_WARNING(disable : 4626) // assignment operator could not be generated because a base class assignment
-                                   // operator is inaccessible or deleted
+BEGIN_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+BEGIN_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
 
 #pragma push_macro("new")
 #undef new
@@ -157,7 +155,7 @@ public:
 
   // We return swarm member as a raw pointer because the new object shares ref count with the swarm and in many cases
   // we want to avoid the extra AddRef/Release because object's lifetime is already tracked.
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   template <typename T, typename TResult = T, typename... TArgs>
   TResult* MakeMember(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
   {
@@ -181,7 +179,7 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
     return result;
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   template <typename T, typename TResult = T, typename TAllocArg, typename... TArgs>
   TResult* MakeMemberAlloc(TAllocArg&& allocArg, TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
@@ -572,5 +570,7 @@ bool operator!=(std::nullptr_t, const SwarmMemberPtr<T, KnownSameSwarm>& right) 
 
 #pragma pop_macro("new")
 
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
+END_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+
 #pragma pack(pop)

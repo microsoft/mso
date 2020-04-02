@@ -12,6 +12,7 @@ See MsoMemory.h for information about operator new.
 #pragma once
 #ifdef __cplusplus
 
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacrosDebug.h>
 #include <compilerAdapters/functionDecorations.h>
 #include <core/smartPointerBase.h>
@@ -213,8 +214,7 @@ static const struct MarkingLeak_t
 }}} // namespace Mso::Memory::NoThrow
 
 namespace Mso { namespace Memory { namespace Throw {
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4100)
+BEGIN_DISABLE_WARNING_UNUSED_PARAMETER()
 /**
 Mso::Memory::Throw::New<T>(args)
 
@@ -230,7 +230,7 @@ _Ret_notnull_ T* New(TArgs&&... t)
     throw std::bad_alloc();
   return pT;
 }
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_UNUSED_PARAMETER()
 }}} // namespace Mso::Memory::Throw
 
 namespace Mso {

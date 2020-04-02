@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Wed, 01 Apr 2020 14:58:01 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Apr 2020 04:14:39 GMT and should not be manually modified.
 
+## 0.0.5
+Thu, 02 Apr 2020 04:14:39 GMT
+
+### Patches
+
+- Turn on level 4 warnings, use non-permissive mode, and make all warnings show up as errors. Fix all impacted code. (adam@thefoxmans.net)
 ## 0.0.4
 Wed, 01 Apr 2020 14:58:01 GMT
 

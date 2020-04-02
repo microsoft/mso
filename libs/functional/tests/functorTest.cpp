@@ -6,6 +6,7 @@ Unit tests for classes in the Functor.h
 ****************************************************************************/
 
 #include "precomp.h"
+#include <compilerAdapters/compilerWarnings.h>
 #include <functional/functor.h>
 #include <object/refCountedObject.h>
 #include "test/skipSEHUT.h"
@@ -459,8 +460,9 @@ TestClassComponent(FunctorTest, Mso.Functor) TEST_CLASS (FunctorTest)
 		Mso::Functor<int(int)> f1 = ([](int) noexcept -> int
 		{
 			OACR_NOEXCEPT_MAYTERMINATE;
-#pragma warning(suppress : 4297) // Suppress warning about throwing in noexcept function.
+      BEGIN_DISABLE_WARNING_EXCEPTIONS_PARAMETER()
 			throw std::runtime_error("Test error");
+      END_DISABLE_WARNING_EXCEPTIONS_PARAMETER()
 		});
 		TestCheckTerminate(f1(5));
 	}
@@ -1546,8 +1548,9 @@ TestClassComponent(FunctorNoexceptTest, Mso.Functor.Noexcept) TEST_CLASS (Functo
 		Mso::Functor<int(int) noexcept> f1 = ([](int) noexcept -> int
 		{
 			OACR_NOEXCEPT_MAYTERMINATE;
-			MSO_PRAGMA_WARNING(suppress:4297) // Suppress warning about throwing in noexcept function.
+      BEGIN_DISABLE_WARNING_EXCEPTIONS_PARAMETER()
 			throw std::runtime_error("Test error");
+      END_DISABLE_WARNING_EXCEPTIONS_PARAMETER()
 		});
 		TestCheckTerminate(f1(5));
 	}

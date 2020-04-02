@@ -19,6 +19,7 @@ See the msoGuid.h for the usage guidelines.
 //#if (__cplusplus >= 201103L) && !defined(MSO_GUID_DISABLED)
 
 #include <compilerAdapters/compilerFeatures.h>
+#include <compilerAdapters/compilerWarnings.h>
 #if MS_TARGET_POSIX
 #include <guiddef.h>
 #endif // MS_TARGET_POSIX
@@ -30,7 +31,9 @@ See the msoGuid.h for the usage guidelines.
       sizeof(guidString) == 37,                                                                \
       "GUID string must have the following format: \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\""); \
   keyword __declspec(uuid(guidString)) type;                                                   \
-  __pragma(warning(suppress : 25352)) extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*);
+  BEGIN_DISABLE_WARNING_MISSING_ANNOTATION()                                                   \
+  extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*);                      \
+  END_DISABLE_WARNING_MISSING_ANNOTATION()
 #else // For Clang
 #define MSO_GUID_IMPL(keyword, type, guidString)                \
   keyword type;                                                 \

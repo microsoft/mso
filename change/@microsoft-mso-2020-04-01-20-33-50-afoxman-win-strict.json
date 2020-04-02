@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Turn on level 4 warnings, use non-permissive mode, and make all warnings show up as errors. Fix all impacted code.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "patch",
-  "date": "2020-04-02T03:33:50.525Z"
-}

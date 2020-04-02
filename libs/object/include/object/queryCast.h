@@ -5,12 +5,14 @@
   Support for IUnknown::QueryInterface implementation.
 */
 #pragma once
-#include <debugAssertApi/debugAssertApi.h>
-#include <platformAdapters/msoGuid.h>
-#include <crash/verifyElseCrash.h>
-#include <object/IUnknownShim.h>
 #include <type_traits>
 #include <utility>
+
+#include <compilerAdapters/compilerWarnings.h>
+#include <crash/verifyElseCrash.h>
+#include <debugAssertApi/debugAssertApi.h>
+#include <object/IUnknownShim.h>
+#include <platformAdapters/msoGuid.h>
 
 /**
 To implement IUnknown::QueryInterface use the QueryCastTraits to implement sequence of probing for a requested
@@ -33,16 +35,12 @@ Here we provide a number of helper templates to implement QueryCast for a type:
 - QueryCastList - Calls QueryCastTraits for all provided types.
 */
 
-MSO_PRAGMA_WARNING(push)
-// Disable warnings 4625 and 4626 because templates below may have or may not have default copy constructor and
+// Disable warnings because templates below may have or may not have default copy constructor and
 // copy assignment operator depending on the template type parameter. We do not want just to delete them because
 // they could be useful in some scenarios when generated.
-MSO_PRAGMA_WARNING(disable : 4625) // copy constructor could not be generated because a base class copy constructor is
-                                   // inaccessible or deleted
-MSO_PRAGMA_WARNING(disable : 4626) // assignment operator could not be generated because a base class assignment
-                                   // operator is inaccessible or deleted
-MSO_PRAGMA_WARNING(
-    disable : 4995) // 'IsDebuggerPresent': name was marked as #pragma deprecated. It is part of VerifyElseCrash macro.
+BEGIN_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+BEGIN_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
+BEGIN_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
 
 namespace Mso {
 
@@ -287,8 +285,6 @@ public:
   {
     return StaticCastHelper<TTarget>::template CastFirst<ThisType, TBase0, TBases...>(this);
   }
-
-  MSO_PRAGMA_WARNING(suppress : 4265) // class has virtual functions, but destructor is not virtual
 };
 
 /**
@@ -386,4 +382,6 @@ TTarget query_cast(TSource&& source) noexcept
   return Mso::Details::QueryCastConverter<TTarget>::QueryCast(std::forward<TSource>(source));
 }
 
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
+END_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
+END_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()

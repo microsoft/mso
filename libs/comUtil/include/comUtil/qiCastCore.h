@@ -5,6 +5,7 @@
 #ifndef LIBLET_COMUTIL_QICASTCORE_H
 #define LIBLET_COMUTIL_QICASTCORE_H
 #include <guiddef.h>
+#include <compilerAdapters/compilerWarnings.h>
 #include <object/IUnknownShim.h>
 #include <core/TCntPtr.h>
 
@@ -64,9 +65,8 @@ Mso::TCntPtr<TTarget> qi_cast(const TSource* piSource, const IID& riid = __uuido
   return qi_cast<TTarget, TSource*>(piSourceNonConst, riid);
 }
 
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4995) // VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as
-                                   // #pragma deprecated"
+// VerifyElseCrashSz gives "warning C4995: 'IsDebuggerPresent': name was marked as #pragma deprecated"
+BEGIN_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
 
 /**
   qi_cast_or_crash<Type>(source, optional riid)
@@ -96,7 +96,7 @@ Mso::TCntPtr<TTarget> qi_cast_or_crash(const TSource* piSource, const IID& riid 
   return target;
 }
 
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
 
 /**
   simpleqi_cast<Type>(source, optional riid)

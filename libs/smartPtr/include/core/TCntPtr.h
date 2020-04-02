@@ -6,11 +6,13 @@
 #ifndef LIBLET_CORE_TCNTPTR_H
 #define LIBLET_CORE_TCNTPTR_H
 
+#include <atomic>
+
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/declspecDefinitions.h>
 #include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
 #include <object/smartPointerBase.h>
-#include <atomic>
 
 #ifdef __cplusplus
 namespace Mso {
@@ -52,6 +54,9 @@ struct DECLSPEC_NOVTABLE IWeakRefCounted : public IRefCounted
     // No need for implementing IRefCounted methods
   };
 */
+
+BEGIN_DISABLE_WARNING_PADDING_ADDED()
+
 template <class... TInterfaces>
 class TRefCountedImpl : public TInterfaces...
 {
@@ -83,8 +88,9 @@ protected:
 
 private:
   mutable std::atomic<uint32_t> m_ref;
-  MSO_PRAGMA_WARNING(suppress : 4820) // 4 bytes padding added after data member
 };
+
+END_DISABLE_WARNING_PADDING_ADDED()
 
 /**
   Manages a pointer cleaned up with Release()

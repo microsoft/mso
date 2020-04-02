@@ -7,23 +7,22 @@
 #ifndef _CPPEXTENSIONS_AUTORESTORE_H_
 #define _CPPEXTENSIONS_AUTORESTORE_H_
 
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
 #include <cppType/typeTraits.h>
 
 #ifdef __cplusplus
-// 4091: extern __declspec(dllimport)' : ignored on left of 'double' when no variable is declared
-// 4472: 'pointer_safety' is a native enum: add an access specifier (private/public) to declare a managed enum
-// 4996: 'wmemcpy': This function or variable may be unsafe. Consider using wmemcpy_s instead
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4091 4472 4996)
+BEGIN_DISABLE_WARNING_KEYWORD_IGNORED_NO_VARIABLE_DECL()
+BEGIN_DISABLE_WARNING_NATIVE_ENUM()
+BEGIN_DISABLE_WARNING_DEPRECATED()
 #include <memory>
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_DEPRECATED()
+END_DISABLE_WARNING_NATIVE_ENUM()
+END_DISABLE_WARNING_KEYWORD_IGNORED_NO_VARIABLE_DECL()
 
-// 4996: 'wmemcpy': This function or variable may be unsafe. Consider using wmemcpy_s instead
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4996)
+BEGIN_DISABLE_WARNING_DEPRECATED()
 #include <utility>
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_DEPRECATED()
 
 namespace Mso {
 
