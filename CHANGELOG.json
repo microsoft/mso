@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Thu, 02 Apr 2020 23:54:29 GMT",
+      "tag": "@microsoft/mso_v0.0.8",
+      "version": "0.0.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add strict warnings and compilation flags for Clang builds. Fix code to conform to strict clang settings. Only ignore warnings for identifiers with names containing a dollar sign, and for upcoming changes to name mangling in C++17.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Apr 2020 21:39:53 GMT",
       "tag": "@microsoft/mso_v0.0.7",
       "version": "0.0.7",

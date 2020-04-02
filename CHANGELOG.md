@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Thu, 02 Apr 2020 21:39:53 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Apr 2020 23:54:29 GMT and should not be manually modified.
 
+## 0.0.8
+Thu, 02 Apr 2020 23:54:29 GMT
+
+### Patches
+
+- Add strict warnings and compilation flags for Clang builds. Fix code to conform to strict clang settings. Only ignore warnings for identifiers with names containing a dollar sign, and for upcoming changes to name mangling in C++17. (adam@thefoxmans.net)
 ## 0.0.7
 Thu, 02 Apr 2020 21:39:53 GMT
 
