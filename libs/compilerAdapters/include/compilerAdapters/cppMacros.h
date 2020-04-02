@@ -8,6 +8,8 @@
 #ifndef COMPILERADAPTERS_CPPMACROS_H
 #define COMPILERADAPTERS_CPPMACROS_H
 
+#include <compilerAdapters/compilerWarnings.h>
+
 /**
     Broadly used macros
 */
@@ -27,38 +29,42 @@
     Statement - used for control flow macros like Check, IfFailGo
     Make the macro act like a statement.
 */
-#ifndef __GNUC__
 #define Statement(x)                                                                                                   \
-    __pragma(warning(push)) __pragma(warning(disable : 4127 25037)) do                                                 \
+    BEGIN_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()                                                         \
+    BEGIN_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()                                                                  \
+    do                                                                                                                 \
     {                                                                                                                  \
         x;                                                                                                             \
     }                                                                                                                  \
     while (0)                                                                                                          \
-    __pragma(warning(pop))
-#else
-#define Statement(x)                                                                                                   \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        x;                                                                                                             \
-    } while (0)
+    END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()                                                                    \
+    END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
+
+#ifdef __GNUC__
 // error: there are no arguments to '__noop' that depend on a template parameter, so a declaration of '__noop' must be
 // available [-fpermissive]
 #define __noop()
 #endif
+
 /**
     Prevent the compiler from automatically providing implementations of various
     class features. Use the macro in your class public: section.
     TODO: probably need to update with new Move functions
 */
-#ifndef __GNUC__
-#define MSO_NO_COPYCONSTR(C) __pragma(warning(suppress : 4822)) C(const C &) = delete
-#define MSO_NO_ASSIGNMENT(C) __pragma(warning(suppress : 4822)) const C &operator=(const C &) = delete
-#define MSO_NO_DEFAULTCONSTR(C) __pragma(warning(suppress : 4822)) explicit C() = delete
-#else
-#define MSO_NO_COPYCONSTR(C) C(const C &) = delete
-#define MSO_NO_ASSIGNMENT(C) const C &operator=(const C &) = delete
-#define MSO_NO_DEFAULTCONSTR(C) explicit C() = delete
-#endif
+#define MSO_NO_COPYCONSTR(C) \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
+    C(const C &) = delete; \
+    END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
+
+#define MSO_NO_ASSIGNMENT(C) \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
+    const C &operator=(const C &) = delete; \
+    END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
+
+#define MSO_NO_DEFAULTCONSTR(C) \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
+    explicit C() = delete; \
+    END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
 
 #ifndef DECLARE_COPYCONSTR_AND_ASSIGNMENT
 #define DECLARE_COPYCONSTR_AND_ASSIGNMENT(C)                                                                           \

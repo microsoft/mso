@@ -8,11 +8,12 @@ share the same reference counter.
 
 #pragma once
 
+#include <memory>
+
 #include <compilerAdapters/compilerWarnings.h>
 #include <object/objectWithWeakRef.h>
 #include <object/queryCast.h>
 #include <object/weakPtr.h>
-#include <memory>
 
 //
 // Swarm is a collection of a ref counted objects that share the same reference counting.
@@ -35,11 +36,8 @@ share the same reference counter.
 
 #pragma pack(push, _CRT_PACKING)
 
-#pragma warning(push)
-#pragma warning(disable : 4625) // copy constructor could not be generated because a base class copy constructor is
-                                // inaccessible or deleted
-#pragma warning(disable : 4626) // assignment operator could not be generated because a base class assignment operator
-                                // is inaccessible or deleted
+BEGIN_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+BEGIN_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
 
 #pragma push_macro("new")
 #undef new
@@ -572,5 +570,7 @@ bool operator!=(std::nullptr_t, const SwarmMemberPtr<T, KnownSameSwarm>& right) 
 
 #pragma pop_macro("new")
 
-#pragma warning(pop)
+END_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
+END_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+
 #pragma pack(pop)

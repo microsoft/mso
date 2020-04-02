@@ -5,16 +5,16 @@
   Base class for all Mso Smart Pointers
 */
 #pragma once
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
-#include <crash/verifyElseCrash.h>
 #include <cppType/typeTraits.h>
+#include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
 
 #ifdef __cplusplus
-#pragma warning(push)
-#pragma warning(disable : 4996) // wmemcpy
+BEGIN_DISABLE_WARNING_DEPRECATED()
 #include <utility>
-#pragma warning(pop)
+END_DISABLE_WARNING_DEPRECATED()
 
 namespace Mso {
 
@@ -335,15 +335,9 @@ private:
       return;
 
     T pT = m_pT;
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#endif
-#pragma warning(suppress : 4996) // deprecated function
+BEGIN_DISABLE_WARNING_DEPRECATED()
     TEmptyTraits::UnsafeEmpty(m_pT);
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
+END_DISABLE_WARNING_DEPRECATED()
     THelper::Free(pT);
   }
 
