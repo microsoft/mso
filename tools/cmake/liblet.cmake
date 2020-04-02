@@ -303,16 +303,22 @@ function(_liblet_set_platform_definitions TARGET)
 
   target_compile_options(${TARGET}
     PRIVATE
-      $<$<CXX_COMPILER_ID:MSVC>:/permissive- /W4 /WX>)
-
-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(${TARGET}
-      PRIVATE
+      $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:
+        /permissive-
+        /W4
+        /WX>
+      $<$<COMPILE_LANG_AND_ID:CXX,AppleClang,Clang>:
         -fms-extensions
         -fms-compatibility-version=19.00
+        -pedantic
+        -Wall
+        -Wextra
+        -Werror
         -Wno-ignored-attributes
-        -Wno-nonportable-include-path
-    )
+        -Wno-nonportable-include-path>
+      $<$<COMPILE_LANG_AND_ID:CXX,GNU>:
+        >
+  )
   endif()
 endfunction()
 
