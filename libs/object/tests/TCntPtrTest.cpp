@@ -123,19 +123,19 @@ private:
   RefCountChangedCallback m_onRefCountChanged;
 };
 
-inline static std::wstring ToString(UnkSimpleClass* q)
+inline static std::wstring ToString(UnkSimpleClass* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(SimpleClass* q)
+inline static std::wstring ToString(SimpleClass* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(const UnkSimpleClass* q)
+inline static std::wstring ToString(const UnkSimpleClass* /*q*/)
 {
   return L"";
 }
-inline static std::wstring ToString(const SimpleClass* q)
+inline static std::wstring ToString(const SimpleClass* /*q*/)
 {
   return L"";
 }

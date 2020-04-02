@@ -2,7 +2,8 @@
 # Licensed under the MIT license.
 
 # set minimum cmake version
-cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
+cmake_policy(SET CMP0092 NEW)
 
 # project name and language
 project(Mso

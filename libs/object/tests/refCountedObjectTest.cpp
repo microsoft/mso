@@ -15,7 +15,7 @@ Unit tests for classes in the msoRefCountedObject.h
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to see compilation error
 //#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
-//class.
+// class.
 
 struct DECLSPEC_NOVTABLE IRefBaseSample1 : public Mso::IRefCounted
 {
@@ -580,11 +580,11 @@ TEST_CLASS (RefCountedObjectTest)
     {
       Mso::TCntPtr<RefCountSample1> refCounted = Mso::Make<RefCountSample1>(/*ref*/ deleted);
       TestAssert::AreEqual(1, refCounted->GetValue1());
-      Debug(TestAssert::AreEqual(1, refCounted->RefCount()));
+      Debug(TestAssert::AreEqual(1u, refCounted->RefCount()));
 
       Mso::TCntPtr<IRefBaseSample1> base1 = refCounted;
       TestAssert::AreEqual(1, base1->GetValue1());
-      Debug(TestAssert::AreEqual(2, refCounted->RefCount()));
+      Debug(TestAssert::AreEqual(2u, refCounted->RefCount()));
     }
     TestAssert::IsTrue(deleted);
   }
@@ -595,15 +595,15 @@ TEST_CLASS (RefCountedObjectTest)
     {
       Mso::TCntPtr<RefCountSample2> refCounted = Mso::Make<RefCountSample2>(/*ref*/ deleted);
       TestAssert::AreEqual(1, refCounted->GetValue1());
-      Debug(TestAssert::AreEqual(1, refCounted->RefCount()));
+      Debug(TestAssert::AreEqual(1u, refCounted->RefCount()));
 
       Mso::TCntPtr<IRefBaseSample1> base1 = refCounted;
       TestAssert::AreEqual(1, base1->GetValue1());
-      Debug(TestAssert::AreEqual(2, refCounted->RefCount()));
+      Debug(TestAssert::AreEqual(2u, refCounted->RefCount()));
 
       Mso::TCntPtr<IRefBaseSample2> base2 = refCounted;
       TestAssert::AreEqual(2, base2->GetValue2());
-      Debug(TestAssert::AreEqual(3, refCounted->RefCount()));
+      Debug(TestAssert::AreEqual(3u, refCounted->RefCount()));
     }
     TestAssert::IsTrue(deleted);
   }
@@ -787,10 +787,10 @@ TEST_CLASS (RefCountedObjectTest)
     {
       Mso::TCntPtr<RefCountSample7> refCounted1 = Mso::Make<RefCountSample7>(/*ref*/ deleted);
       TestAssert::AreEqual(1, refCounted1->GetValue1());
-      Debug(TestAssert::AreEqual(1, refCounted1->RefCount()));
+      Debug(TestAssert::AreEqual(1u, refCounted1->RefCount()));
       Mso::TCntPtr<RefCountSample7> refCounted2(refCounted1);
       UNREFERENCED_OACR(refCounted2);
-      Debug(TestAssert::AreEqual(2, refCounted1->RefCount()));
+      Debug(TestAssert::AreEqual(2u, refCounted1->RefCount()));
     }
     TestAssert::IsTrue(deleted);
   }

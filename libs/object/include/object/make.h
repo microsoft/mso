@@ -9,8 +9,9 @@
 
 #ifdef __cplusplus
 
-#include <core/TCntPtr.h>
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacrosDebug.h>
+#include <core/TCntPtr.h>
 #include <memoryApi/memoryApi.h>
 
 #pragma pack(push, _CRT_PACKING)
@@ -130,6 +131,7 @@ namespace MakePolicy {
 /// ThrowCtor MakePolicy passes all parameters to the constructor.
 /// ThrowCtor::Make may throw an exception if constructor throws.
 /// To allow this class to access private constructor add "friend MakePolicy;" to your class.
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
 struct ThrowCtor
 {
   static const bool IsNoExcept = false;
@@ -142,6 +144,7 @@ struct ThrowCtor
     memoryGuard.ObjMemory = nullptr; // Memory is now controlled by the object. Set to null to avoid memory destruction.
   }
 };
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
 /// NoThrowCtor MakePolicy passes all parameters to the constructor.
 /// NoThrowCtor::Make does not throw exception and crashes the app if constructor throws.
