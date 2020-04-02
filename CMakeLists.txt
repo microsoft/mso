@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 # project name and language
-project(Mso 
+project(Mso
   HOMEPAGE_URL "https://github.com/microsoft/Mso"
   LANGUAGES CXX)
 
