@@ -15,7 +15,7 @@ class TestData : public Mso::RefCountedObjectNoVTable<TestData>
 
 public:
   TestData(int& addRefCalls, int& releaseCalls) noexcept
-      : m_addRefCalls(addRefCalls), m_releaseCalls(releaseCalls), Value(0)
+      : Value(0), m_addRefCalls(addRefCalls), m_releaseCalls(releaseCalls)
   {
   }
 

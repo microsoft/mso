@@ -8,6 +8,8 @@ Unit tests for the TCntPtr smart pointer
 #include "precomp.h"
 #include <atomic>
 #include <functional>
+
+#include <compilerAdapters/compilerWarnings.h>
 #include <object/refCounted.h>
 #include <object/unknownObject.h>
 #include <test/testCheck.h>
@@ -37,6 +39,8 @@ public:
       : m_refCount(0), m_onRefCountChanged(std::move(onRefCountChanged))
   {
   }
+
+  virtual ~SimpleClass() = default;
 
   virtual void AddRef() const noexcept override
   {
@@ -83,6 +87,8 @@ public:
   {
   }
 
+  virtual ~UnkSimpleClass() = default;
+
   _Success_(return == S_OK)
       STDMETHOD(QueryInterface)(const GUID& /*riid*/, _Outptr_ void** /*ppvObject*/) noexcept override
   {
@@ -122,23 +128,6 @@ private:
   mutable std::atomic<uint32_t> m_refCount;
   RefCountChangedCallback m_onRefCountChanged;
 };
-
-inline static std::wstring ToString(UnkSimpleClass* /*q*/)
-{
-  return L"";
-}
-inline static std::wstring ToString(SimpleClass* /*q*/)
-{
-  return L"";
-}
-inline static std::wstring ToString(const UnkSimpleClass* /*q*/)
-{
-  return L"";
-}
-inline static std::wstring ToString(const SimpleClass* /*q*/)
-{
-  return L"";
-}
 
 class AggregatedObject : public Mso::UnknownObject<IUnkSimple, IUnkSample>
 {
@@ -329,7 +318,9 @@ TEST_METHOD(TCntPtr_CopyAssignmentSameObject)
     Mso::TCntPtr<SimpleClass> spObj(ptr);
 
     OACR_WARNING_SUPPRESS(IDENTITY_ASSIGNMENT, "We want to test our code that nothing bad happens in this case");
+    BEGIN_DISABLE_WARNING_SELF_ASSIGN_OVERLOADED()
     spObj = spObj;
+    END_DISABLE_WARNING_SELF_ASSIGN_OVERLOADED()
 
     TestAssert::AreEqual((void*)ptr, (void*)spObj.Get(), L"Expected ptr");
   });
@@ -381,7 +372,10 @@ TEST_METHOD(TCntPtr_MoveAssignmentSameObject)
   ValidateRefCount(1, [](RefCountChangedCallback&& onRefCountChanged) {
     SimpleClass* ptr = new SimpleClass(std::move(onRefCountChanged));
     Mso::TCntPtr<SimpleClass> spObj(ptr);
+
+    BEGIN_DISABLE_WARNING_SELF_MOVE()
     spObj = std::move(spObj);
+    END_DISABLE_WARNING_SELF_MOVE()
 
     TestAssert::AreEqual((void*)ptr, (void*)spObj.Get(), L"Expected ptr");
   });

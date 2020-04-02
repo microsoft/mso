@@ -7,7 +7,7 @@
   DO NOT INCLUDE THIS HEADER - LINK WITH THE LOB
   (unless you need to link in pass0 e.g. msoprep\legacy)
 */
-#include <memoryleakscope/memoryLeakScope.h>
+#include <memoryLeakScope/memoryLeakScope.h>
 
 #ifdef DEBUG
 
