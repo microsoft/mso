@@ -310,6 +310,10 @@ function(_liblet_set_platform_definitions TARGET)
   if (CMAKE_CXX_STANDARD EQUAL 17)
     target_compile_definitions(${TARGET} PRIVATE _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
   endif()
+
+  target_compile_options(${TARGET}
+    PRIVATE
+      $<$<CXX_COMPILER_ID:MSVC>:/permissive- /W4 /WX>)
 endfunction()
 
 function(_liblet_verify_includes LIBLET_TARGET LIBLET_INCLUDES)
