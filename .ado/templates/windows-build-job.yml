@@ -59,15 +59,14 @@ jobs:
     - task: BatchScript@1
       displayName: Setup Visual C++ Environment
       inputs:
-        filename: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
-        arguments: $(BuildPlatform) $(BuildWindowsSDK)
+        filename: .ado\vcenv.bat
         modifyEnvironment: true
 
     - task: CMake@1
       displayName: Generate Ninja scripts
       inputs:
         workingDirectory: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
-        cmakeArgs: -G Ninja -DMSO_LIBLET_PLATFORM=$(MsoPlatform) -DCMAKE_BUILD_TYPE=$(BuildConfiguration) -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)\tools\CMake\toolchain.windows.cmake $(Build.SourcesDirectory)
+        cmakeArgs: -G Ninja -DMSO_LIBLET_PLATFORM=$(MsoPlatform) -DCMAKE_BUILD_TYPE=$(BuildConfiguration) -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_SYSTEM_VERSION=$(BuildWindowsSDK) $(Build.SourcesDirectory)
 
     - task: CMake@1
       displayName: Build
