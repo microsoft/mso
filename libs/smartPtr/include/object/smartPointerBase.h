@@ -335,9 +335,9 @@ private:
       return;
 
     T pT = m_pT;
-BEGIN_DISABLE_WARNING_DEPRECATED()
+    BEGIN_DISABLE_WARNING_DEPRECATED()
     TEmptyTraits::UnsafeEmpty(m_pT);
-END_DISABLE_WARNING_DEPRECATED()
+    END_DISABLE_WARNING_DEPRECATED()
     THelper::Free(pT);
   }
 

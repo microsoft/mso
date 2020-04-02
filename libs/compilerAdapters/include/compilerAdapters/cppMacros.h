@@ -35,10 +35,7 @@
     do                                                                                                                 \
     {                                                                                                                  \
         x;                                                                                                             \
-    }                                                                                                                  \
-    while (0)                                                                                                          \
-    END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()                                                                    \
-    END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
+    } while (0) END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND() END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
 
 #ifdef __GNUC__
 // error: there are no arguments to '__noop' that depend on a template parameter, so a declaration of '__noop' must be
@@ -51,19 +48,19 @@
     class features. Use the macro in your class public: section.
     TODO: probably need to update with new Move functions
 */
-#define MSO_NO_COPYCONSTR(C) \
-    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
-    C(const C &) = delete; \
+#define MSO_NO_COPYCONSTR(C)                                                                                           \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()                                                               \
+    C(const C &) = delete;                                                                                             \
     END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
 
-#define MSO_NO_ASSIGNMENT(C) \
-    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
-    const C &operator=(const C &) = delete; \
+#define MSO_NO_ASSIGNMENT(C)                                                                                           \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()                                                               \
+    const C &operator=(const C &) = delete;                                                                            \
     END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
 
-#define MSO_NO_DEFAULTCONSTR(C) \
-    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED() \
-    explicit C() = delete; \
+#define MSO_NO_DEFAULTCONSTR(C)                                                                                        \
+    BEGIN_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()                                                               \
+    explicit C() = delete;                                                                                             \
     END_DISABLE_WARNING_LOCAL_CLASS_FUNC_NOT_DEFINED()
 
 #ifndef DECLARE_COPYCONSTR_AND_ASSIGNMENT

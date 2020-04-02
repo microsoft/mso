@@ -155,7 +155,7 @@ public:
 
   // We return swarm member as a raw pointer because the new object shares ref count with the swarm and in many cases
   // we want to avoid the extra AddRef/Release because object's lifetime is already tracked.
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   template <typename T, typename TResult = T, typename... TArgs>
   TResult* MakeMember(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
   {
@@ -179,7 +179,7 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
     return result;
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   template <typename T, typename TResult = T, typename TAllocArg, typename... TArgs>
   TResult* MakeMemberAlloc(TAllocArg&& allocArg, TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)

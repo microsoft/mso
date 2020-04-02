@@ -56,7 +56,8 @@ namespace Mso { namespace DebugAsserts {
   Return values from MsoAssertSzTagProc(Inline)(2)
 */
 BEGIN_DISABLE_WARNING_NATIVE_ENUM()
-enum class AssertResult : uint32_t {
+enum class AssertResult : uint32_t
+{
   Ignore = c_assertIgnore,
   Break = c_assertDebugBreak,
   AlwaysIgnore = c_assertAlwaysIgnore,
@@ -104,25 +105,24 @@ static
   _fIgnore_ (for in-proc based assert management) and unique break address.
 */
 #define MsoAssertSzTagProcInline2(dwTag, szFile, iLine, wzAnnotation, szFmt, ...)                               \
-  BEGIN_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()        \
-  BEGIN_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE() \
-  [&]() -> int32_t {                                                                                            \
-    static int32_t _fIgnore_ = false;                                                                       \
+  BEGIN_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()                                                  \
+  BEGIN_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE()[&]()->int32_t                                            \
+  {                                                                                                             \
+    static int32_t _fIgnore_ = false;                                                                           \
     if (!_fIgnore_)                                                                                             \
     {                                                                                                           \
-      DeclareMsoAssertParams(dwTag, szFile, iLine);                                                         \
+      DeclareMsoAssertParams(dwTag, szFile, iLine);                                                             \
       params.framesToSkip++;                                                                                    \
       const int32_t _assertResult_ = MsoAssertSzTagProcInline(PassMsoAssertParams(params), szFmt, __VA_ARGS__); \
-      if (_assertResult_ == c_assertDebugBreak)                                                             \
+      if (_assertResult_ == c_assertDebugBreak)                                                                 \
       {                                                                                                         \
         AssertBreak(wzAnnotation);                                                                              \
       }                                                                                                         \
       _fIgnore_ = (_assertResult_ == c_assertAlwaysIgnore);                                                     \
     }                                                                                                           \
     return FALSE;                                                                                               \
-  }() \
-  END_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE() \
-  END_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()
+  }                                                                                                             \
+  () END_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE() END_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()
 #endif // __cplusplus
 
 #else

@@ -285,7 +285,8 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectRefCount_Make_CtorThrows)
   {
     Mso::TCntPtr<ObjectRefCountSample4Throw> obj;
@@ -307,7 +308,8 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     TestAssert::IsTrue(deleted); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectRefCount_MakeElseNull)
   {
@@ -413,7 +415,7 @@ END_DISABLE_WARNING_UNREACHABLE_CODE()
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectRefCount_MakeAlloc_CtorThrows)
   {
     Mso::TCntPtr<ObjectRefCountSample41Throw> obj;
@@ -439,7 +441,7 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     AssertAllocState(state); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectRefCount_MakeAllocElseNull)
   {

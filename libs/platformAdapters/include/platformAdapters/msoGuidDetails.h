@@ -31,8 +31,8 @@ See the msoGuid.h for the usage guidelines.
       sizeof(guidString) == 37,                                                                \
       "GUID string must have the following format: \"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\""); \
   keyword __declspec(uuid(guidString)) type;                                                   \
-  BEGIN_DISABLE_WARNING_MISSING_ANNOTATION() \
-  extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*); \
+  BEGIN_DISABLE_WARNING_MISSING_ANNOTATION()                                                   \
+  extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*);                      \
   END_DISABLE_WARNING_MISSING_ANNOTATION()
 #else // For Clang
 #define MSO_GUID_IMPL(keyword, type, guidString)                \
