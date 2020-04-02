@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Replace all warning pragmas with macros, making them more expressive and cross-platform.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "patch",
-  "date": "2020-04-02T07:28:34.505Z"
-}
