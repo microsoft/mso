@@ -13,14 +13,17 @@
 #define LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
 #include <cstdarg>
 #include <cstdint>
+#include <compilerAdapters/compilerWarnings.h>
 #include <debugAssertApi/debugAssertApi.h>
 
 /**
 Mappings for core Debug asserts.
 */
-#pragma warning(suppress : 4005) // macro redefinition :(
+BEGIN_DISABLE_WARNING_MACRO_REDEFINITION()
 #define AssertTag(f, tag) \
   AssertAnnotatedSzNTagImpl(f, L## #f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", #f)
+END_DISABLE_WARNING_MACRO_REDEFINITION()
+
 #define AssertSzTag(f, sz, tag) \
   AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), "%s", AssertDetails_SzCast(sz))
 #define AssertSz1Tag(f, sz, a, tag) AssertSzNTagImpl(f, InlineMsoAssertParams(#f, tag, __FILE__, __LINE__), sz, a)
@@ -52,11 +55,14 @@ namespace Mso { namespace DebugAsserts {
 /**
   Return values from MsoAssertSzTagProc(Inline)(2)
 */
-__pragma(warning(suppress : 4472)) enum class AssertResult : uint32_t {
+BEGIN_DISABLE_WARNING_NATIVE_ENUM()
+enum class AssertResult : uint32_t
+{
   Ignore = c_assertIgnore,
   Break = c_assertDebugBreak,
   AlwaysIgnore = c_assertAlwaysIgnore,
 };
+END_DISABLE_WARNING_NATIVE_ENUM()
 
 }} // namespace Mso::DebugAsserts
 #endif // DEBUG
@@ -99,24 +105,24 @@ static
   _fIgnore_ (for in-proc based assert management) and unique break address.
 */
 #define MsoAssertSzTagProcInline2(dwTag, szFile, iLine, wzAnnotation, szFmt, ...)                               \
-  [&]() -> int32_t {                                                                                            \
-    __pragma(warning(suppress : 4456)) /* declaration of '_fIgnore_' hides previous local declaration */        \
-        static int32_t _fIgnore_ = false;                                                                       \
+  BEGIN_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()                                                  \
+  BEGIN_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE()[&]()->int32_t                                            \
+  {                                                                                                             \
+    static int32_t _fIgnore_ = false;                                                                           \
     if (!_fIgnore_)                                                                                             \
     {                                                                                                           \
-      __pragma(warning(suppress : 4456)) /* declaration of 'params' hides previous local declaration */         \
-          DeclareMsoAssertParams(dwTag, szFile, iLine);                                                         \
+      DeclareMsoAssertParams(dwTag, szFile, iLine);                                                             \
       params.framesToSkip++;                                                                                    \
       const int32_t _assertResult_ = MsoAssertSzTagProcInline(PassMsoAssertParams(params), szFmt, __VA_ARGS__); \
-      __pragma(warning(suppress : 4700)) /* MSVC is unhappy with this used in a loop conditional */             \
-          if (_assertResult_ == c_assertDebugBreak)                                                             \
+      if (_assertResult_ == c_assertDebugBreak)                                                                 \
       {                                                                                                         \
         AssertBreak(wzAnnotation);                                                                              \
       }                                                                                                         \
       _fIgnore_ = (_assertResult_ == c_assertAlwaysIgnore);                                                     \
     }                                                                                                           \
     return FALSE;                                                                                               \
-  }()
+  }                                                                                                             \
+  () END_DISABLE_WARNING_USING_UNINITIALIZED_VARIABLE() END_DISABLE_WARNING_LOCAL_DECL_HIDES_PREVIOUS_LOCAL_DECL()
 #endif // __cplusplus
 
 #else

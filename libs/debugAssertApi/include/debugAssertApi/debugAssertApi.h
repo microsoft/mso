@@ -10,6 +10,7 @@
 #ifndef RC_INVOKED
 #pragma pack(push, 8)
 
+#include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
 #include <compilerAdapters/functionDecorations.h>
 #include <stdint.h>
@@ -57,28 +58,35 @@ if (FAssertDo(f)) { ... } // same as "if (f) { ... } else Assert(false);"
 #define AssertDetails_SzCast(sz) (const char*)(sz)
 #endif
 
-/**
-Suppressed warnings in Assert macros:
-  C4127 - if/while loop condition is a constant
-  C4018 - signed/unsigned compare was converted to unsigned/unsigned compare
-  C4389 - operation involved signed/unsigned variables
-   6239 - OACR left expression is always false
-  25011 - OACR missing 'break' or '__fallthrough' statement
-  25037 - OACR expression is always false
-  25038 - OACR expression is always false
-  25039 - OACR expression is always true
-  25041 - OACR if/while loop condition is true
-  25042 - OACR if/while loop condition is false
-  25064 - OACR function called twice in macro
-*/
-#define AssertDetails_Statement_Begin                                                               \
-  __pragma(warning(push))                                                                           \
-      __pragma(warning(disable : 4127 4018 4389 6239 25037 25038 25039 25041 25042 25064 25306)) do \
+#define AssertDetails_Statement_Begin                          \
+  BEGIN_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()   \
+  BEGIN_DISABLE_WARNING_SIGNED_TO_UNSIGNED_CONVERSION()        \
+  BEGIN_DISABLE_WARNING_MIXING_SIGNED_AND_UNSIGNED_VARIABLES() \
+  BEGIN_DISABLE_WARNING_NONZERO_LOGICAL_AND()                  \
+  BEGIN_DISABLE_WARNING_MISSING_BREAK_OR_FALLTHROUGH()         \
+  BEGIN_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()            \
+  BEGIN_DISABLE_WARNING_FALSE_CONSTANT_EXPR_IN_AND()           \
+  BEGIN_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_OR()             \
+  BEGIN_DISABLE_WARNING_IF_CONDITION_IS_ALWAYS_TRUE()          \
+  BEGIN_DISABLE_WARNING_IF_CONDITION_IS_ALWAYS_FALSE()         \
+  BEGIN_DISABLE_WARNING_FUNCTION_CALLED_TWICE_IN_MACRO()       \
+  BEGIN_DISABLE_WARNING_NOTHROW_FUNC_THROWS()                  \
   {
-#define AssertDetails_Statement_End \
-  }                                 \
-  while (0)                         \
-  __pragma(warning(suppress : 25011)) __pragma(warning(pop))
+#define AssertDetails_Statement_End                          \
+  }                                                          \
+  while (0)                                                  \
+    END_DISABLE_WARNING_NOTHROW_FUNC_THROWS()                \
+  END_DISABLE_WARNING_FUNCTION_CALLED_TWICE_IN_MACRO()       \
+  END_DISABLE_WARNING_IF_CONDITION_IS_ALWAYS_FALSE()         \
+  END_DISABLE_WARNING_IF_CONDITION_IS_ALWAYS_TRUE()          \
+  END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_OR()             \
+  END_DISABLE_WARNING_FALSE_CONSTANT_EXPR_IN_AND()           \
+  END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()            \
+  END_DISABLE_WARNING_MISSING_BREAK_OR_FALLTHROUGH()         \
+  END_DISABLE_WARNING_NONZERO_LOGICAL_AND()                  \
+  END_DISABLE_WARNING_MIXING_SIGNED_AND_UNSIGNED_VARIABLES() \
+  END_DISABLE_WARNING_SIGNED_TO_UNSIGNED_CONVERSION()        \
+  END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
 
 // NOTE: OACR_ASSUME uses the Assert macro, so oacr.h must be included after Assert is defined
 #include <oacr.h>
@@ -111,7 +119,9 @@ using MsoAssertParamsType = const struct _MsoAssertParams&;
 #else // __cplusplus
 typedef struct _MsoAssertParams* MsoAssertParamsType;
 #ifdef DEBUG
-#define DeclareMsoAssertParams(...) (__pragma(warning(suppress : 4204)) MsoAssertParams params = {__VA_ARGS__})
+#define DeclareMsoAssertParams(...)                       \
+  (BEGIN_DISABLE_WARNING_NONCONST_AGGREGATE_INITIALIZER() \
+       MsoAssertParams params = {__VA_ARGS__} END_DISABLE_WARNING_NONCONST_AGGREGATE_INITIALIZER())
 #else
 #define DeclareMsoAssertParams(...)
 #endif // DEBUG

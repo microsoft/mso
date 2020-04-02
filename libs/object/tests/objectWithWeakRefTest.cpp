@@ -327,7 +327,8 @@ TEST_CLASS (ObjectWithWeakRefTest)
     TestAssert::IsTrue(deleted);
   }
 
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectWithWeakRef_Make_CannotAllocate)
   {
     Mso::TCntPtr<ObjectWithWeakRefSample3CannotAllocate> obj;
@@ -357,7 +358,8 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     TestAssert::IsTrue(deleted); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectWithWeakRef_MakeElseNull)
   {
@@ -448,7 +450,8 @@ END_DISABLE_WARNING_UNREACHABLE_CODE()
     AssertAllocState(state);
   }
 
-BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectWithWeakRef_MakeAlloc_CannotAllocate)
   {
     Mso::TCntPtr<ObjectWithWeakRefSample31CannotAllocate> obj;
@@ -486,7 +489,8 @@ BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
     AssertAllocState(state); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
-END_DISABLE_WARNING_UNREACHABLE_CODE()
+
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectWithWeakRef_MakeAllocElseNull)
   {
