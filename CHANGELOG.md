@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Thu, 02 Apr 2020 04:14:39 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Apr 2020 07:43:26 GMT and should not be manually modified.
 
+## 0.0.6
+Thu, 02 Apr 2020 07:43:26 GMT
+
+### Patches
+
+- Replace all warning pragmas with macros, making them more expressive and cross-platform. (adam@thefoxmans.net)
 ## 0.0.5
 Thu, 02 Apr 2020 04:14:39 GMT
 

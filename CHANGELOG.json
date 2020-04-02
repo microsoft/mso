@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Thu, 02 Apr 2020 07:43:26 GMT",
+      "tag": "@microsoft/mso_v0.0.6",
+      "version": "0.0.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Replace all warning pragmas with macros, making them more expressive and cross-platform.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Apr 2020 04:14:39 GMT",
       "tag": "@microsoft/mso_v0.0.5",
       "version": "0.0.5",
