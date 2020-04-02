@@ -7,6 +7,7 @@ Unit tests for classes in the ObjectRefCount.h
 
 #include "precomp.h"
 //#include <core/memoryNew_Throw.h> // It must be here to define operator new which helps memory leak detection.
+#include <compilerAdapters/compilerWarnings.h>
 #include <object/refCountedObject.h>
 #include <test/skipSEHUT.h>
 #include "testAllocators.h"
@@ -284,6 +285,7 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectRefCount_Make_CtorThrows)
   {
     Mso::TCntPtr<ObjectRefCountSample4Throw> obj;
@@ -305,6 +307,7 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(deleted); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectRefCount_MakeElseNull)
   {
@@ -410,6 +413,7 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectRefCount_MakeAlloc_CtorThrows)
   {
     Mso::TCntPtr<ObjectRefCountSample41Throw> obj;
@@ -435,6 +439,7 @@ TEST_CLASS (ObjectRefCountTest)
     AssertAllocState(state); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectRefCount_MakeAllocElseNull)
   {

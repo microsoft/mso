@@ -146,8 +146,6 @@ struct ThrowCtor
 };
 END_DISABLE_WARNING_UNREACHABLE_CODE()
 
-MSO_PRAGMA_WARNING(pop)
-
 /// NoThrowCtor MakePolicy passes all parameters to the constructor.
 /// NoThrowCtor::Make does not throw exception and crashes the app if constructor throws.
 /// To allow this class to access private constructor add "friend MakePolicy;" to your class.
