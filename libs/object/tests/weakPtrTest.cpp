@@ -6,6 +6,8 @@ Unit tests for classes in the ObjectWeakPtr.h
 ****************************************************************************/
 
 #include "precomp.h"
+
+#include <compilerAdapters/compilerWarnings.h>
 #include <object/weakPtr.h>
 #include <object/refCountedObject.h>
 #include <test/skipSEHUT.h>
@@ -665,7 +667,9 @@ TEST_METHOD(WeakPtr_CopyAssignmentSamePtr)
     Mso::WeakPtr<WeakPtrSample1> weakPtr1(ptr);
 
     OACR_WARNING_SUPPRESS(IDENTITY_ASSIGNMENT, "We want to test our code that nothing bad happens in this case");
+    BEGIN_DISABLE_WARNING_SELF_ASSIGN_OVERLOADED()
     weakPtr1 = weakPtr1;
+    END_DISABLE_WARNING_SELF_ASSIGN_OVERLOADED()
 
     TestAssert::IsFalse(weakPtr1.IsExpired());
     TestAssert::IsNotNull(weakPtr1.GetStrongPtr().Get());
@@ -744,7 +748,9 @@ TEST_METHOD(WeakPtr_MoveAssignmentSamePtr)
     Mso::TCntPtr<WeakPtrSample1> ptr = Mso::Make<WeakPtrSample1>(/*ref*/ deleted);
     Mso::WeakPtr<WeakPtrSample1> weakPtr1(ptr);
 
+    BEGIN_DISABLE_WARNING_SELF_MOVE()
     weakPtr1 = std::move(weakPtr1);
+    END_DISABLE_WARNING_SELF_MOVE()
 
     TestAssert::IsFalse(weakPtr1.IsExpired());
     TestAssert::IsNotNull(weakPtr1.GetStrongPtr().Get());

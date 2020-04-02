@@ -189,7 +189,7 @@ inline void ExpectException(const std::function<void()>& statement, const WCHAR*
 template <typename ExceptionType>
 inline void ExpectException(
     const std::function<void()>& statement,
-    const std::function<void()>& onException,
+    const std::function<void()>& /*onException*/,
     const WCHAR* message = L"")
 {
   EXPECT_THROW(statement(), ExceptionType) << message;
@@ -281,13 +281,13 @@ private:
 
 // Returns true if crash (segmentation fault happened)
 template <class Fn>
-inline bool ExpectCrashCore(const Fn& fn, const WCHAR* message)
+inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
   static sigjmp_buf buf{};
 
   // Set sigaction and save the previous action to be restored in the end of
   // function.
-  CrashState crashState{[](int signal, siginfo_t* si, void* arg) { longjmp(buf, 1); }};
+  CrashState crashState{[](int /*signal*/, siginfo_t* /*si*/, void* /*arg*/) { longjmp(buf, 1); }};
 
   // setjmp originally returns 0, and when longjmp is called it returns 1.
   if (!setjmp(buf))

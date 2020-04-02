@@ -52,7 +52,7 @@ private:
 class IgnoreAssertPlatformImpl
 {
 public:
-  IgnoreAssertPlatformImpl(DWORD tag) : m_tag(tag), m_tagEnabled(NLIsAssertEnabledByTag(tag))
+  IgnoreAssertPlatformImpl(DWORD tag) : m_tagEnabled(NLIsAssertEnabledByTag(tag)), m_tag(tag)
   {
     if (m_tagEnabled)
     {

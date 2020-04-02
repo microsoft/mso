@@ -10,7 +10,7 @@ class MotifCppTestBase
 public:
   MotifCppTestBase() {}
 
-  ~MotifCppTestBase()
+  virtual ~MotifCppTestBase()
   {
     TestClassTeardown();
   }
