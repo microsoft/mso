@@ -6,6 +6,7 @@ Unit tests for classes in the ObjectRefCount.h
 ****************************************************************************/
 
 #include "precomp.h"
+#include <compilerAdapters/compilerWarnings.h>
 #include <object/refCountedObject.h>
 #include <test/skipSEHUT.h>
 #include "testAllocators.h"
@@ -326,6 +327,7 @@ TEST_CLASS (ObjectWithWeakRefTest)
     TestAssert::IsTrue(deleted);
   }
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectWithWeakRef_Make_CannotAllocate)
   {
     Mso::TCntPtr<ObjectWithWeakRefSample3CannotAllocate> obj;
@@ -355,6 +357,7 @@ TEST_CLASS (ObjectWithWeakRefTest)
     TestAssert::IsTrue(deleted); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectWithWeakRef_MakeElseNull)
   {
@@ -445,6 +448,7 @@ TEST_CLASS (ObjectWithWeakRefTest)
     AssertAllocState(state);
   }
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectWithWeakRef_MakeAlloc_CannotAllocate)
   {
     Mso::TCntPtr<ObjectWithWeakRefSample31CannotAllocate> obj;
@@ -482,6 +486,7 @@ TEST_CLASS (ObjectWithWeakRefTest)
     AssertAllocState(state); // If InitializeThis throws then destructor must be called.
     TestAssert::IsTrue(obj.IsEmpty());
   }
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectWithWeakRef_MakeAllocElseNull)
   {
