@@ -314,8 +314,8 @@ function(_liblet_set_platform_definitions TARGET)
         -Wall
         -Wextra
         -Werror
-        -Wno-ignored-attributes
-        -Wno-nonportable-include-path>
+        -Wno-dollar-in-identifier-extension
+        -Wno-c++17-compat-mangling>
       $<$<COMPILE_LANG_AND_ID:CXX,GNU>:
         >
   )
