@@ -10,34 +10,35 @@
 #if defined(__clang__)
 
 #define COMPILER_WARNING_PUSH() __pragma(clang diagnostic push)
-#define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn) COMPILER_WARNING_DISABLE_CLANG(clangWarn)
+#define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn, gccWarn) COMPILER_WARNING_DISABLE_CLANG(clangWarn)
 #define COMPILER_WARNING_DISABLE_MSVC(msvcNum)
 #define COMPILER_WARNING_DISABLE_CLANG(clangWarn) __pragma(clang diagnostic ignored clangWarn)
+#define COMPILER_WARNING_DISABLE_GCC(gccWarn)
 #define COMPILER_WARNING_POP() __pragma(clang diagnostic pop)
 
-// See https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html
 #elif defined(__GNUC__)
 
-// TODO: Implement GCC-specific warnings.
-#define COMPILER_WARNING_PUSH()
-#define COMPILER_WARNING_DISABLE_ALL(msvcNum, gccWarn)
+#define COMPILER_WARNING_PUSH() _Pragma(GCC diagnostic push)
+#define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn, gccWarn) COMPILER_WARNING_DISABLE_GCC(gccWarn)
 #define COMPILER_WARNING_DISABLE_MSVC(msvcNum)
 #define COMPILER_WARNING_DISABLE_CLANG(clangWarn)
-#define COMPILER_WARNING_POP()
+#define COMPILER_WARNING_DISABLE_GCC(gccWarn) _Pragma(GCC diagnostic ignored gccWarn)
+#define COMPILER_WARNING_POP() _Pragma(GCC diagnostic push)
 
 #else
 
 #define COMPILER_WARNING_PUSH() __pragma(warning(push))
-#define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn) COMPILER_WARNING_DISABLE_MSVC(msvcNum)
+#define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn, gccWarn) COMPILER_WARNING_DISABLE_MSVC(msvcNum)
 #define COMPILER_WARNING_DISABLE_MSVC(msvcNum) __pragma(warning(disable :##msvcNum))
 #define COMPILER_WARNING_DISABLE_CLANG(clangWarn)
+#define COMPILER_WARNING_DISABLE_GCC(gccWarn)
 #define COMPILER_WARNING_POP() __pragma(warning(pop))
 
 #endif
 
-#define BEGIN_DISABLE_COMPILER_WARNING_ALL(msvcNum, clangWarn) \
-  COMPILER_WARNING_PUSH()                                      \
-  COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn)
+#define BEGIN_DISABLE_COMPILER_WARNING_ALL(msvcNum, clangWarn, gccWarn) \
+  COMPILER_WARNING_PUSH()                                               \
+  COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn, gccWarn)
 
 #define BEGIN_DISABLE_COMPILER_WARNING_MSVC(msvcNum) \
   COMPILER_WARNING_PUSH()                            \
@@ -46,6 +47,10 @@
 #define BEGIN_DISABLE_COMPILER_WARNING_CLANG(clangWarn) \
   COMPILER_WARNING_PUSH()                               \
   COMPILER_WARNING_DISABLE_CLANG(clangWarn)
+
+#define BEGIN_DISABLE_COMPILER_WARNING_GCC(gccWarn) \
+  COMPILER_WARNING_PUSH()                           \
+  COMPILER_WARNING_DISABLE_GCC(gccWarn)
 
 #define END_DISABLE_COMPILER_WARNING() COMPILER_WARNING_POP()
 
