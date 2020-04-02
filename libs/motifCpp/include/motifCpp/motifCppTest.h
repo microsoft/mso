@@ -2,14 +2,16 @@
 // Licensed under the MIT license.
 
 #pragma once
-#include <type_traits>
-#include <oacr.h>
-#include <functional>
-#include <compilerAdapters/cppMacros.h>
-#include <object/IUnknownShim.h>
-#include <cstdarg>
+
 #include <csetjmp>
 #include <csignal>
+#include <cstdarg>
+#include <functional>
+#include <type_traits>
+
+#include <compilerAdapters/compilerWarnings.h>
+#include <oacr.h>
+#include <object/IUnknownShim.h>
 
 #if defined(MSO_USE_GTEST)
 #include <motifCpp/gTestAdapter.h>
@@ -229,9 +231,7 @@ inline DWORD FilterCrashExceptions(DWORD exceptionCode) noexcept
   return EXCEPTION_EXECUTE_HANDLER;
 }
 
-MSO_PRAGMA_WARNING(push)
-MSO_PRAGMA_WARNING(disable : 4702)
-
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
 template <typename Fn>
 inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
 {
@@ -247,8 +247,7 @@ inline bool ExpectCrashCore(const Fn& fn, const WCHAR* /*message*/)
   // Fail(message == nullptr || message[0] == L'\0' ? L"Test function did not crash!" : message);
   return false;
 }
-
-MSO_PRAGMA_WARNING(pop)
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
 #else
 

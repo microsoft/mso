@@ -100,7 +100,7 @@ static int TestFreeFunction_Subtract(int i) noexcept
   return g_freeFunctionState;
 }
 
-#if 0
+#if 0 // unused function; test which calls it is commented out
 static void TestFreeFunction_Throw(int i)
 {
   if (i < 0)
