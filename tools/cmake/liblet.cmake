@@ -319,7 +319,6 @@ function(_liblet_set_platform_definitions TARGET)
       $<$<COMPILE_LANG_AND_ID:CXX,GNU>:
         >
   )
-  endif()
 endfunction()
 
 function(_liblet_verify_includes LIBLET_TARGET LIBLET_INCLUDES)
