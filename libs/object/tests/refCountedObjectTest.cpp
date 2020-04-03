@@ -541,7 +541,7 @@ class BadRefCountedObject1 final
   friend MakePolicy; // To allow constructor to be private or protected.
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(BadRefCountedObject1);
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(BadRefCountedObject1);
 
   virtual int GetValue1() override
   {

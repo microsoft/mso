@@ -193,7 +193,7 @@ TEST_CLASS (TPropertyRestorerTest)
     private:
       Unmovable(Unmovable&&) = delete;
       Unmovable& operator=(Unmovable&&) = delete;
-      DECLARE_COPYCONSTR_AND_ASSIGNMENT(Unmovable); // No copying!
+      MSO_NO_COPY_CTOR_AND_ASSIGNMENT(Unmovable); // No copying!
     };
 
     // Ensure PropertyRestorer doesn't cause any extra constructor calls.

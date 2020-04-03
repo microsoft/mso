@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_COMPILERADAPTERS_FUNCTIONDECORATIONS_H
+#define MSO_COMPILERADAPTERS_FUNCTIONDECORATIONS_H
+
 /**
   Cross-platform/language macros to decorate APIs
 */
-#pragma once
-#ifndef COMPILERADAPTERS_FUNCTIONDECORATIONS_H
-#define COMPILERADAPTERS_FUNCTIONDECORATIONS_H
 
 /**
   The Liblet::PublicApi attribute is used to mark a function, class or
@@ -230,4 +231,4 @@
 
 #endif
 
-#endif
+#endif // MSO_COMPILERADAPTERS_FUNCTIONDECORATIONS_H

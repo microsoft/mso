@@ -63,7 +63,7 @@ class TRefCountedImpl : public TInterfaces...
   OACR_MARK_CLASS_DEPRECATED(Mso::RefCountedObject)
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TRefCountedImpl)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TRefCountedImpl);
 
   virtual void AddRef() const noexcept override
   {

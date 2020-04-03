@@ -440,7 +440,7 @@ public:
 #endif
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(MemoryPtr)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(MemoryPtr);
 };
 } // namespace Mso
 

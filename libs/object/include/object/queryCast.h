@@ -298,7 +298,7 @@ public:
 MSO_STRUCT_GUID(QueryCastBridge, "A39D5FC8-0641-4EEE-8C97-DDEF114D487D")
 struct QueryCastBridge
 {
-  // DECLARE_COPYCONSTR_AND_ASSIGNMENT(QueryCastBridge);
+  // MSO_NO_COPY_CTOR_AND_ASSIGNMENT(QueryCastBridge);
   void* Object; // It must be a first field. In that case **ppvObject in QueryInterface will have the same semantic as
                 // with the normal QueryInterface calls.
   const GUID& ObjectId;

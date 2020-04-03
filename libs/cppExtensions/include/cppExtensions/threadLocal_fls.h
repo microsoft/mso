@@ -16,7 +16,7 @@ namespace Mso { namespace Details {
 
 struct ThreadLocalImpl
 {
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ThreadLocalImpl);
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(ThreadLocalImpl);
   static_assert(FLS_OUT_OF_INDEXES == TLS_OUT_OF_INDEXES, "Assumption violation");
 
   ThreadLocalImpl() noexcept : ThreadLocalImpl(nullptr) {}

@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_COMPILERADAPTERS_CPPMACROSDEBUG_H
+#define MSO_COMPILERADAPTERS_CPPMACROSDEBUG_H
+
 /**
   Some globally useful debug-only macros
 */
-#pragma once
-#ifndef COMPILERADAPTERS_CPPMACROSDEBUG_H
-#define COMPILERADAPTERS_CPPMACROSDEBUG_H
 
 #include <cstdint>
 
@@ -92,4 +93,4 @@ __inline int32_t MsoDebugBreak(void)
 #define MsoDebugBreak() (0)
 #endif
 
-#endif
+#endif // MSO_COMPILERADAPTERS_CPPMACROSDEBUG_H

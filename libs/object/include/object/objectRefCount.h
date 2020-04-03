@@ -25,7 +25,7 @@
 #pragma push_macro("new")
 #undef new
 
-#define _MSO_OBJECT_SIMPLEREFCOUNT(TObject)                                                        \
+#define MSO_OBJECT_SIMPLEREFCOUNT(TObject)                                                        \
 public:                                                                                            \
   bool IsUniqueRef() const noexcept                                                                \
   {                                                                                                \
@@ -35,11 +35,11 @@ public:                                                                         
                                                                                                    \
       template <typename UseMsoMakeInsteadOfOperatorNew>                                           \
       void* operator new(size_t, UseMsoMakeInsteadOfOperatorNew* = nullptr);                       \
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TObject)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TObject)
 
-#define _MSO_OBJECT_NOREFCOUNT(TObject) \
+#define MSO_OBJECT_NOREFCOUNT(TObject) \
 public:                                 \
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TObject)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TObject)
 
 namespace Mso {
 
@@ -160,7 +160,7 @@ public:
 
   using TypeToDelete = RefCountedWrapperBase; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedWrapperBase)
+  MSO_OBJECT_SIMPLEREFCOUNT(RefCountedWrapperBase);
 
   void AddRef() const noexcept
   {
@@ -195,7 +195,7 @@ class RefCountedWrapper
     , public T
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(RefCountedWrapper);
 
   using MakePolicy = Mso::MakePolicy::ThrowCtor;
 
@@ -216,7 +216,7 @@ template <>
 class RefCountedWrapper<void> : public RefCountedWrapperBase
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(RefCountedWrapper);
   RefCountedWrapper() noexcept = default;
 };
 

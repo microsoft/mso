@@ -380,7 +380,7 @@ public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
   using TypeToDelete = UnknownObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject)
+  MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject);
 
   _Success_(return == S_OK) STDMETHOD(QueryInterface)(const GUID& riid, _Outptr_ void** ppvObject) noexcept override
   {
@@ -436,7 +436,7 @@ public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
   using TypeToDelete = UnknownObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject)
+  MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject);
 
   _Success_(return == S_OK) STDMETHOD(QueryInterface)(const GUID& riid, _Outptr_ void** ppvObject) override
   {
@@ -491,7 +491,7 @@ public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
   using TypeToDelete = UnknownObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject)
+  MSO_OBJECT_SIMPLEREFCOUNT(UnknownObject);
 
   _Success_(return == S_OK)
       STDMETHOD(QueryInterface)(const GUID& /*riid*/, _Outptr_ void** /*ppvObject*/) noexcept override
@@ -548,7 +548,7 @@ public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
   using TypeToDelete = UnknownObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_WEAKREFCOUNT(UnknownObject)
+  MSO_OBJECT_WEAKREFCOUNT(UnknownObject);
 
   void* QueryCast(const GUID& riid) noexcept
   {
@@ -595,7 +595,7 @@ class DECLSPEC_NOVTABLE UnknownObject<Mso::RefCountStrategy::NoRefCount, TBaseTy
 public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
 
-  _MSO_OBJECT_NOREFCOUNT(UnknownObject)
+  MSO_OBJECT_NOREFCOUNT(UnknownObject);
 
   template <typename... TArgs>
   UnknownObject(TArgs&&... args) noexcept : Super(std::forward<TArgs>(args)...)
@@ -631,7 +631,7 @@ class DECLSPEC_NOVTABLE UnknownObject<Mso::RefCountStrategy::NoRefCountNoQuery, 
 public:
   using UnknownObjectType = UnknownObject; // To use in derived class as "using Super = UnknownObjectType"
 
-  _MSO_OBJECT_NOREFCOUNT(UnknownObject)
+  MSO_OBJECT_NOREFCOUNT(UnknownObject);
 
   template <typename... TArgs>
   UnknownObject(TArgs&&... args) noexcept : Super(std::forward<TArgs>(args)...)
@@ -668,7 +668,7 @@ class AgileUnknownObject : public UnknownObject<TBaseTypes...>
   using Super = UnknownObject<TBaseTypes...>;
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(AgileUnknownObject)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(AgileUnknownObject);
 
   template <typename... TArgs>
   AgileUnknownObject(TArgs&&... args) noexcept : Super(std::forward<TArgs>(args)...)

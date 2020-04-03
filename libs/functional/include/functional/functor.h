@@ -175,7 +175,7 @@ class FunctionObjectWrapper final
 {
 public:
   FunctionObjectWrapper() = delete;
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctionObjectWrapper)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctionObjectWrapper);
 
   template <typename T>
   FunctionObjectWrapper(T&& func) noexcept : m_func(std::forward<T>(func))
@@ -198,7 +198,7 @@ class FunctionObjectWrapperThrow final
 {
 public:
   FunctionObjectWrapperThrow() = delete;
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctionObjectWrapperThrow)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctionObjectWrapperThrow);
 
   template <typename T>
   FunctionObjectWrapperThrow(T&& func) noexcept : m_func(std::forward<T>(func))
