@@ -11,9 +11,10 @@
 #include <functional>
 #include <string>
 #include <type_traits>
-#include "platformAdapters/IUnknownShim.h"
-#include "motifCpp/gTestAdapter.h"
-#include "oacr/oacr.h"
+#include <platformAdapters/IUnknownShim.h>
+#include <motifCpp/gTestAdapter.h>
+#include <oacr/oacr.h>
+#include <compilerAdapters/compilerWarnings.h>
 
 using WCHAR = wchar_t;
 
@@ -214,6 +215,7 @@ inline uint32_t FilterCrashExceptions(uint32_t exceptionCode) noexcept
   return EXCEPTION_EXECUTE_HANDLER;
 }
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
 template <class TLambda>
 inline bool ExpectCrashCore(TLambda const& lambda)
 {
@@ -227,6 +229,7 @@ inline bool ExpectCrashCore(TLambda const& lambda)
     return true;
   }
 }
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
 template <class TLambda>
 inline void
