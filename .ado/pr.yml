@@ -32,3 +32,7 @@ jobs:
   - template: templates/apple-build-job.yml
     parameters:
       DependsOn: ChangeLog
+
+  - template: templates/linux-build-job.yml
+    parameters:
+      DependsOn: ChangeLog

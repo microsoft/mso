@@ -18,6 +18,8 @@ stages:
 
       - template: templates/apple-build-job.yml
 
+      - template: templates/linux-build-job.yml
+
   - stage: Release
     dependsOn: Build
     condition: succeeded()

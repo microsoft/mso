@@ -5,7 +5,7 @@ parameters:
 
 jobs:
 - job: WindowsBuild
-  displayName: Windows Build
+  displayName: Build
   ${{ if ne(parameters.DependsOn, '') }}:
     dependsOn: ${{ parameters.DependsOn }}
   ${{ if ne(parameters.DependsOn, '') }}:

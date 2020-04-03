@@ -1,0 +1,34 @@
+steps:
+- checkout: self
+  clean: false
+  submodules: false
+
+- task: CMake@1
+  displayName: Generate build scripts
+  inputs:
+    workingDirectory: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)
+    cmakeArgs: -DMSO_LIBLET_PLATFORM=$(MsoPlatform) -DCMAKE_BUILD_TYPE=$(BuildConfiguration) $(Build.SourcesDirectory)
+
+- task: CMake@1
+  displayName: Build
+  inputs:
+    workingDirectory: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)
+    cmakeArgs: --build .
+
+- task: CMake@1
+  displayName: Stage built files
+  inputs:
+    workingDirectory: $(Pipeline.Workspace)
+    cmakeArgs: --install $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration) --prefix tests --component tests
+
+- script: ./eventWaitHandle_tests
+  displayName: Tests - Event Wait Handle
+  workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
+
+- script: ./functional_tests
+  displayName: Tests - Functional
+  workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
+
+- script: ./object_tests
+  displayName: Tests - Object
+  workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
