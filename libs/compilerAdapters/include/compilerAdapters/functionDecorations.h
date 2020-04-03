@@ -210,7 +210,7 @@
 
 #if defined(__cplusplus)
 
-#if defined(__clang__)
+#if defined(__clang__) || defined(__GNUC__)
 
 #define MSOCPPAPI_(t) extern "C++" t
 #define MSOAPI_(t) MSOEXTERN_C t
