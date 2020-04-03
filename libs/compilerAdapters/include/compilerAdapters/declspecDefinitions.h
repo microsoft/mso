@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_COMPILERADAPTERS_DECLSPECDEFINITIONS_H
+#define MSO_COMPILERADAPTERS_DECLSPECDEFINITIONS_H
+
 /**
   Cross-compiler support for declspec things
   FUTURE: reconcile this with compilerFeatures.h
 */
-#pragma once
-#ifndef COMPILERADAPTERS_DECLSPECDEFINITIONS_H
-#define COMPILERADAPTERS_DECLSPECDEFINITIONS_H
 
 #ifndef DECLSPEC_NORETURN
 #if defined(__clang__) || defined(__GNUC__)
@@ -71,4 +72,4 @@
 #endif
 #endif
 
-#endif // COMPILERADAPTERS_DECLSPECDEFINITIONS_H
+#endif // MSO_COMPILERADAPTERS_DECLSPECDEFINITIONS_H

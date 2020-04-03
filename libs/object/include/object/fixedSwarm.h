@@ -156,7 +156,7 @@ public:
 
   FixedSwarmBase() noexcept : Super(), m_storage() {}
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FixedSwarmBase)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FixedSwarmBase);
 
   template <size_t Index>
   MemberType<Index>* Get() const noexcept

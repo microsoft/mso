@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
+#define MSO_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
 /**
   Implementation details for suppressing compiler warnings in a cross-plat manner.
   */
-#ifndef LIBLET_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
-#define LIBLET_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
 
 #if defined(__clang__)
 
@@ -55,4 +56,4 @@
 
 #define END_DISABLE_COMPILER_WARNING() COMPILER_WARNING_POP()
 
-#endif // LIBLET_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H
+#endif // MSO_COMPILERADAPTERS_COMPILERWARNINGS_IMPL_H

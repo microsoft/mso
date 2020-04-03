@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  Things related to linking
-*/
 #pragma once
-#ifndef COMPILERADAPTERS_LINKER_H
-#define COMPILERADAPTERS_LINKER_H
+#ifndef MSO_COMPILERADAPTERS_LINKER_H
+#define MSO_COMPILERADAPTERS_LINKER_H
 
 /**
   If a library has no direct entry points, it may be necessary to force
@@ -66,4 +63,5 @@
 #define MSO_LINK_SYMBOL(symbol)
 
 #endif // MS_TARGET_WINDOWS
-#endif
+
+#endif // MSO_COMPILERADAPTERS_LINKER_H

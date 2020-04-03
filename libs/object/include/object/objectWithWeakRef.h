@@ -70,7 +70,7 @@ To implement your classes please use classes defined in the msoUnknownObject.h o
 #pragma push_macro("new")
 #undef new
 
-#define _MSO_OBJECT_WEAKREFCOUNT(TObject)                                       \
+#define MSO_OBJECT_WEAKREFCOUNT(TObject)                                       \
 public:                                                                         \
   Mso::ObjectWeakRef& GetWeakRef() const noexcept                               \
   {                                                                             \
@@ -84,7 +84,7 @@ public:                                                                         
                                                                                 \
       template <typename UseMsoMakeInsteadOfOperatorNew>                        \
       void* operator new(size_t, UseMsoMakeInsteadOfOperatorNew* = nullptr);    \
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TObject)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TObject)
 
 namespace Mso {
 
@@ -100,7 +100,7 @@ public:
 
   using TypeToDelete = ObjectWeakRef; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(ObjectWeakRef)
+  MSO_OBJECT_SIMPLEREFCOUNT(ObjectWeakRef);
 
   ObjectWeakRef() = default;
 
@@ -210,7 +210,7 @@ template <typename TObject, typename TWeakRef>
 class ObjectWeakRefContainer : public TWeakRef
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ObjectWeakRefContainer)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(ObjectWeakRefContainer);
 
   ObjectWeakRefContainer() = default;
 

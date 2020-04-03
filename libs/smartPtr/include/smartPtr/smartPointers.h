@@ -60,7 +60,7 @@ public:
   }
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerPtr<T>)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TOwnerPtr<T>);
 };
 
 /**
@@ -111,7 +111,7 @@ public:
   }
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TArrayHolder)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TArrayHolder);
 };
 
 /**
@@ -146,7 +146,7 @@ public:
   IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr);
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerIPtr)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TOwnerIPtr);
 };
 
 /**
@@ -181,7 +181,7 @@ public:
   IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr);
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TDestroyPtr)
+  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TDestroyPtr);
 };
 
 /**

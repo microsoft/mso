@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef COMPILERADAPTERS_COMPILERFEATURES_H
-#define COMPILERADAPTERS_COMPILERFEATURES_H
+#ifndef MSO_COMPILERADAPTERS_COMPILERFEATURES_H
+#define MSO_COMPILERADAPTERS_COMPILERFEATURES_H
 
 //=============================================================================
 // Detect whether compiler features are present
@@ -29,4 +29,4 @@
 #endif
 #endif
 
-#endif // COMPILERADAPTERS_COMPILERFEATURES_H
+#endif // MSO_COMPILERADAPTERS_COMPILERFEATURES_H
