@@ -10,8 +10,8 @@ Unit tests for classes in the Functor.h
 #include <functional/functor.h>
 #include <object/refCountedObject.h>
 #include "test/skipSEHUT.h"
-#include <test/testCheck.h>
-#include "functorTestsCommon.h"
+#include <motifCpp/testCheck.h>
+#include "functorTest.h"
 
 using namespace FunctorTestsCommon;
 

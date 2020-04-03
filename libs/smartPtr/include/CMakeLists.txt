@@ -3,10 +3,9 @@
 
 liblet_includes(
   INCLUDES
-    core/smartPointerBase.h
-    core/smartPointers.h
-    core/TCntPtr.h
-    object/smartPointerBase.h
+    smartPtr/cntPtr.h
+    smartPtr/smartPointerBase.h
+    smartPtr/smartPointers.h
   INCLUDES_WIN
-    core/smartHandles.h    
+    smartPtr/smartHandles.h    
 )

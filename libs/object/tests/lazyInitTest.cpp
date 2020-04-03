@@ -9,7 +9,7 @@
 #include <object/lazyInit.h>
 #include <object/refCountedObject.h>
 #include <object/unknownObject.h>
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 struct ICountedType : Mso::IRefCounted
 {

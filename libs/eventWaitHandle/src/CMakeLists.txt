@@ -3,9 +3,9 @@
 
 liblet_sources(
   SOURCES
-    eventWaitHandle.h
+    eventWaitHandleImpl.h
   SOURCES_WIN
-    eventWaitHandle_win.cpp
+    eventWaitHandleImpl_win.cpp
   SOURCES_POSIX
-    eventWaitHandle_posix.cpp
+    eventWaitHandleImpl_posix.cpp
 )

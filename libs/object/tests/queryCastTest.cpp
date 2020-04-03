@@ -7,7 +7,7 @@ Unit tests for classes in the ObjectQueryCast.h
 
 #include "precomp.h"
 #include <object/queryCast.h>
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 #define DEFINE_STRING_GUID(var, guid) \
   MSO_STRUCT_GUID(_test_##var, guid)  \

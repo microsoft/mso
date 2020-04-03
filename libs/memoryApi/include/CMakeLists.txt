@@ -3,10 +3,9 @@
 
 liblet_includes(
   INCLUDES
-    core/memoryApi.h
     memoryApi/leakDetection.h
     memoryApi/memoryApi.h
-    memoryLeakScope/memoryLeakScope.h
+    memoryApi/memoryLeakScope.h
     safeAlloct.h
 )
 

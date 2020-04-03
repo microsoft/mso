@@ -13,7 +13,7 @@ Unit tests for classes in the msoUnknownObject.h
 #include <test/skipSEHUT.h>
 #include "testAllocators.h"
 #include <eventWaitHandle/eventWaitHandle.h>
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to see compilation error
 //#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this

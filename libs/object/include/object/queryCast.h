@@ -11,8 +11,8 @@
 #include <compilerAdapters/compilerWarnings.h>
 #include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
-#include <object/IUnknownShim.h>
-#include <platformAdapters/msoGuid.h>
+#include <platformAdapters/IUnknownShim.h>
+#include <guid/msoGuid.h>
 
 /**
 To implement IUnknown::QueryInterface use the QueryCastTraits to implement sequence of probing for a requested

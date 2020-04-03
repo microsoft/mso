@@ -3,7 +3,6 @@
 
 liblet_includes(
   INCLUDES
-    cppType/restrictHelper.h
-    cppType/functionTypeTraits.h
-    cppType/typeTraits.h
+    guid/msoGuid.h
+    guid/msoGuidDetails.h
 )

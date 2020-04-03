@@ -9,7 +9,7 @@
 
 #include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
-#include <cppType/typeTraits.h>
+#include <typeTraits/typeTraits.h>
 
 #ifdef __cplusplus
 BEGIN_DISABLE_WARNING_KEYWORD_IGNORED_NO_VARIABLE_DECL()

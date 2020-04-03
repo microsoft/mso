@@ -8,11 +8,11 @@
 
 ****************************************************************************/
 #include "precomp.h"
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 #include <compilerAdapters/functionDecorations.h>
-#include <object/smartPointerBase.h>
-#include <core/smartPointers.h>
-#include <core/TCntPtr.h>
+#include <smartPtr/smartPointerBase.h>
+#include <smartPtr/smartPointers.h>
+#include <smartPtr/cntPtr.h>
 #include <comUtil/qiCast.h>
 #include <cppExtensions/autoRestore.h>
 

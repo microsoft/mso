@@ -89,7 +89,7 @@ if (FAssertDo(f)) { ... } // same as "if (f) { ... } else Assert(false);"
   END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
 
 // NOTE: OACR_ASSUME uses the Assert macro, so oacr.h must be included after Assert is defined
-#include <oacr.h>
+#include <oacr/oacr.h>
 
 /**
 Return Address

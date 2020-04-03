@@ -4,7 +4,7 @@
 /**
   CRT based implementation for Mso::Memory
 */
-#include <core/memoryApi.h>
+#include <memoryApi/memoryApi.h>
 #include <cstdlib>
 #include <memory>
 
@@ -61,9 +61,9 @@ _Use_decl_annotations_ void Free(void* pv) noexcept
 }
 
 #ifdef DEBUG
-void RegisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
+// void RegisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
 
-void UnregisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
+// void UnregisterCallback(Mso::LibletAPI::ILibletMemoryMarking&) noexcept {}
 #endif
 
 }} // namespace Mso::Memory

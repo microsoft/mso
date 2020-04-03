@@ -11,7 +11,7 @@ Unit tests for classes in the ObjectRefCount.h
 #include <object/refCountedObject.h>
 #include <test/skipSEHUT.h>
 #include "testAllocators.h"
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 class ObjectRefCountSample1 final : public Mso::RefCountedObjectNoVTable<ObjectRefCountSample1>
 {
