@@ -64,6 +64,17 @@
 #define DebugFill(pb, cb) (1)
 #endif
 
+#if defined(__GNUC__)
+
+#ifdef DEBUG
+#include <signal.h>
+#define __debugbreak() raise(SIGTRAP)
+#else // !DEBUG
+#define __debugbreak()
+#endif // DEBUG
+
+#endif // __GNUC__
+
 /**
    MsoDebugBreak can be used inside expressions.
   Otherwise code should use __debugbreak() directly.

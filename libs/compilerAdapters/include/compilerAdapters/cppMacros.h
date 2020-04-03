@@ -29,6 +29,13 @@
     Statement - used for control flow macros like Check, IfFailGo
     Make the macro act like a statement.
 */
+#if defined(__GNUC__)
+#define Statement(x)                                                                                                   \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        x;                                                                                                             \
+    } while(0)
+#else
 #define Statement(x)                                                                                                   \
     BEGIN_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()                                                         \
     BEGIN_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND()                                                                  \
@@ -36,10 +43,9 @@
     {                                                                                                                  \
         x;                                                                                                             \
     } while (0) END_DISABLE_WARNING_TRUE_CONSTANT_EXPR_IN_AND() END_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()
+#endif
 
 #ifdef __GNUC__
-// error: there are no arguments to '__noop' that depend on a template parameter, so a declaration of '__noop' must be
-// available [-fpermissive]
 #define __noop()
 #endif
 

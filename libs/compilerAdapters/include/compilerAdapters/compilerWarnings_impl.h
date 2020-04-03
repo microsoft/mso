@@ -18,12 +18,13 @@
 
 #elif defined(__GNUC__)
 
-#define COMPILER_WARNING_PUSH() _Pragma(GCC diagnostic push)
+#define COMPILER_GCC_PRAGMA(x) _Pragma(#x)
+#define COMPILER_WARNING_PUSH() COMPILER_GCC_PRAGMA(GCC diagnostic push)
 #define COMPILER_WARNING_DISABLE_ALL(msvcNum, clangWarn, gccWarn) COMPILER_WARNING_DISABLE_GCC(gccWarn)
 #define COMPILER_WARNING_DISABLE_MSVC(msvcNum)
 #define COMPILER_WARNING_DISABLE_CLANG(clangWarn)
-#define COMPILER_WARNING_DISABLE_GCC(gccWarn) _Pragma(GCC diagnostic ignored gccWarn)
-#define COMPILER_WARNING_POP() _Pragma(GCC diagnostic push)
+#define COMPILER_WARNING_DISABLE_GCC(gccWarn) COMPILER_GCC_PRAGMA(GCC diagnostic ignored gccWarn)
+#define COMPILER_WARNING_POP() COMPILER_GCC_PRAGMA(GCC diagnostic push)
 
 #else
 
