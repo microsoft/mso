@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Fri, 03 Apr 2020 06:08:58 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Apr 2020 07:57:59 GMT and should not be manually modified.
 
+## 0.0.11
+Fri, 03 Apr 2020 07:57:59 GMT
+
+### Patches
+
+- Moved and renamed files as in the RNW repo (vmorozov@microsoft.com)
 ## 0.0.10
 Fri, 03 Apr 2020 06:08:58 GMT
 

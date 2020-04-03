@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Fri, 03 Apr 2020 07:57:59 GMT",
+      "tag": "@microsoft/mso_v0.0.11",
+      "version": "0.0.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Moved and renamed files as in the RNW repo",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 03 Apr 2020 06:40:21 GMT",
       "tag": "@microsoft/mso_v0.0.10",
       "version": "0.0.10",
