@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Turn on strict GCC warnings and compiler settings. Fix the code so it compiles.",
+  "packageName": "@microsoft/mso",
+  "email": "adam@thefoxmans.net",
+  "dependentChangeType": "patch",
+  "date": "2020-04-03T05:57:20.606Z"
+}

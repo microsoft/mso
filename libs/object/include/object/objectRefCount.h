@@ -9,9 +9,11 @@
 #ifdef __cplusplus
 #include <cstdint>
 #include <type_traits>
+
+#include <compilerAdapters/compilerWarnings.h>
+#include <compilerAdapters/cppMacrosDebug.h>
 #include <object/make.h>
 #include <object/refCounted.h>
-#include <compilerAdapters/cppMacrosDebug.h>
 
 //
 // Simple ref counting manages object lifetime using a ref counter.
@@ -95,9 +97,11 @@ struct SimpleRefCountPolicy
   template <typename T>
   static void ValidateObject(MemoryGuard<T>& memoryGuard) noexcept
   {
+    BEGIN_DISABLE_WARNING_OFFSETOF_NONSTD_LAYOUT()
     static_assert(
         offsetof(typename T::TypeToDelete, m_refCount) == offsetof(T, m_refCount),
         "Ref counted object must be the first type in T inheritance list.");
+    END_DISABLE_WARNING_OFFSETOF_NONSTD_LAYOUT()
 
     VerifyElseCrashSzTag(memoryGuard.Obj, "Object was not created", 0x01105590 /* tag_befwq */);
     VerifyElseCrashSzTag(
@@ -126,7 +130,7 @@ using Simple = SimpleRefCountPolicy<DefaultRefCountedDeleter, MakeAllocator>;
 struct SimpleNoQuery;
 struct NoRefCount;
 struct NoRefCountNoQuery;
-}; // namespace RefCountStrategy
+} // namespace RefCountStrategy
 
 /**
   std::shared_ptr<T> is large - it's 2 pointers.
@@ -156,7 +160,7 @@ public:
 
   using TypeToDelete = RefCountedWrapperBase; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedWrapperBase);
+  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedWrapperBase)
 
   void AddRef() const noexcept
   {
@@ -191,7 +195,7 @@ class RefCountedWrapper
     , public T
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper)
 
   using MakePolicy = Mso::MakePolicy::ThrowCtor;
 
@@ -212,7 +216,7 @@ template <>
 class RefCountedWrapper<void> : public RefCountedWrapperBase
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RefCountedWrapper)
   RefCountedWrapper() noexcept = default;
 };
 

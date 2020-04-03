@@ -25,7 +25,7 @@ class CountedType final : public Mso::RefCountedObject<Mso::RefCountStrategy::We
   friend MakePolicy;
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(CountedType);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(CountedType)
 
   int GetCallCount() const noexcept override
   {
@@ -78,7 +78,7 @@ class UnknownType final : public Mso::UnknownObject<Mso::RefCountStrategy::WeakR
   friend MakePolicy;
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(UnknownType);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(UnknownType)
 
   int GetArgument0() const noexcept override
   {

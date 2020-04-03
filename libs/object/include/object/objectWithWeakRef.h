@@ -100,7 +100,7 @@ public:
 
   using TypeToDelete = ObjectWeakRef; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(ObjectWeakRef);
+  _MSO_OBJECT_SIMPLEREFCOUNT(ObjectWeakRef)
 
   ObjectWeakRef() = default;
 
@@ -210,7 +210,7 @@ template <typename TObject, typename TWeakRef>
 class ObjectWeakRefContainer : public TWeakRef
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ObjectWeakRefContainer);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ObjectWeakRefContainer)
 
   ObjectWeakRefContainer() = default;
 

@@ -39,7 +39,7 @@ struct MyMemHeap : public IMyMemHeap
 {
   MyMemHeap(bool& allocCalled, bool& freeCalled) noexcept : m_allocCalled(allocCalled), m_freeCalled(freeCalled) {}
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(MyMemHeap);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(MyMemHeap)
 
   virtual void* Alloc(size_t size) noexcept override
   {

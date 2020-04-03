@@ -121,7 +121,7 @@ class Swarm : public ObjectWeakRef
 public:
   Swarm() noexcept : ObjectWeakRef(), m_headMember() {}
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(Swarm);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(Swarm)
 
   template <typename T, typename TResult = T, typename... TArgs>
   static Mso::TCntPtr<TResult> Make(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
@@ -336,7 +336,7 @@ template <typename T, bool KnownSameSwarm = false>
 class SwarmMemberPtr
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(SwarmMemberPtr);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(SwarmMemberPtr)
 
   SwarmMemberPtr() noexcept {}
 
@@ -463,7 +463,7 @@ template <typename T>
 class SwarmMemberPtr<T, /*KnownSameSwarm*/ true>
 {
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(SwarmMemberPtr);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(SwarmMemberPtr)
 
   SwarmMemberPtr() noexcept {}
 

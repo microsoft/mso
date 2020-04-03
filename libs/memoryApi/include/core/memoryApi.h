@@ -67,7 +67,7 @@ struct RegisterMarkMemoryCallback : public Mso::LibletAPI::ILibletMemoryMarking
 {
   using MarkMemHandler = std::add_pointer_t<void(intptr_t) noexcept>;
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RegisterMarkMemoryCallback);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(RegisterMarkMemoryCallback)
   RegisterMarkMemoryCallback(MarkMemHandler handler) noexcept : m_handler(handler)
   {
     RegisterCallback(*this);

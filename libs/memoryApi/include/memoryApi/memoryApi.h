@@ -85,7 +85,7 @@ enum Enum : unsigned int
   // track this memory using memory marking / idle time leak detection
   MarkingLeak = 0x0004,
 };
-};
+}
 
 /**
 Return a new allocation of the requested size (cb)
@@ -440,7 +440,7 @@ public:
 #endif
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(MemoryPtr);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(MemoryPtr)
 };
 } // namespace Mso
 

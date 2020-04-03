@@ -34,7 +34,7 @@
     do                                                                                                                 \
     {                                                                                                                  \
         x;                                                                                                             \
-    } while(0)
+    } while (0)
 #else
 #define Statement(x)                                                                                                   \
     BEGIN_DISABLE_WARNING_CONDITIONAL_EXPRESSION_IS_CONSTANT()                                                         \
@@ -71,7 +71,7 @@
 
 #ifndef DECLARE_COPYCONSTR_AND_ASSIGNMENT
 #define DECLARE_COPYCONSTR_AND_ASSIGNMENT(C)                                                                           \
-    MSO_NO_COPYCONSTR(C);                                                                                              \
+    MSO_NO_COPYCONSTR(C)                                                                                               \
     MSO_NO_ASSIGNMENT(C)
 #endif
 

@@ -302,7 +302,7 @@ public:
   using RefCountedObjectType = RefCountedObject; // To use in derived class as "using Super = RefCountedObjectType"
   using TypeToDelete = RefCountedObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObject);
+  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObject)
 
   void AddRef() const noexcept override
   {
@@ -348,7 +348,7 @@ public:
   using RefCountedObjectType = RefCountedObject; // To use in derived class as "using Super = RefCountedObjectType"
   using TypeToDelete = RefCountedObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObject);
+  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObject)
 
   void AddRef() const noexcept override
   {
@@ -394,7 +394,7 @@ public:
   using RefCountedObjectType = RefCountedObject; // To use in derived class as "using Super = RefCountedObjectType"
   using TypeToDelete = RefCountedObject; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_WEAKREFCOUNT(RefCountedObject);
+  _MSO_OBJECT_WEAKREFCOUNT(RefCountedObject)
 
   void AddRef() const noexcept override
   {
@@ -423,7 +423,7 @@ class RefCountedObject<Mso::RefCountStrategy::NoRefCount, TBaseType0, TBaseTypes
 public:
   using RefCountedObjectType = RefCountedObject; // To use in derived class as "using Super = RefCountedObjectType"
 
-  _MSO_OBJECT_NOREFCOUNT(RefCountedObject);
+  _MSO_OBJECT_NOREFCOUNT(RefCountedObject)
 
   template <typename... TArgs>
   RefCountedObject(TArgs&&... args) noexcept : TBaseType0(std::forward<TArgs>(args)...)
@@ -453,7 +453,7 @@ public:
       RefCountedObjectNoVTable; // To use in derived class as "using Super = RefCountedObjectNoVTableType"
   using TypeToDelete = TDerived; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObjectNoVTable);
+  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObjectNoVTable)
 
   void AddRef() const noexcept
   {
@@ -496,7 +496,7 @@ public:
       RefCountedObjectNoVTable; // To use in derived class as "using Super = RefCountedObjectNoVTableType"
   using TypeToDelete = TDerived; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObjectNoVTable);
+  _MSO_OBJECT_SIMPLEREFCOUNT(RefCountedObjectNoVTable)
 
   void AddRef() const noexcept
   {
@@ -539,7 +539,7 @@ public:
       RefCountedObjectNoVTable; // To use in derived class as "using Super = RefCountedObjectNoVTableType"
   using TypeToDelete = TDerived; // To verify that TypeToDelete is the first in the inheritance chain.
 
-  _MSO_OBJECT_WEAKREFCOUNT(RefCountedObjectNoVTable);
+  _MSO_OBJECT_WEAKREFCOUNT(RefCountedObjectNoVTable)
 
   void AddRef() const noexcept
   {
