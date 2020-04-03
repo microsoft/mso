@@ -4,7 +4,7 @@ parameters:
     default: ''
 
 jobs:
-- job: AppleBuild
+- job: LinuxBuild
   displayName: Build
   ${{ if ne(parameters.DependsOn, '') }}:
     dependsOn: ${{ parameters.DependsOn }}
@@ -13,20 +13,14 @@ jobs:
   timeoutInMinutes: 30
   cancelTimeoutInMinutes: 2
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'ubuntu-18.04'
   strategy:
     matrix:
-      iOS_Debug:
-        MsoPlatform: IOS
+      Linux_Debug:
+        MsoPlatform: LINUX
         BuildConfiguration: Debug
-      iOS_Release:
-        MsoPlatform: IOS
-        BuildConfiguration: Release
-      macOS_Debug:
-        MsoPlatform: MAC
-        BuildConfiguration: Debug
-      macOS_Release:
-        MsoPlatform: MAC
+      Linux_Release:
+        MsoPlatform: LINUX
         BuildConfiguration: Release
   steps:
     - template: posix-build-steps.yml
