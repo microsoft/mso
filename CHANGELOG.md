@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Fri, 03 Apr 2020 07:57:59 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Apr 2020 18:15:55 GMT and should not be manually modified.
 
+## 0.0.12
+Fri, 03 Apr 2020 18:15:55 GMT
+
+### Patches
+
+- Updated compilerAdapters liblet from RNW Mso clone (vmorozov@microsoft.com)
 ## 0.0.11
 Fri, 03 Apr 2020 07:57:59 GMT
 
