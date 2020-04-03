@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Fri, 03 Apr 2020 01:44:22 GMT",
+      "tag": "@microsoft/mso_v0.0.9",
+      "version": "0.0.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Minor fixes to make the GCC build work.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Apr 2020 23:54:29 GMT",
       "tag": "@microsoft/mso_v0.0.8",
       "version": "0.0.8",

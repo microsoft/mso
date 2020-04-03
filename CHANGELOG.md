@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Thu, 02 Apr 2020 23:54:29 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Apr 2020 01:44:22 GMT and should not be manually modified.
 
+## 0.0.9
+Fri, 03 Apr 2020 01:44:22 GMT
+
+### Patches
+
+- Minor fixes to make the GCC build work. (adam@thefoxmans.net)
 ## 0.0.8
 Thu, 02 Apr 2020 23:54:29 GMT
 
