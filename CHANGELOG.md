@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Fri, 03 Apr 2020 01:44:22 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Apr 2020 06:08:58 GMT and should not be manually modified.
 
+## 0.0.10
+Fri, 03 Apr 2020 06:08:58 GMT
+
+### Patches
+
+- Turn on strict GCC warnings and compiler settings. Fix the code so it compiles. (adam@thefoxmans.net)
 ## 0.0.9
 Fri, 03 Apr 2020 01:44:22 GMT
 
