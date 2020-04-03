@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef _CPPEXTENSIONS_VERIFYELSECRASH_H_
-#define _CPPEXTENSIONS_VERIFYELSECRASH_H_
+#ifndef MSO_CRASH_VERIFYELSECRASH_H
+#define MSO_CRASH_VERIFYELSECRASH_H
 
 #include <compilerAdapters/declspecDefinitions.h>
 #include <debugAssertApi/debugAssertApi.h>
@@ -34,4 +34,4 @@ DECLSPEC_NORETURN void CrashWithRecovery(uint32_t tag) noexcept;
 
 #define CrashWithRecoveryOnOOM() CrashWithRecovery(0)
 
-#endif // _CPPEXTENSIONS_VERIFYELSECRASH_H_
+#endif // MSO_CRASH_VERIFYELSECRASH_H

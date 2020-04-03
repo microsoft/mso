@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
+#ifndef MSO_MOTIFCPP_MOTIFCPPTESTBASE_H
+#define MSO_MOTIFCPP_MOTIFCPPTESTBASE_H
 
 typedef wchar_t WCHAR;
 
@@ -23,3 +25,5 @@ public:
 
   virtual void Teardown() {}
 };
+
+#endif // MSO_MOTIFCPP_MOTIFCPPTESTBASE_H

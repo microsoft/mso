@@ -25,7 +25,7 @@
 #pragma push_macro("new")
 #undef new
 
-#define MSO_OBJECT_SIMPLEREFCOUNT(TObject)                                                        \
+#define MSO_OBJECT_SIMPLEREFCOUNT(TObject)                                                         \
 public:                                                                                            \
   bool IsUniqueRef() const noexcept                                                                \
   {                                                                                                \
@@ -38,7 +38,7 @@ public:                                                                         
   MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TObject)
 
 #define MSO_OBJECT_NOREFCOUNT(TObject) \
-public:                                 \
+public:                                \
   MSO_NO_COPY_CTOR_AND_ASSIGNMENT(TObject)
 
 namespace Mso {

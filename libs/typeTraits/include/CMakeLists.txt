@@ -3,5 +3,7 @@
 
 liblet_includes(
   INCLUDES
+    typeTraits/sfinae.h
+    typeTraits/tags.h
     typeTraits/typeTraits.h
 )

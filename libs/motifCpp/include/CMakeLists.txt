@@ -8,8 +8,8 @@ liblet_includes(
     motifCpp/libletAwareMemLeakDetection.h
     motifCpp/motifCppTest.h
     motifCpp/motifCppTestBase.h
-    motifCpp/testInfo.h
     motifCpp/testCheck.h
+    motifCpp/testInfo.h
     test/skipSEHUT.h
   INCLUDES_APPLE
     motifCpp/assert_IgnorePlat_apple.h

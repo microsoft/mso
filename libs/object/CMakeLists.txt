@@ -4,9 +4,9 @@
 liblet(object
   DEPENDS
     Mso::comUtil
-    Mso::cppType
     Mso::crash
     Mso::debugAssertApi
     Mso::memoryApi
     Mso::platformAdapters
+    Mso::typeTraits
 )

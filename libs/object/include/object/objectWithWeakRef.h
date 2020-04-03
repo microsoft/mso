@@ -70,7 +70,7 @@ To implement your classes please use classes defined in the msoUnknownObject.h o
 #pragma push_macro("new")
 #undef new
 
-#define MSO_OBJECT_WEAKREFCOUNT(TObject)                                       \
+#define MSO_OBJECT_WEAKREFCOUNT(TObject)                                        \
 public:                                                                         \
   Mso::ObjectWeakRef& GetWeakRef() const noexcept                               \
   {                                                                             \

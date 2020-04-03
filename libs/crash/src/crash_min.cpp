@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-//#include "precomp.h"
-
 #include <crash/verifyElseCrash.h>
 #include <compilerAdapters/cppMacros.h>
 #include <platformAdapters/windowsFirst.h>

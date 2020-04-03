@@ -2,13 +2,12 @@
 // Licensed under the MIT license.
 
 #pragma once
-
-#ifndef TESTINFO_H
-#define TESTINFO_H
+#ifndef MSO_MOTIFCPP_TESTINFO_H
+#define MSO_MOTIFCPP_TESTINFO_H
 
 #include <memory>
 #include <vector>
-#include <motifCpp/motifCppTestBase.h>
+#include "motifCpp/motifCppTestBase.h"
 
 #define TEST_CLASS(className)                                                                      \
   struct className;                                                                                \
@@ -19,6 +18,18 @@
     TestClassInfo_##className() noexcept : TestClassInfoRegType{#className, __FILE__, __LINE__} {} \
   };                                                                                               \
                                                                                                    \
+  struct className : Mso::UnitTests::Internal::TestClassBase<className, TestClassInfo_##className>
+
+#define TEST_CLASS_EX(className, baseClass)                                                                     \
+  struct className;                                                                                             \
+                                                                                                                \
+  struct TestClassInfo_##className final                                                                        \
+      : baseClass                                                                                               \
+      , Mso::UnitTests::Internal::TestClassInfoReg<TestClassInfo_##className, className>                        \
+  {                                                                                                             \
+    TestClassInfo_##className() noexcept : baseClass{}, TestClassInfoRegType{#className, __FILE__, __LINE__} {} \
+  };                                                                                                            \
+                                                                                                                \
   struct className : Mso::UnitTests::Internal::TestClassBase<className, TestClassInfo_##className>
 
 #define TEST_METHOD(methodName)                                                                                       \
@@ -33,12 +44,14 @@
   };                                                                                                                  \
   virtual void methodName()
 
+#define TESTMETHOD_REQUIRES_SEH(methodName) TEST_METHOD(methodName)
+
 #define TestClassComponent(x1, x2)
 
 // Allows a test to be compiled, but not executed
 #define SKIPTESTMETHOD(methodName) virtual void skipped_##methodName()
 
-namespace Mso { namespace UnitTests {
+namespace Mso::UnitTests {
 
 using TestClass = MotifCppTestBase;
 struct TestClassInfo;
@@ -127,9 +140,9 @@ private:
   int m_sourceLine{0};
 };
 
-}} // namespace Mso::UnitTests
+} // namespace Mso::UnitTests
 
-namespace Mso { namespace UnitTests { namespace Internal {
+namespace Mso::UnitTests::Internal {
 
 template <class TTestClass, class TTestClassInfo>
 struct TestClassBase : TestClass
@@ -172,6 +185,6 @@ struct TestMethodInfoReg : TestMethodInfo
 template <class TMethodInfo>
 TMethodInfo TestMethodInfoReg<TMethodInfo>::Instance;
 
-}}} // namespace Mso::UnitTests::Internal
+} // namespace Mso::UnitTests::Internal
 
-#endif // TESTINFO_H
+#endif // MSO_MOTIFCPP_TESTINFO_H

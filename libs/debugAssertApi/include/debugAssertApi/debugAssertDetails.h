@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
+#define MSO_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
 /**
   Private implementation details for debug assert macros
   This header should not be included directly - only through debugAssertApi.h
@@ -8,9 +11,7 @@
    Note that C4706 is purposely left enabled. Assignments in inside Assert
   statements are almost always a bug (e.g. Assert(m_foo = fooBar))
 */
-#pragma once
-#ifndef LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
-#define LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
+
 #include <cstdarg>
 #include <cstdint>
 #include <compilerAdapters/compilerWarnings.h>
@@ -248,4 +249,4 @@ static
 #define AssertImpliesTag(a, b, tag) AssertSzTag(FImplies(a, b), #a " => " #b, tag)
 #define AssertBiImpliesTag(a, b, tag) AssertSzTag(FBiImplies(a, b), #a " <==> " #b, tag)
 
-#endif // LIBLET_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H
+#endif // MSO_DEBUGASSERTAPI_DEBUGASSERTDETAILS_H

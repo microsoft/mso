@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_DEBUGASSERTAPI_DEBUGASSERTAPI_H
+#define MSO_DEBUGASSERTAPI_DEBUGASSERTAPI_H
+
 /**
   API for debug asserts. Must support C callers
 */
-#pragma once
-#ifndef LIBLET_DEBUGASSERTAPI_DEBUGASSERTAPI_H
-#define LIBLET_DEBUGASSERTAPI_DEBUGASSERTAPI_H
+
 #ifndef RC_INVOKED
 #pragma pack(push, 8)
 
@@ -273,7 +275,9 @@ private:
   AssertListener m_listener;
 };
 
-using AssertHandler = int32_t (*)(const MsoAssertParams& params, const char* szMsg);
+enum class AssertResult : uint32_t;
+
+using AssertHandler = AssertResult (*)(const MsoAssertParams& params, const char* szMsg);
 
 /**
   Set the assert handler for this process. The previous handler is returned.
@@ -306,4 +310,4 @@ private:
 #pragma pack(pop)
 #endif // RC_INVOKED
 
-#endif // LIBLET_DEBUGASSERTAPI_DEBUGASSERTAPI_H
+#endif // MSO_DEBUGASSERTAPI_DEBUGASSERTAPI_H

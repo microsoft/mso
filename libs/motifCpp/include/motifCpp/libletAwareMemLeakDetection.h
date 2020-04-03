@@ -1,13 +1,23 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-#include <motifCpp/assert_motifApi.h>
+#pragma once
+#ifndef MSO_MOTIFCPP_LIBLETAWAREMEMLEAKDETECTION_H
+#define MSO_MOTIFCPP_LIBLETAWAREMEMLEAKDETECTION_H
+
+#include "motifCpp/assert_motifApi.h"
 
 // TODO: Implement this as needed
-class LibletAwareMemLeakDetection : public MotifCppTestBase
+struct LibletAwareMemLeakDetection : MotifCppTestBase
 {
 protected:
   void InitLiblets() noexcept {}
 
   void UninitLiblets() noexcept {}
+
+public:
+  virtual void StartTrackingMemoryAllocations() {}
+  virtual void StopTrackingMemoryAllocations() {}
 };
+
+#endif // MSO_MOTIFCPP_LIBLETAWAREMEMLEAKDETECTION_H

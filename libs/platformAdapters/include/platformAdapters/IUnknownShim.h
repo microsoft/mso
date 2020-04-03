@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
+#ifndef MSO_PLATFORMADAPTERS_IUNKNOWNSHIM_H
+#define MSO_PLATFORMADAPTERS_IUNKNOWNSHIM_H
 #include <guid/msoGuid.h>
 #include <platformAdapters/types.h>
 #include <platformAdapters/windowsFirst.h>
@@ -94,3 +96,9 @@ struct IUnknown
 #define __RPC_FAR
 
 #endif
+
+namespace Mso {
+using IUnknown = ::IUnknown;
+}
+
+#endif // MSO_PLATFORMADAPTERS_IUNKNOWNSHIM_H

@@ -4,8 +4,8 @@
 liblet(cppExtensions
   DEPENDS
     Mso::compilerAdapters
-    Mso::cppType
     Mso::platformAdapters
+    Mso::typeTraits
   DEPENDS_POSIX
     Mso::oacr_posix
 )

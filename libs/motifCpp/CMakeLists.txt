@@ -3,6 +3,7 @@
 
 liblet(motifCpp
   DEPENDS
+    Mso::crash
     Mso::oacr
     Mso::platformAdapters
 )
