@@ -144,7 +144,7 @@ public:
   }
 
   //! Delete copy and move constructors and assignment operators.
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRef);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRef)
 
   //! Calls referenced function object.
   //! Crash if referenced function object is nullptr.
@@ -181,7 +181,7 @@ private:
   struct FunctorRefWrapper final : IFunctorRef
   {
     FunctorRefWrapper(T* func) noexcept : m_func(func) {}
-    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefWrapper);
+    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefWrapper)
     ~FunctorRefWrapper() = delete;
 
     TResult Invoke(TArgs&&... args) const noexcept override
@@ -241,7 +241,7 @@ public:
   }
 
   //! Delete copy and move constructors and assignment operators.
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrow);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrow)
 
   //! Calls referenced function object.
   //! Crash if referenced function object is nullptr.
@@ -278,7 +278,7 @@ private:
   struct FunctorRefThrowWrapper final : IFunctorRefThrow
   {
     FunctorRefThrowWrapper(T* func) noexcept : m_func(func) {}
-    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrowWrapper);
+    DECLARE_COPYCONSTR_AND_ASSIGNMENT(FunctorRefThrowWrapper)
     ~FunctorRefThrowWrapper() = delete;
 
     TResult Invoke(TArgs&&... args) const override

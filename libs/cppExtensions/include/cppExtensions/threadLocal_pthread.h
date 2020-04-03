@@ -13,7 +13,7 @@ namespace Mso { namespace Details {
 
 struct ThreadLocalImpl
 {
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ThreadLocalImpl);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(ThreadLocalImpl)
 
   ThreadLocalImpl() noexcept
   {

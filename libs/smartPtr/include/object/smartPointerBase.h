@@ -44,7 +44,7 @@ public:
       std::remove_pointer_t<TArrowType>>::type;
 
   // TODO: consider allowing this via extension of THelper?
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(THolder);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(THolder)
 
   /**
     Construction / Destruction
@@ -524,7 +524,7 @@ class THolderPair : protected THolder<THolderPairData<T, TData>, THelper>
   using _Myt = THolderPair<T, TData, THelper>;
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(THolderPair);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(THolderPair)
 
   using Super = THolder<THolderPairData<T, TData>, THelper>;
   using TRefType = typename std::

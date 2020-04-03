@@ -39,7 +39,7 @@ class TOwnerPtr : public THolder<T*, TDeleteHelper<T*>>
 public:
   TOwnerPtr() noexcept {}
   /*explicit*/ TOwnerPtr(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>);
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerPtr<T>)
   IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerPtr<T>);
 
   T* get() noexcept
@@ -60,7 +60,7 @@ public:
   }
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerPtr<T>);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerPtr<T>)
 };
 
 /**
@@ -90,7 +90,7 @@ class TArrayHolder : public THolder<T*, TArrayHelper<T*>>
 public:
   TArrayHolder() noexcept {}
   /*explicit*/ TArrayHolder(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder);
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TArrayHolder)
   IMPLEMENT_THOLDER_RVALUE_REFS(TArrayHolder);
 
   T* get() noexcept
@@ -111,7 +111,7 @@ public:
   }
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TArrayHolder);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TArrayHolder)
 };
 
 /**
@@ -142,11 +142,11 @@ class TOwnerIPtr : public THolder<T*, TFreeHelper<T*>>
 public:
   TOwnerIPtr() noexcept {}
   /*explicit*/ TOwnerIPtr(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr);
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TOwnerIPtr)
   IMPLEMENT_THOLDER_RVALUE_REFS(TOwnerIPtr);
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerIPtr);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TOwnerIPtr)
 };
 
 /**
@@ -177,11 +177,11 @@ class TDestroyPtr : public THolder<T*, TDestroyHelper<T*>>
 public:
   TDestroyPtr() noexcept {}
   explicit TDestroyPtr(T* pT) noexcept : Super(pT) {}
-  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr);
+  IMPLEMENT_THOLDER_OPERATOR_EQUALS(TDestroyPtr)
   IMPLEMENT_THOLDER_RVALUE_REFS(TDestroyPtr);
 
 private:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TDestroyPtr);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TDestroyPtr)
 };
 
 /**

@@ -40,7 +40,7 @@ class LazyInit final
       "The type must be derived from Mso::IRefCounted or IUnknown.");
 
 public:
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(LazyInit);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(LazyInit)
 
   explicit LazyInit() noexcept = default;
 

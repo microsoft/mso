@@ -317,7 +317,11 @@ function(_liblet_set_platform_definitions TARGET)
         -Wno-dollar-in-identifier-extension
         -Wno-c++17-compat-mangling>
       $<$<COMPILE_LANG_AND_ID:CXX,GNU>:
-        >
+        -pedantic
+        -Wall
+        -Wextra
+        -Werror
+        -Wno-noexcept-type>
   )
 endfunction()
 

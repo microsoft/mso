@@ -52,7 +52,7 @@ public:
     *m_pValue = m_previousValue;
   }
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TRestorer);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TRestorer)
   TRestorer& operator=(TRestorer&& other) noexcept = delete;
 
   bool IsEnabled() noexcept
@@ -134,7 +134,7 @@ public:
     }
   }
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TPropertyRestorer); // No copying!
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TPropertyRestorer) // No copying!
 
   template <
       typename TSelf = TPropertyRestorer,
@@ -226,7 +226,7 @@ public:
       m_fnCleanup();
   }
 
-  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TCleanup);
+  DECLARE_COPYCONSTR_AND_ASSIGNMENT(TCleanup)
 
   void enable() noexcept
   {
