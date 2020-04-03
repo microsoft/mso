@@ -1711,7 +1711,7 @@ TEST_CLASS (UnknownObjectTest)
       IBaseSample3* base3 = query_cast<IBaseSample3*>(base1);
       TestAssert::IsNull(base3);
       UnknownSample3* unknown2 = query_cast<UnknownSample3*>(base2);
-      OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
+      //OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
       TestAssert::AreEqual(2, unknown2->GetValue2());
     }
     TestAssert::IsTrue(deleted);
@@ -1842,7 +1842,7 @@ TEST_CLASS (UnknownObjectTest)
       IBaseSample3* base3 = query_cast<IBaseSample3*>(base1);
       TestAssert::IsNull(base3);
       UnknownSample6* unknown2 = query_cast<UnknownSample6*>(base2);
-      OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
+      // OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
       TestAssert::AreEqual(2, unknown2->GetValue2());
     }
     TestAssert::IsTrue(deleted);
