@@ -1,8 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add Linux builds to the PR and Build pipelines. Update job names.",
-  "packageName": "@microsoft/mso",
-  "email": "adam@thefoxmans.net",
-  "dependentChangeType": "none",
-  "date": "2020-04-03T06:28:01.705Z"
-}

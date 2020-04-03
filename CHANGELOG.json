@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Fri, 03 Apr 2020 06:40:21 GMT",
+      "tag": "@microsoft/mso_v0.0.10",
+      "version": "0.0.10",
+      "comments": {
+        "none": [
+          {
+            "comment": "Add Linux builds to the PR and Build pipelines. Update job names.",
+            "author": "adam@thefoxmans.net",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 03 Apr 2020 06:08:58 GMT",
       "tag": "@microsoft/mso_v0.0.10",
       "version": "0.0.10",
