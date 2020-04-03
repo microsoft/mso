@@ -3,8 +3,8 @@
 
 #include "precomp.h"
 #include <eventWaitHandle/eventWaitHandle.h>
-#include <test/libletAwareMemLeakDetection.h>
-#include <test/testCheck.h>
+#include <motifCpp/libletAwareMemLeakDetection.h>
+#include <motifCpp/testCheck.h>
 #include <test/skipSEHUT.h>
 #include <atomic>
 #include <thread>

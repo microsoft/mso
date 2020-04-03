@@ -3,6 +3,6 @@
 
 liblet_sources(
   SOURCES
-    crt/memoryApi.cpp
-    emptyImpl/memoryLeakScope_EmptyImpl.cpp
+    memoryApi.cpp
+    memoryLeakScope_EmptyImpl.cpp
 )

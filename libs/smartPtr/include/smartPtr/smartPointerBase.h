@@ -7,7 +7,7 @@
 #pragma once
 #include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
-#include <cppType/typeTraits.h>
+#include <typeTraits/typeTraits.h>
 #include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
 

@@ -3,9 +3,7 @@
 
 liblet_includes(
   INCLUDES
-    object/IUnknownShim.h
-    platformAdapters/msoGuid.h
-    platformAdapters/msoGuidDetails.h
+    platformAdapters/IUnknownShim.h 
     platformAdapters/types.h
   INCLUDES_WIN
     platformAdapters/windowsFirst.h

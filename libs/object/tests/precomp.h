@@ -14,4 +14,4 @@
 // Headers for CppUnitTest
 #include <motifCpp/gTestAdapter.h>
 
-#include <object/IUnknownShim.h>
+#include <platformAdapters/IUnknownShim.h>

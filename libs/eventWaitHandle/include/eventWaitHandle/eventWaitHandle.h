@@ -5,7 +5,7 @@
 #ifndef LIBLET_DISPATCHQUEUE_EVENTWAITHANDLE_H
 #define LIBLET_DISPATCHQUEUE_EVENTWAITHANDLE_H
 
-#include <core/TCntPtr.h>
+#include <smartPtr/cntPtr.h>
 #include <compilerAdapters/functionDecorations.h>
 #include <chrono>
 

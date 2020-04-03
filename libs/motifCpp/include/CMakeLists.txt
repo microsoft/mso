@@ -5,12 +5,12 @@ liblet_includes(
   INCLUDES
     motifCpp/assert_IgnorePlat_emptyImpl.h
     motifCpp/assert_motifApi.h
+    motifCpp/libletAwareMemLeakDetection.h
     motifCpp/motifCppTest.h
     motifCpp/motifCppTestBase.h
     motifCpp/testInfo.h
-    test/libletAwareMemLeakDetection.h
+    motifCpp/testCheck.h
     test/skipSEHUT.h
-    test/testCheck.h
   INCLUDES_APPLE
     motifCpp/assert_IgnorePlat_apple.h
 )

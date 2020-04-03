@@ -9,7 +9,7 @@
 #include "qiCastCore.h"
 
 #include <platformAdapters/windowsFirst.h>
-#include <platformAdapters/msoGuid.h>
+#include <guid/msoGuid.h>
 #ifdef MS_TARGET_WINDOWS
 #include <comBaseApi.h>
 #include <unknwn.h>

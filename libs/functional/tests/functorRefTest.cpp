@@ -10,7 +10,7 @@ Unit tests for classes in the Functor.h
 #include <functional/functor.h>
 #include <functional/functorRef.h>
 #include "test/skipSEHUT.h"
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 // use the anonymous namespace to avoid potential conflict with MyParam def in FunctorRef.cpp
 namespace {

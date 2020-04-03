@@ -5,5 +5,5 @@
   Helper classes for internal ref-counting
 */
 #pragma once
-#include <core/TCntPtr.h>
+#include <smartPtr/cntPtr.h>
 #include <comUtil/qiCastCore.h>

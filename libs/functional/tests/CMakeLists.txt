@@ -5,5 +5,5 @@ liblet_tests(
   SOURCES
     functorRefTest.cpp
     functorTest.cpp
-    functorTestsCommon.h
+    functorTest.h
 )

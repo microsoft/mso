@@ -11,7 +11,7 @@
 
 #include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacrosDebug.h>
-#include <core/TCntPtr.h>
+#include <smartPtr/cntPtr.h>
 #include <memoryApi/memoryApi.h>
 
 #pragma pack(push, _CRT_PACKING)

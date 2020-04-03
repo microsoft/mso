@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 //#include "precomp.h"
-#include "EventWaitHandle.h"
+#include "EventWaitHandleImpl.h"
 #include <synchapi.h>
 #include <algorithm>
 

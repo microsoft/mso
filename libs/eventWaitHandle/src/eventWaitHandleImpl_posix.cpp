@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 //#include "precomp.h"
-#include "eventWaitHandle.h"
+#include "eventWaitHandleImpl.h"
 #include <pthread.h>
 
 namespace Mso { namespace Async {

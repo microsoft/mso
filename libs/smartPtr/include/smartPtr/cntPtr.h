@@ -12,7 +12,7 @@
 #include <compilerAdapters/declspecDefinitions.h>
 #include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
-#include <object/smartPointerBase.h>
+#include <smartPtr/smartPointerBase.h>
 
 #ifdef __cplusplus
 namespace Mso {

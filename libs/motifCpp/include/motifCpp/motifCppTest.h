@@ -10,8 +10,8 @@
 #include <type_traits>
 
 #include <compilerAdapters/compilerWarnings.h>
-#include <oacr.h>
-#include <object/IUnknownShim.h>
+#include <oacr/oacr.h>
+#include <platformAdapters/IUnknownShim.h>
 
 #if defined(MSO_USE_GTEST)
 #include <motifCpp/gTestAdapter.h>

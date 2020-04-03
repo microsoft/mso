@@ -11,7 +11,7 @@ share the same reference counter.
 #include <object/objectWithWeakRef.h>
 #include <object/queryCast.h>
 #include <object/weakPtr.h>
-#include <core/memoryApi.h>
+#include <memoryApi/memoryApi.h>
 
 //
 // Swarm is a collection of a ref counted objects that share the same reference counting.

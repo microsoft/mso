@@ -11,7 +11,7 @@ Unit tests for classes in the msoRefCountedObject.h
 //#include <core/memoryNew_Throw.h>
 #include <eventWaitHandle/eventWaitHandle.h>
 #include <test/skipSEHUT.h>
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to see compilation error
 //#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this

@@ -7,7 +7,7 @@
 #include <type_traits>
 
 #include <object/make.h>
-#include <object/IUnknownShim.h>
+#include <platformAdapters/IUnknownShim.h>
 
 namespace Mso { namespace Object {
 

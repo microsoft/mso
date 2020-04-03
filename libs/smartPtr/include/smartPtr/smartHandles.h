@@ -11,7 +11,7 @@
 #ifdef MS_TARGET_WINDOWS
 #include <platformadapters/windowsfirst.h>
 #endif
-#include <core/smartPointerBase.h>
+#include <smartPtr/smartPointerBase.h>
 
 namespace Mso {
 

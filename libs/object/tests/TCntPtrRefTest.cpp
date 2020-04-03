@@ -10,7 +10,7 @@ Unit tests for the TCntPtrRef class
 #include <functional>
 #include <object/refCounted.h>
 #include <object/unknownObject.h>
-#include <test/testCheck.h>
+#include <motifCpp/testCheck.h>
 #include <comUtil/qiCast.h>
 
 MSO_STRUCT_GUID(ISimpleUnknown, "C70B7853-1EDB-4AB8-B2D2-F9951A99A847")

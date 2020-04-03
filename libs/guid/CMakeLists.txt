@@ -1,13 +1,10 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
 
-liblet(platformAdapters
+liblet(guid
   DEPENDS
     Mso::compilerAdapters
     Mso::debugAssertApi
-    Mso::guid
     Mso::oacr
     Mso::tagUtils
-  DEPENDS_POSIX
-    Mso::platform_posix
 )

@@ -5,7 +5,7 @@
   Deprecated APIs related to leak detection
 */
 #pragma once
-#include <memoryLeakScope/memoryLeakScope.h>
+#include <memoryApi/memoryLeakScope.h>
 
 /**
   When this object is active, allocations on this thread are marked as
