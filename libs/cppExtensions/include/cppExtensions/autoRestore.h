@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_CPPEXTENSIONS_AUTORESTORE_H
+#define MSO_CPPEXTENSIONS_AUTORESTORE_H
 /**
   Helper classes to automatically restore/cleanup/undo an operation.
 */
-#ifndef _CPPEXTENSIONS_AUTORESTORE_H_
-#define _CPPEXTENSIONS_AUTORESTORE_H_
 
 #include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
@@ -255,4 +256,4 @@ inline TCleanup<Func> Make(const Func& pfnCleanup) noexcept
 
 #endif // __cplusplus
 
-#endif // _CPPEXTENSIONS_AUTORESTORE_H_
+#endif // MSO_CPPEXTENSIONS_AUTORESTORE_H

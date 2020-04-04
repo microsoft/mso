@@ -2,8 +2,9 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef MOTIFCPP_ASSERT_MOTIFAPI_H
-#define MOTIFCPP_ASSERT_MOTIFAPI_H
+#ifndef MSO_MOTIFCPP_ASSERT_MOTIFAPI_H
+#define MSO_MOTIFCPP_ASSERT_MOTIFAPI_H
+
 #include "motifCppTest.h"
 
 #define BeginSupportFileMap()
@@ -12,4 +13,4 @@
 
 #define EndSupportFileMap()
 
-#endif // MOTIFCPP_ASSERT_MOTIFAPI_H
+#endif // MSO_MOTIFCPP_ASSERT_MOTIFAPI_H

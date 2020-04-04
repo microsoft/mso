@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_PLATFORMADAPTERS_WINDOWSFIRST_H
+#define MSO_PLATFORMADAPTERS_WINDOWSFIRST_H
+
 /**
   Header to properly include windows.h
 */
-#pragma once
-#ifndef LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
-#define LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
 
 #ifdef MS_TARGET_WINDOWS
 
@@ -19,4 +20,4 @@
 
 #endif // MS_TARGET_WINDOWS
 
-#endif // LIBLET_PLATFORMADAPTERS_WINDOWSFIRST_H
+#endif // MSO_PLATFORMADAPTERS_WINDOWSFIRST_H

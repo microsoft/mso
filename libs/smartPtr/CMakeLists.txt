@@ -3,7 +3,7 @@
 
 liblet(smartPtr
   DEPENDS
-    Mso::cppType
     Mso::crash
     Mso::platformAdapters
+    Mso::typeTraits
 )

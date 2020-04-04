@@ -5,12 +5,11 @@
   Various C++ templates to help with compile-time type information.
 */
 #pragma once
-#ifndef LIBLET_CPPTYPE_TYPETRAITS_H
-#define LIBLET_CPPTYPE_TYPETRAITS_H
-#ifdef __cplusplus
+#ifndef MSO_TYPETRAITS_TYPETRAITS_H
+#define MSO_TYPETRAITS_TYPETRAITS_H
 
 #include <type_traits>
-#include <compilerAdapters/declspecDefinitions.h>
+#include "compilerAdapters/declspecDefinitions.h"
 
 namespace Mso {
 
@@ -281,6 +280,4 @@ struct LargestType<T1, T2, Ts...>
 
 } // namespace Mso
 
-#endif // __cplusplus
-
-#endif // LIBLET_CPPTYPE_TYPETRAITS_H
+#endif // MSO_TYPETRAITS_TYPETRAITS_H

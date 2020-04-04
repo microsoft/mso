@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
+#define MSO_MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
+
 /*----------------------------------------------------------------------------
     MotifCpp assert APIs
 ----------------------------------------------------------------------------*/
-#pragma once
-#ifndef MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
-#define MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
 
 #include <cstdint>
 
@@ -24,4 +25,4 @@ public:
 
 } // namespace Mso
 
-#endif // MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
+#endif // MSO_MOTIFCPP_ASSERT_IGNOREPLAT_EMPTYIMPL_H
