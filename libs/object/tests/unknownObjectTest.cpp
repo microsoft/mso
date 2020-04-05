@@ -1,19 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/****************************************************************************
-Unit tests for classes in the msoUnknownObject.h
-****************************************************************************/
-
-#include "precomp.h"
-#include <object/unknownObject.h>
+#include "object/unknownObject.h"
 #include <future>
-#include <vector>
 #include <thread>
-#include <test/skipSEHUT.h>
-#include "testAllocators.h"
+#include <vector>
+#include <comUtil/qiCast.h>
 #include <eventWaitHandle/eventWaitHandle.h>
 #include <motifCpp/testCheck.h>
+#include "testAllocators.h"
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to see compilation error
 //#define TEST_BAD_INHERITANCE2 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
@@ -572,13 +567,13 @@ protected:
   }
 
 private:
-  UnknownSample101(Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
-      : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
+  UnknownSample101(Mso::ManualResetEvent const& deleted, bool& isAsyncDestroy) noexcept
+      : m_deleted{deleted}, m_isAsyncDestroy{isAsyncDestroy}
   {
   }
 
 private:
-  Mso::Async::ManualResetEvent& m_deleted;
+  Mso::ManualResetEvent m_deleted;
   bool& m_isAsyncDestroy;
 };
 
@@ -606,13 +601,13 @@ protected:
   }
 
 private:
-  UnknownSample102(Mso::Async::ManualResetEvent& deleted, bool& isAsyncDestroy) noexcept
+  UnknownSample102(Mso::ManualResetEvent const& deleted, bool& isAsyncDestroy) noexcept
       : m_deleted(deleted), m_isAsyncDestroy(isAsyncDestroy)
   {
   }
 
 private:
-  Mso::Async::ManualResetEvent& m_deleted;
+  Mso::ManualResetEvent m_deleted;
   bool& m_isAsyncDestroy;
 };
 
@@ -1013,11 +1008,11 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample1> unknown1 = Mso::Make<UnknownSample1>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample1> unknown1 = Mso::Make<UnknownSample1>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       TestAssert::AreEqual(1, base1->GetValue1());
       Debug(TestAssert::AreEqual(2u, unknown1->RefCount()));
     }
@@ -1028,11 +1023,11 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample11> unknown1 = Mso::Make<UnknownSample11>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample11> unknown1 = Mso::Make<UnknownSample11>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       TestAssert::AreEqual(1, base1->GetValue1());
       Debug(TestAssert::AreEqual(2u, unknown1->RefCount()));
     }
@@ -1043,15 +1038,15 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample2> unknown1 = Mso::Make<UnknownSample2>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample2> unknown1 = Mso::Make<UnknownSample2>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       TestAssert::AreEqual(1, base1->GetValue1());
       Debug(TestAssert::AreEqual(2u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample2> base2 = unknown1;
+      Mso::CntPtr<IBaseSample2> base2 = unknown1;
       TestAssert::AreEqual(2, base2->GetValue2());
       Debug(TestAssert::AreEqual(3u, unknown1->RefCount()));
     }
@@ -1062,19 +1057,19 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       TestAssert::AreEqual(1, base1->GetValue1());
       Debug(TestAssert::AreEqual(2u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample2> base2 = unknown1;
+      Mso::CntPtr<IBaseSample2> base2 = unknown1;
       TestAssert::AreEqual(2, base2->GetValue2());
       Debug(TestAssert::AreEqual(3u, unknown1->RefCount()));
 
-      Mso::TCntPtr<UnknownSample3> unknown2 = qi_cast<UnknownSample3>(base2.Get());
+      Mso::CntPtr<UnknownSample3> unknown2 = qi_cast<UnknownSample3>(base2.Get());
       TestAssert::AreEqual(2, unknown2->GetValue2());
       Debug(TestAssert::AreEqual(4u, unknown1->RefCount()));
     }
@@ -1085,11 +1080,11 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample4> unknown1 = Mso::Make<UnknownSample4>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample4> unknown1 = Mso::Make<UnknownSample4>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->GetWeakRef().RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       Debug(TestAssert::AreEqual(2u, unknown1->GetWeakRef().RefCount()));
 
       Mso::ObjectWeakRef* obj1weakRef = query_cast<Mso::ObjectWeakRef*>(base1.Get());
@@ -1106,24 +1101,24 @@ TEST_CLASS (UnknownObjectTest)
       Mso::WeakPtr<UnknownSample4> weakPtr;
       Mso::WeakPtr<IBaseSample1> weakPtr1;
       {
-        Mso::TCntPtr<UnknownSample4> unknown1 = Mso::Make<UnknownSample4>(/*ref*/ deleted);
+        Mso::CntPtr<UnknownSample4> unknown1 = Mso::Make<UnknownSample4>(/*ref*/ deleted);
         TestAssert::AreEqual(1, unknown1->GetValue1());
 
-        Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+        Mso::CntPtr<IBaseSample1> base1 = unknown1;
         TestAssert::AreEqual(1, base1->GetValue1());
 
         weakPtr = unknown1;
-        Mso::TCntPtr<UnknownSample4> unknown11 = weakPtr.GetStrongPtr();
+        Mso::CntPtr<UnknownSample4> unknown11 = weakPtr.GetStrongPtr();
         TestAssert::IsNotNull(unknown11.Get());
         TestAssert::IsFalse(weakPtr.IsExpired());
 
         weakPtr1 = base1;
-        Mso::TCntPtr<IBaseSample1> base11 = weakPtr1.GetStrongPtr();
+        Mso::CntPtr<IBaseSample1> base11 = weakPtr1.GetStrongPtr();
         TestAssert::IsNotNull(base11.Get());
         TestAssert::IsFalse(weakPtr1.IsExpired());
       }
       TestAssert::IsTrue(deleted);
-      Mso::TCntPtr<UnknownSample4> unknown12 = weakPtr.GetStrongPtr();
+      Mso::CntPtr<UnknownSample4> unknown12 = weakPtr.GetStrongPtr();
       TestAssert::IsNull(unknown12.Get());
       TestAssert::IsTrue(weakPtr1.IsExpired());
     }
@@ -1137,35 +1132,35 @@ TEST_CLASS (UnknownObjectTest)
       Mso::WeakPtr<IBaseSample1> weakPtr1;
       Mso::WeakPtr<IBaseSample2> weakPtr2;
       {
-        Mso::TCntPtr<UnknownSample5> unknown1 = Mso::Make<UnknownSample5>(/*ref*/ deleted);
+        Mso::CntPtr<UnknownSample5> unknown1 = Mso::Make<UnknownSample5>(/*ref*/ deleted);
         TestAssert::AreEqual(1, unknown1->GetValue1());
 
-        Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+        Mso::CntPtr<IBaseSample1> base1 = unknown1;
         TestAssert::AreEqual(1, base1->GetValue1());
 
-        Mso::TCntPtr<IBaseSample2> base2 = unknown1;
+        Mso::CntPtr<IBaseSample2> base2 = unknown1;
         TestAssert::AreEqual(2, base2->GetValue2());
 
-        Mso::TCntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(base2.Get());
+        Mso::CntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(base2.Get());
         TestAssert::IsTrue(base1.Get() == base11.Get(), L"Expected the same IBaseSample1 pointer");
 
         weakPtr = unknown1;
-        Mso::TCntPtr<UnknownSample5> unknown11 = weakPtr.GetStrongPtr();
+        Mso::CntPtr<UnknownSample5> unknown11 = weakPtr.GetStrongPtr();
         TestAssert::IsNotNull(unknown11.Get());
         TestAssert::IsFalse(weakPtr.IsExpired());
 
         weakPtr1 = base1;
-        Mso::TCntPtr<IBaseSample1> base12 = weakPtr1.GetStrongPtr();
+        Mso::CntPtr<IBaseSample1> base12 = weakPtr1.GetStrongPtr();
         TestAssert::IsNotNull(base12.Get());
         TestAssert::IsFalse(weakPtr1.IsExpired());
 
         weakPtr2 = base2;
-        Mso::TCntPtr<IBaseSample2> base21 = weakPtr2.GetStrongPtr();
+        Mso::CntPtr<IBaseSample2> base21 = weakPtr2.GetStrongPtr();
         TestAssert::IsNotNull(base21.Get());
         TestAssert::IsFalse(weakPtr2.IsExpired());
       }
       TestAssert::IsTrue(deleted);
-      Mso::TCntPtr<UnknownSample5> unknown12 = weakPtr.GetStrongPtr();
+      Mso::CntPtr<UnknownSample5> unknown12 = weakPtr.GetStrongPtr();
       TestAssert::IsNull(unknown12.Get());
       TestAssert::IsTrue(weakPtr1.IsExpired());
     }
@@ -1179,38 +1174,38 @@ TEST_CLASS (UnknownObjectTest)
       Mso::WeakPtr<IBaseSample1> weakPtr1;
       Mso::WeakPtr<IBaseSample2> weakPtr2;
       {
-        Mso::TCntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
+        Mso::CntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
         TestAssert::AreEqual(1, unknown1->GetValue1());
 
-        Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+        Mso::CntPtr<IBaseSample1> base1 = unknown1;
         TestAssert::AreEqual(1, base1->GetValue1());
 
-        Mso::TCntPtr<IBaseSample2> base2 = unknown1;
+        Mso::CntPtr<IBaseSample2> base2 = unknown1;
         TestAssert::AreEqual(2, base2->GetValue2());
 
-        Mso::TCntPtr<UnknownSample6> unknown2 = qi_cast<UnknownSample6>(base1.Get());
+        Mso::CntPtr<UnknownSample6> unknown2 = qi_cast<UnknownSample6>(base1.Get());
         TestAssert::IsTrue(unknown1.Get() == unknown2.Get(), L"Expected the same UnknownSample6 instance");
 
-        Mso::TCntPtr<UnknownSample6> unknown3 = qi_cast<UnknownSample6>(base2.Get());
+        Mso::CntPtr<UnknownSample6> unknown3 = qi_cast<UnknownSample6>(base2.Get());
         TestAssert::IsTrue(unknown1.Get() == unknown3.Get(), L"Expected the same UnknownSample6 instance");
 
         weakPtr = unknown1;
-        Mso::TCntPtr<UnknownSample6> unknown11 = weakPtr.GetStrongPtr();
+        Mso::CntPtr<UnknownSample6> unknown11 = weakPtr.GetStrongPtr();
         TestAssert::IsNotNull(unknown11.Get());
         TestAssert::IsFalse(weakPtr.IsExpired());
 
         weakPtr1 = base1;
-        Mso::TCntPtr<IBaseSample1> base11 = weakPtr1.GetStrongPtr();
+        Mso::CntPtr<IBaseSample1> base11 = weakPtr1.GetStrongPtr();
         TestAssert::IsNotNull(base11.Get());
         TestAssert::IsFalse(weakPtr1.IsExpired());
 
         weakPtr2 = base2;
-        Mso::TCntPtr<IBaseSample2> base21 = weakPtr2.GetStrongPtr();
+        Mso::CntPtr<IBaseSample2> base21 = weakPtr2.GetStrongPtr();
         TestAssert::IsNotNull(base21.Get());
         TestAssert::IsFalse(weakPtr2.IsExpired());
       }
       TestAssert::IsTrue(deleted);
-      Mso::TCntPtr<UnknownSample6> unknown12 = weakPtr.GetStrongPtr();
+      Mso::CntPtr<UnknownSample6> unknown12 = weakPtr.GetStrongPtr();
       TestAssert::IsNull(unknown12.Get());
       TestAssert::IsTrue(weakPtr1.IsExpired());
     }
@@ -1220,14 +1215,14 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample7> unknown1 = Mso::Make<UnknownSample7>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.Get());
+      Mso::CntPtr<UnknownSample7> unknown1 = Mso::Make<UnknownSample7>(/*ref*/ deleted);
+      Mso::CntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.Get());
       TestAssert::IsNotNull(base2.Get());
       TestAssert::AreEqual(2, base2->GetValue2());
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(base2.Get());
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(base2.Get());
       TestAssert::IsNotNull(base1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
-      Mso::TCntPtr<IDerivedBase1> derivedBase1 = qi_cast<IDerivedBase1>(base2.Get());
+      Mso::CntPtr<IDerivedBase1> derivedBase1 = qi_cast<IDerivedBase1>(base2.Get());
       TestAssert::IsNotNull(derivedBase1.Get());
       TestAssert::AreEqual(11, derivedBase1->GetValue11());
     }
@@ -1239,9 +1234,9 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       UnknownSample8 unknown1(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(&unknown1);
+      Mso::CntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(&unknown1);
       TestAssert::IsNull(base2.Get());
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
       TestAssert::IsNotNull(base1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
     }
@@ -1253,9 +1248,9 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       std::unique_ptr<UnknownSample8> unknown1 = std::make_unique<UnknownSample8>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.get());
+      Mso::CntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.get());
       TestAssert::IsNull(base2.Get());
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.get());
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.get());
       TestAssert::IsNotNull(base1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
     }
@@ -1266,20 +1261,20 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample91> unknown1 = Mso::Make<UnknownSample91>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
+      Mso::CntPtr<UnknownSample91> unknown1 = Mso::Make<UnknownSample91>(/*ref*/ deleted);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
       TestAssert::AreEqual(0, base1->GetValue1());
 
-      Mso::TCntPtr<UnknownSample91> unknown2 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(unknown2.Get());
+      Mso::CntPtr<UnknownSample91> unknown2 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(unknown2.Get());
       TestAssert::AreEqual(3, base2->GetValue1());
 
-      Mso::TCntPtr<UnknownSample91> unknown3 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(unknown3.Get());
+      Mso::CntPtr<UnknownSample91> unknown3 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3, 5);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(unknown3.Get());
       TestAssert::AreEqual(8, base3->GetValue1());
 
-      Mso::TCntPtr<UnknownSample91> unknown4 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(unknown4.Get());
+      Mso::CntPtr<UnknownSample91> unknown4 = Mso::Make<UnknownSample91>(/*ref*/ deleted, 3, 5, 11);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(unknown4.Get());
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1289,20 +1284,20 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<UnknownSample92> unknown1 = Mso::Make<UnknownSample92>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
+      Mso::CntPtr<UnknownSample92> unknown1 = Mso::Make<UnknownSample92>(/*ref*/ deleted);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
       TestAssert::AreEqual(0, base1->GetValue1());
 
-      Mso::TCntPtr<UnknownSample92> unknown2 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(unknown2.Get());
+      Mso::CntPtr<UnknownSample92> unknown2 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(unknown2.Get());
       TestAssert::AreEqual(3, base2->GetValue1());
 
-      Mso::TCntPtr<UnknownSample92> unknown3 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(unknown3.Get());
+      Mso::CntPtr<UnknownSample92> unknown3 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3, 5);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(unknown3.Get());
       TestAssert::AreEqual(8, base3->GetValue1());
 
-      Mso::TCntPtr<UnknownSample92> unknown4 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(unknown4.Get());
+      Mso::CntPtr<UnknownSample92> unknown4 = Mso::Make<UnknownSample92>(/*ref*/ deleted, 3, 5, 11);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(unknown4.Get());
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1313,19 +1308,19 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       UnknownSample93 unknown1(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
       TestAssert::AreEqual(0, base1->GetValue1());
 
       UnknownSample93 unknown2(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(&unknown2);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(&unknown2);
       TestAssert::AreEqual(3, base2->GetValue1());
 
       UnknownSample93 unknown3(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(&unknown3);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(&unknown3);
       TestAssert::AreEqual(8, base3->GetValue1());
 
       UnknownSample93 unknown4(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(&unknown4);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(&unknown4);
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1352,44 +1347,46 @@ TEST_CLASS (UnknownObjectTest)
 
   TEST_METHOD(UnknownObject_DestroyThis)
   {
-    Mso::Async::ManualResetEvent deleted;
+    Mso::ManualResetEvent deleted;
     bool isAsyncDestroy = false;
 
     {
-      Mso::TCntPtr<UnknownSample101> unknown1 = Mso::Make<UnknownSample101>(/*ref*/ deleted, /*ref*/ isAsyncDestroy);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
+      Mso::CntPtr<UnknownSample101> unknown1 = Mso::Make<UnknownSample101>(/*ref*/ deleted, /*ref*/ isAsyncDestroy);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
     }
 
     // Wait for deletion to complete
-    deleted.Wait();
+    TestAssert::IsTrue(deleted.Wait());
     TestAssert::IsTrue(isAsyncDestroy);
   }
 
   TEST_METHOD(UnknownObject_WeakRef_DestroyThis)
   {
-    Mso::Async::ManualResetEvent deleted;
+    Mso::ManualResetEvent deleted;
     bool isAsyncDestroy = false;
 
     {
-      Mso::TCntPtr<UnknownSample102> unknown1 = Mso::Make<UnknownSample102>(/*ref*/ deleted, /*ref*/ isAsyncDestroy);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
+      Mso::CntPtr<UnknownSample102> unknown1 = Mso::Make<UnknownSample102>(/*ref*/ deleted, /*ref*/ isAsyncDestroy);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
     }
 
     // Wait for deletion to complete
-    deleted.Wait();
+    TestAssert::IsTrue(deleted.Wait());
     TestAssert::IsTrue(isAsyncDestroy);
   }
 
   TEST_METHOD(UnknownObject_QI_NullPtr)
   {
-    Mso::TCntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample21, IBaseSample1>();
+    Mso::CntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample21, IBaseSample1>();
 
-    TestCheckCrash(OACR_WARNING_SUPPRESS(
-                       INVALID_PARAM_VALUE_1,
-                       "Invalid parameter value. Our goal here is to see runtime check for the invalid value");
-                   (void)base1->QueryInterface(__uuidof(IBaseSample2), nullptr););
+    TestAssert::ExpectVEC([&]() noexcept {
+      OACR_WARNING_SUPPRESS(
+          INVALID_PARAM_VALUE_1,
+          "Invalid parameter value. Our goal here is to see runtime check for the invalid value");
+      (void)base1->QueryInterface(__uuidof(IBaseSample2), nullptr);
+    });
   }
 
   TEST_METHOD(UnknownObject_NoRefCountNoQuery_Stack)
@@ -1397,9 +1394,9 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       UnknownSample12 unknown1(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(&unknown1);
+      Mso::CntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(&unknown1);
       TestAssert::IsNull(base2.Get());
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&unknown1);
       TestAssert::IsNull(base1.Get());
     }
     TestAssert::IsTrue(deleted);
@@ -1410,9 +1407,9 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       std::unique_ptr<UnknownSample12> unknown1 = std::make_unique<UnknownSample12>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.get());
+      Mso::CntPtr<IBaseSample2> base2 = qi_cast<IBaseSample2>(unknown1.get());
       TestAssert::IsNull(base2.Get());
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.get());
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(unknown1.get());
       TestAssert::IsNull(base1.Get());
     }
     TestAssert::IsTrue(deleted);
@@ -1421,8 +1418,8 @@ TEST_CLASS (UnknownObjectTest)
 #if defined(MSO_ENABLE_QICHECK) && defined(DEBUG) && !defined(__clang__)
   TESTMETHOD_REQUIRES_SEH(UnknownObject_QI_NotNullResult)
   {
-    Mso::TCntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample21, IBaseSample1>();
-    Mso::TCntPtr<IBaseSample2> base2 = Mso::Make<UnknownSample21, IBaseSample2>();
+    Mso::CntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample21, IBaseSample1>();
+    Mso::CntPtr<IBaseSample2> base2 = Mso::Make<UnknownSample21, IBaseSample2>();
 
     TestAssert::ExpectVEC(
         [&]() noexcept { base1->QueryInterface(__uuidof(IBaseSample2), reinterpret_cast<void**>(base2.GetRaw())); });
@@ -1433,20 +1430,20 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<AgileSample1> unknown1 = Mso::Make<AgileSample1>(/*ref*/ deleted);
+      Mso::CntPtr<AgileSample1> unknown1 = Mso::Make<AgileSample1>(/*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
       Debug(TestAssert::AreEqual(1u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IBaseSample1> base1 = unknown1;
+      Mso::CntPtr<IBaseSample1> base1 = unknown1;
       TestAssert::AreEqual(1, base1->GetValue1());
       Debug(TestAssert::AreEqual(2u, unknown1->RefCount()));
 
 #if defined(MS_TARGET_WINDOWS)
-      Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
+      Mso::CntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
       TestAssert::IsNotNull(marshal1.Get(), L"IMarshal must not be null.");
       Debug(TestAssert::AreEqual(3u, unknown1->RefCount()));
 
-      Mso::TCntPtr<IAgileObject> agile1 = qi_cast<IAgileObject>(base1.Get());
+      Mso::CntPtr<IAgileObject> agile1 = qi_cast<IAgileObject>(base1.Get());
       TestAssert::IsNotNull(agile1.Get(), L"IAgileObject must not be null.");
       Debug(TestAssert::AreEqual(4u, unknown1->RefCount()));
 #endif
@@ -1465,48 +1462,48 @@ TEST_CLASS (UnknownObjectTest)
       Mso::WeakPtr<IAgileObject> weakAgileObj;
 #endif
       {
-        Mso::TCntPtr<AgileSample2> agile1 = Mso::Make<AgileSample2>(/*ref*/ deleted);
+        Mso::CntPtr<AgileSample2> agile1 = Mso::Make<AgileSample2>(/*ref*/ deleted);
         TestAssert::AreEqual(1, agile1->GetValue1());
         Debug(TestAssert::AreEqual(1u, agile1->GetWeakRef().RefCount()));
 
-        Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
+        Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
         TestAssert::AreEqual(1, base1->GetValue1());
         Debug(TestAssert::AreEqual(2u, agile1->GetWeakRef().RefCount()));
 
 #if !defined(__clang__) && !defined(__GNUC__)
-        Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
+        Mso::CntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(base1.Get());
         TestAssert::IsNotNull(marshal1.Get(), L"IMarshal must not be null.");
         Debug(TestAssert::AreEqual(3u, agile1->GetWeakRef().RefCount()));
 
-        Mso::TCntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(marshal1.Get());
+        Mso::CntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(marshal1.Get());
         TestAssert::IsNotNull(agileObj1.Get(), L"IAgileObject must not be null.");
         Debug(TestAssert::AreEqual(4u, agile1->GetWeakRef().RefCount()));
 #endif
 
         weakAgile = agile1;
-        Mso::TCntPtr<AgileSample2> agile11 = weakAgile.GetStrongPtr();
+        Mso::CntPtr<AgileSample2> agile11 = weakAgile.GetStrongPtr();
         TestAssert::IsNotNull(agile11.Get());
         TestAssert::IsFalse(weakAgile.IsExpired());
 
         weakBase1 = base1;
-        Mso::TCntPtr<IBaseSample1> base11 = weakBase1.GetStrongPtr();
+        Mso::CntPtr<IBaseSample1> base11 = weakBase1.GetStrongPtr();
         TestAssert::IsNotNull(base11.Get());
         TestAssert::IsFalse(weakBase1.IsExpired());
 
 #if !defined(__clang__) && !defined(__GNUC__)
         weakMarshal = marshal1;
-        Mso::TCntPtr<IMarshal> marshal11 = weakMarshal.GetStrongPtr();
+        Mso::CntPtr<IMarshal> marshal11 = weakMarshal.GetStrongPtr();
         TestAssert::IsNotNull(marshal11.Get());
         TestAssert::IsFalse(weakMarshal.IsExpired());
 
         weakAgileObj = agileObj1;
-        Mso::TCntPtr<IAgileObject> agileObj11 = weakAgileObj.GetStrongPtr();
+        Mso::CntPtr<IAgileObject> agileObj11 = weakAgileObj.GetStrongPtr();
         TestAssert::IsNotNull(agileObj11.Get());
         TestAssert::IsFalse(weakAgileObj.IsExpired());
 #endif
       }
       TestAssert::IsTrue(deleted);
-      Mso::TCntPtr<AgileSample2> agile12 = weakAgile.GetStrongPtr();
+      Mso::CntPtr<AgileSample2> agile12 = weakAgile.GetStrongPtr();
       TestAssert::IsNull(agile12.Get());
       TestAssert::IsTrue(weakAgile.IsExpired());
     }
@@ -1519,17 +1516,17 @@ TEST_CLASS (UnknownObjectTest)
       AgileSample3 agile1(/*ref*/ deleted);
 
 #if !defined(__clang__) && !defined(__GNUC__)
-      Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(&agile1);
+      Mso::CntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(&agile1);
       TestAssert::IsNotNull(marshal1.Get());
 
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(marshal1.Get());
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(marshal1.Get());
       TestAssert::IsNotNull(base1.Get());
 
-      Mso::TCntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(base1.Get());
+      Mso::CntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(base1.Get());
       TestAssert::IsNotNull(agileObj1.Get());
 #endif
 
-      Mso::TCntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(&agile1);
+      Mso::CntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(&agile1);
       TestAssert::IsNotNull(base11.Get());
     }
     TestAssert::IsTrue(deleted);
@@ -1542,17 +1539,17 @@ TEST_CLASS (UnknownObjectTest)
       std::unique_ptr<AgileSample3> agile1 = std::make_unique<AgileSample3>(/*ref*/ deleted);
 
 #if !defined(__clang__) && !defined(__GNUC__)
-      Mso::TCntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(agile1.get());
+      Mso::CntPtr<IMarshal> marshal1 = qi_cast<IMarshal>(agile1.get());
       TestAssert::IsNotNull(marshal1.Get());
 
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(marshal1.Get());
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(marshal1.Get());
       TestAssert::IsNotNull(base1.Get());
 
-      Mso::TCntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(base1.Get());
+      Mso::CntPtr<IAgileObject> agileObj1 = qi_cast<IAgileObject>(base1.Get());
       TestAssert::IsNotNull(agileObj1.Get());
 #endif
 
-      Mso::TCntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(agile1.get());
+      Mso::CntPtr<IBaseSample1> base11 = qi_cast<IBaseSample1>(agile1.get());
       TestAssert::IsNotNull(base11.Get());
     }
     TestAssert::IsTrue(deleted);
@@ -1572,11 +1569,11 @@ TEST_CLASS (UnknownObjectTest)
       std::vector<std::thread> threads;
       threads.reserve(20);
 
-      std::vector<Mso::TCntPtr<IMarshal>> results;
+      std::vector<Mso::CntPtr<IMarshal>> results;
       results.resize(threadCount);
 
       bool deleted = false;
-      Mso::TCntPtr<AgileSample1> agile1 = Mso::Make<AgileSample1>(/*ref*/ deleted);
+      Mso::CntPtr<AgileSample1> agile1 = Mso::Make<AgileSample1>(/*ref*/ deleted);
 
       for (size_t i = 0; i < threadCount; ++i)
       {
@@ -1591,7 +1588,7 @@ TEST_CLASS (UnknownObjectTest)
       }
 
       // See that we have the same result
-      Mso::TCntPtr<IMarshal> expected = qi_cast<IMarshal>(agile1.Get());
+      Mso::CntPtr<IMarshal> expected = qi_cast<IMarshal>(agile1.Get());
       TestAssert::IsNotNull(expected.Get(), L"Expected not null IMarshal instance.");
       for (const auto& result : results)
       {
@@ -1605,20 +1602,20 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<AgileSample41> agile1 = Mso::Make<AgileSample41>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
+      Mso::CntPtr<AgileSample41> agile1 = Mso::Make<AgileSample41>(/*ref*/ deleted);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
       TestAssert::AreEqual(0, base1->GetValue1());
 
-      Mso::TCntPtr<AgileSample41> agile2 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(agile2.Get());
+      Mso::CntPtr<AgileSample41> agile2 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(agile2.Get());
       TestAssert::AreEqual(3, base2->GetValue1());
 
-      Mso::TCntPtr<AgileSample41> agile3 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(agile3.Get());
+      Mso::CntPtr<AgileSample41> agile3 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3, 5);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(agile3.Get());
       TestAssert::AreEqual(8, base3->GetValue1());
 
-      Mso::TCntPtr<AgileSample41> agile4 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(agile4.Get());
+      Mso::CntPtr<AgileSample41> agile4 = Mso::Make<AgileSample41>(/*ref*/ deleted, 3, 5, 11);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(agile4.Get());
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1628,20 +1625,20 @@ TEST_CLASS (UnknownObjectTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<AgileSample42> agile1 = Mso::Make<AgileSample42>(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
+      Mso::CntPtr<AgileSample42> agile1 = Mso::Make<AgileSample42>(/*ref*/ deleted);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(agile1.Get());
       TestAssert::AreEqual(0, base1->GetValue1());
 
-      Mso::TCntPtr<AgileSample42> agile2 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(agile2.Get());
+      Mso::CntPtr<AgileSample42> agile2 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(agile2.Get());
       TestAssert::AreEqual(3, base2->GetValue1());
 
-      Mso::TCntPtr<AgileSample42> agile3 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(agile3.Get());
+      Mso::CntPtr<AgileSample42> agile3 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3, 5);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(agile3.Get());
       TestAssert::AreEqual(8, base3->GetValue1());
 
-      Mso::TCntPtr<AgileSample42> agile4 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(agile4.Get());
+      Mso::CntPtr<AgileSample42> agile4 = Mso::Make<AgileSample42>(/*ref*/ deleted, 3, 5, 11);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(agile4.Get());
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1652,19 +1649,19 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       AgileSample43 agile1(/*ref*/ deleted);
-      Mso::TCntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&agile1);
+      Mso::CntPtr<IBaseSample1> base1 = qi_cast<IBaseSample1>(&agile1);
       TestAssert::AreEqual(0, base1->GetValue1());
 
       AgileSample43 agile2(/*ref*/ deleted, 3);
-      Mso::TCntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(&agile2);
+      Mso::CntPtr<IBaseSample1> base2 = qi_cast<IBaseSample1>(&agile2);
       TestAssert::AreEqual(3, base2->GetValue1());
 
       AgileSample43 agile3(/*ref*/ deleted, 3, 5);
-      Mso::TCntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(&agile3);
+      Mso::CntPtr<IBaseSample1> base3 = qi_cast<IBaseSample1>(&agile3);
       TestAssert::AreEqual(8, base3->GetValue1());
 
       AgileSample43 agile4(/*ref*/ deleted, 3, 5, 11);
-      Mso::TCntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(&agile4);
+      Mso::CntPtr<IBaseSample1> base4 = qi_cast<IBaseSample1>(&agile4);
       TestAssert::AreEqual(19, base4->GetValue1());
     }
     TestAssert::IsTrue(deleted);
@@ -1703,7 +1700,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       IBaseSample1* base1 = query_cast<IBaseSample1*>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
       IBaseSample2* base2 = query_cast<IBaseSample2*>(base1);
@@ -1711,7 +1708,7 @@ TEST_CLASS (UnknownObjectTest)
       IBaseSample3* base3 = query_cast<IBaseSample3*>(base1);
       TestAssert::IsNull(base3);
       UnknownSample3* unknown2 = query_cast<UnknownSample3*>(base2);
-      //OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
+      // OACR_USE_PTR(unknown2); // We do not want to make unknown2 const in this test.
       TestAssert::AreEqual(2, unknown2->GetValue2());
     }
     TestAssert::IsTrue(deleted);
@@ -1722,7 +1719,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       const IBaseSample1* base1 = query_cast<const IBaseSample1*>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
       const IBaseSample2* base2 = query_cast<const IBaseSample2*>(base1);
@@ -1740,7 +1737,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       const IBaseSample1* base1 = query_cast<const IBaseSample1*>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
       const IBaseSample2* base2 = query_cast<const IBaseSample2*>(const_cast<IBaseSample1*>(base1));
@@ -1756,7 +1753,7 @@ TEST_CLASS (UnknownObjectTest)
   TEST_METHOD(UnknownObject_query_cast_if_set_nullptr)
   {
     // UnknownSample111 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-    Mso::TCntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample111, IBaseSample1>();
+    Mso::CntPtr<IBaseSample1> base1 = Mso::Make<UnknownSample111, IBaseSample1>();
     IBaseSample2* base2 = query_cast<IBaseSample2*>(base1.Get());
     TestAssert::AreEqual(2, base2->GetValue2());
     const IBaseSample1* base11 = query_cast<IBaseSample1*>(base2);
@@ -1770,11 +1767,11 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       IBaseSample1& base1 = query_cast<IBaseSample1&>(*unknown1);
       TestAssert::AreEqual(1, base1.GetValue1());
       IBaseSample2& base2 = query_cast<IBaseSample2&>(base1);
-      TestAssert::AreEqual(2, base2.GetValue2());
+
       TestCheckCrash(query_cast<IBaseSample3&>(base1));
       UnknownSample3& unknown2 = query_cast<UnknownSample3&>(base2);
       OACR_USE_PTR(&unknown2); // We do not want to make unknown2 const in this test.
@@ -1788,7 +1785,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       const IBaseSample1& base1 = query_cast<const IBaseSample1&>(*unknown1);
       TestAssert::AreEqual(1, base1.GetValue1());
       const IBaseSample2& base2 = query_cast<const IBaseSample2&>(base1);
@@ -1811,7 +1808,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample3 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
+      Mso::CntPtr<const UnknownSample3> unknown1 = Mso::Make<UnknownSample3>(/*ref*/ deleted);
       const IBaseSample1& base1 = query_cast<const IBaseSample1&>(const_cast<UnknownSample3&>(*unknown1));
       TestAssert::AreEqual(1, base1.GetValue1());
       const IBaseSample2& base2 = query_cast<const IBaseSample2&>(const_cast<IBaseSample1&>(base1));
@@ -1834,7 +1831,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample6 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
       IBaseSample1* base1 = query_cast<IBaseSample1*>(unknown1.Get());
       TestAssert::AreEqual(1, base1->GetValue1());
       IBaseSample2* base2 = query_cast<IBaseSample2*>(base1);
@@ -1853,7 +1850,7 @@ TEST_CLASS (UnknownObjectTest)
     bool deleted = false;
     {
       // UnknownSample6 implements IBaseSample1, IBaseSample2, and not IBaseSample3
-      Mso::TCntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
+      Mso::CntPtr<UnknownSample6> unknown1 = Mso::Make<UnknownSample6>(/*ref*/ deleted);
       IBaseSample1& base1 = query_cast<IBaseSample1&>(*unknown1);
       TestAssert::AreEqual(1, base1.GetValue1());
       IBaseSample2& base2 = query_cast<IBaseSample2&>(base1);
@@ -1976,7 +1973,7 @@ TEST_CLASS (UnknownObjectTest)
     bool freeCalled = false;
     {
       MyMemHeap memHeap(/*ref*/ allocCalled, /*ref*/ freeCalled);
-      Mso::TCntPtr<IBaseSample1> unknown1 =
+      Mso::CntPtr<IBaseSample1> unknown1 =
           Mso::MakeAlloc<MyMemHeapUnknownSample1, IBaseSample1>(&memHeap, /*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
     }
@@ -1992,7 +1989,7 @@ TEST_CLASS (UnknownObjectTest)
     bool freeCalled = false;
     {
       MyMemHeap memHeap(/*ref*/ allocCalled, /*ref*/ freeCalled);
-      Mso::TCntPtr<IBaseSample1> unknown1 =
+      Mso::CntPtr<IBaseSample1> unknown1 =
           Mso::MakeAlloc<MyMemHeapUnknownSample2, IBaseSample1>(&memHeap, /*ref*/ deleted);
       TestAssert::AreEqual(1, unknown1->GetValue1());
     }

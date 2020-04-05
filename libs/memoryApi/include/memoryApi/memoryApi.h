@@ -10,6 +10,9 @@ This file contains the basic set of allocation APIs that anyone can use:
 See MsoMemory.h for information about operator new.
 */
 #pragma once
+#ifndef MSO_MEMORYAPI_MEMORYAPI_H
+#define MSO_MEMORYAPI_MEMORYAPI_H
+
 #ifdef __cplusplus
 
 #include <compilerAdapters/compilerWarnings.h>
@@ -21,12 +24,7 @@ See MsoMemory.h for information about operator new.
 #include <memoryApi/memoryLeakScope.h>
 #include <oacr/oacr.h>
 #include <platformAdapters/types.h>
-// TODO: reconcile this #include <safeInt.h>
 
-#pragma push_macro("new")
-#undef new
-#pragma push_macro("New")
-#undef New
 #include <memory>
 
 namespace Mso { namespace Memory {
@@ -92,7 +90,7 @@ Return a new allocation of the requested size (cb)
 Returns nullptr on failure
 */
 LIBLET_PUBLICAPI_EX("win", "android")
-_Ret_maybenull_ _Post_writable_byte_size_(cb) void* AllocateEx(size_t cb, DWORD allocFlags) noexcept;
+_Ret_maybenull_ _Post_writable_byte_size_(cb) void* AllocateEx(size_t cb, uint32_t allocFlags) noexcept;
 
 /**
 Return a new allocation of the requested size (cb)
@@ -185,7 +183,7 @@ namespace Mso { namespace Memory { namespace FailFast {
 Return a new allocation of the requested size (cb)
 Never returns nullptr
 */
-_Ret_maybenull_ _Post_writable_byte_size_(cb) inline void* AllocateEx(size_t cb, DWORD allocFlags) noexcept
+_Ret_maybenull_ _Post_writable_byte_size_(cb) inline void* AllocateEx(size_t cb, uint32_t allocFlags) noexcept
 {
   auto pv = Mso::Memory::AllocateEx(cb, allocFlags);
   if (pv == nullptr)
@@ -257,7 +255,7 @@ The equals operator is purposely left out. Use the c'tor or Attach().
 
 Mso::MemoryPtr<BYTE> pFoo; // equivalent to BYTE* pFoo;
 */
-template <typename T, DWORD allocFlags = 0>
+template <typename T, uint32_t allocFlags = 0>
 class MemoryPtr : public Mso::THolder<T*, MemoryPtrHelper<T>>
 {
   typedef Mso::THolder<T*, MemoryPtrHelper<T>> Super;
@@ -442,9 +440,9 @@ public:
 private:
   MSO_NO_COPY_CTOR_AND_ASSIGNMENT(MemoryPtr);
 };
+
 } // namespace Mso
 
-#pragma pop_macro("New")
-#pragma pop_macro("new")
-
 #endif // __cplusplus
+
+#endif // MSO_MEMORYAPI_MEMORYAPI_H

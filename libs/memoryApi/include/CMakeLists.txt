@@ -6,7 +6,4 @@ liblet_includes(
     memoryApi/leakDetection.h
     memoryApi/memoryApi.h
     memoryApi/memoryLeakScope.h
-    safeAlloct.h
 )
-
-#TODO: memoryapi/threadLocalUniquePtr.h

@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#pragma once
+#ifndef MSO_FUNCTIONAL_FUNCTORREF_H
+#define MSO_FUNCTIONAL_FUNCTORREF_H
+
 //! Mso::FunctorRef is a lightweight type erased reference to a function
 //! object such as lambda.
 //!
@@ -34,7 +38,7 @@
 //! Use Mso::FunctorRefThrow for throwing function objects.
 //!
 //! In case if you want to store function object or transfer its ownership, you can use:
-//! - Mso::Functor that is an Mso::TCntPtr to a ref counted heap-allocated object.
+//! - Mso::Functor that is an Mso::CntPtr to a ref counted heap-allocated object.
 //! - Mso::SmallFunctor that uses in-place storage.
 //!
 //! Usage example:
@@ -83,19 +87,12 @@
 //! optimized builds, while sometimes unoptimized builds seem to work.
 //!
 
-#pragma once
-#ifndef LIBLET_CORE_FUNCTORREF_H
-#define LIBLET_CORE_FUNCTORREF_H
-
 #include <compilerAdapters/cppMacros.h>
 #include <crash/verifyElseCrash.h>
 
 #include <memory>
 #include <type_traits>
 #include <utility>
-
-#pragma push_macro("new")
-#undef new
 
 namespace Mso {
 
@@ -144,7 +141,8 @@ public:
   }
 
   //! Delete copy and move constructors and assignment operators.
-  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctorRef);
+  FunctorRef(FunctorRef const& other) = delete;
+  FunctorRef& operator=(FunctorRef const& other) = delete;
 
   //! Calls referenced function object.
   //! Crash if referenced function object is nullptr.
@@ -181,7 +179,8 @@ private:
   struct FunctorRefWrapper final : IFunctorRef
   {
     FunctorRefWrapper(T* func) noexcept : m_func(func) {}
-    MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctorRefWrapper);
+    FunctorRefWrapper(FunctorRefWrapper const&) = delete;
+    FunctorRefWrapper& operator=(FunctorRefWrapper const&) = delete;
     ~FunctorRefWrapper() = delete;
 
     TResult Invoke(TArgs&&... args) const noexcept override
@@ -241,7 +240,8 @@ public:
   }
 
   //! Delete copy and move constructors and assignment operators.
-  MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctorRefThrow);
+  FunctorRefThrow(FunctorRefThrow const&) = delete;
+  FunctorRefThrow& operator=(FunctorRefThrow const&) = delete;
 
   //! Calls referenced function object.
   //! Crash if referenced function object is nullptr.
@@ -278,7 +278,8 @@ private:
   struct FunctorRefThrowWrapper final : IFunctorRefThrow
   {
     FunctorRefThrowWrapper(T* func) noexcept : m_func(func) {}
-    MSO_NO_COPY_CTOR_AND_ASSIGNMENT(FunctorRefThrowWrapper);
+    FunctorRefThrowWrapper(FunctorRefThrowWrapper const&) = delete;
+    FunctorRefThrowWrapper& operator=(FunctorRefThrowWrapper const&) = delete;
     ~FunctorRefThrowWrapper() = delete;
 
     TResult Invoke(TArgs&&... args) const override
@@ -303,6 +304,4 @@ using VoidFunctorRefThrow = FunctorRefThrow<void()>;
 
 } // namespace Mso
 
-#pragma pop_macro("new")
-
-#endif // LIBLET_CORE_FUNCTORREF_H
+#endif // MSO_FUNCTIONAL_FUNCTORREF_H

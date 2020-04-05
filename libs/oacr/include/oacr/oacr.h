@@ -25,7 +25,7 @@
 #define OACR_DEPRECATED 0
 
 #ifndef __oacr_noop
-#define __oacr_noop __noop
+#define __oacr_noop() (void)0
 #endif
 
 #if defined(__cplusplus)
@@ -674,8 +674,8 @@ void _lambda_noexcept_mayterminate_() noexcept {};
 #define OACR_LAMBDA_NOEXCEPT_MAYTERMINATE _lambda_noexcept_mayterminate_()
 #define OACR_NOEXCEPT_MAYTERMINATE _lambda_noexcept_mayterminate_()
 #else
-#define OACR_LAMBDA_NOEXCEPT_MAYTERMINATE __oacr_noop
-#define OACR_NOEXCEPT_MAYTERMINATE __oacr_noop
+#define OACR_LAMBDA_NOEXCEPT_MAYTERMINATE __oacr_noop()
+#define OACR_NOEXCEPT_MAYTERMINATE __oacr_noop()
 #endif
 
 // macro indicate mayterminate ignore stl
@@ -683,7 +683,7 @@ void _lambda_noexcept_mayterminate_() noexcept {};
 void _noexcept_mayterminate_ignore_stl_() noexcept {};
 #define OACR_NOEXCEPT_MAYTERMINATE_IGNORE_STL _noexcept_mayterminate_ignore_stl_()
 #else
-#define OACR_NOEXCEPT_MAYTERMINATE_IGNORE_STL __oacr_noop
+#define OACR_NOEXCEPT_MAYTERMINATE_IGNORE_STL __oacr_noop()
 #endif
 
 // macro indicate mayterminate ignore
@@ -691,7 +691,7 @@ void _noexcept_mayterminate_ignore_stl_() noexcept {};
 __extern_c void _noexcept_mayterminate_ignore_(const char*) noexcept;
 #define OACR_NOEXCEPT_MAYTERMINATE_IGNORE(funcs) _noexcept_mayterminate_ignore_(funcs)
 #else
-#define OACR_NOEXCEPT_MAYTERMINATE_IGNORE(funcs) __oacr_noop
+#define OACR_NOEXCEPT_MAYTERMINATE_IGNORE(funcs) __oacr_noop()
 #endif
 
 // OACR custom plugin specific extensions

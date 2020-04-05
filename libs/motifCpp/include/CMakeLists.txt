@@ -10,7 +10,6 @@ liblet_includes(
     motifCpp/motifCppTestBase.h
     motifCpp/testCheck.h
     motifCpp/testInfo.h
-    test/skipSEHUT.h
   INCLUDES_APPLE
     motifCpp/assert_IgnorePlat_apple.h
 )

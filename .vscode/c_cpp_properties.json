@@ -1,0 +1,36 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/libs/compilerAdapters/include",
+                "${workspaceFolder}/libs/comUtil/include",
+                "${workspaceFolder}/libs/cppExtensions/include",
+                "${workspaceFolder}/libs/crash/include",
+                "${workspaceFolder}/libs/debugAssertApi/include",
+                "${workspaceFolder}/libs/eventWaitHandle/include",
+                "${workspaceFolder}/libs/functional/include",
+                "${workspaceFolder}/libs/guid/include",
+                "${workspaceFolder}/libs/memoryApi/include",
+                "${workspaceFolder}/libs/motifCpp/include",
+                "${workspaceFolder}/libs/oacr/include",
+                "${workspaceFolder}/libs/oacr_posix/include",
+                "${workspaceFolder}/libs/object/include",
+                "${workspaceFolder}/libs/platformAdapters/include",
+                "${workspaceFolder}/libs/platform_posix/include",
+                "${workspaceFolder}/libs/smartPtr/include",
+                "${workspaceFolder}/libs/tagUtils/include",
+                "${workspaceFolder}/libs/typeTraits/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "vector-of-bool.cmake-tools"
+        }
+    ],
+    "version": 4
+}

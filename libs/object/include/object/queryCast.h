@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  Support for IUnknown::QueryInterface implementation.
-*/
 #pragma once
+#ifndef MSO_OBJECT_QUERYCAST_H
+#define MSO_OBJECT_QUERYCAST_H
+
 #include <type_traits>
 #include <utility>
 
@@ -385,3 +385,5 @@ TTarget query_cast(TSource&& source) noexcept
 END_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
 END_DISABLE_WARNING_ASSIGNMENT_OPERATOR_IMPLICITLY_DELETED()
 END_DISABLE_WARNING_COPY_CTOR_IMPLICITLY_DELETED()
+
+#endif // MSO_OBJECT_QUERYCAST_H

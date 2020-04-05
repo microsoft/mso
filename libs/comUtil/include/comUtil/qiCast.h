@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef LIBLET_COMUTIL_QICAST_H
-#define LIBLET_COMUTIL_QICAST_H
+#ifndef MSO_COMUTIL_QICAST_H
+#define MSO_COMUTIL_QICAST_H
 #ifdef __cplusplus
 
 #include "qiCastCore.h"
@@ -14,11 +14,11 @@
 #include <comBaseApi.h>
 #include <unknwn.h>
 
-namespace Mso { namespace ComUtil {
+namespace Mso::ComUtil {
 
 template <typename T>
 HRESULT HrCoCreateInstance(
-    Mso::TCntPtr<T>& target,
+    Mso::CntPtr<T>& target,
     REFCLSID rclsid,
     _In_opt_ LPUNKNOWN pUnkOuter = nullptr,
     DWORD dwClsContext = CLSCTX_ALL) noexcept
@@ -30,7 +30,7 @@ HRESULT HrCoCreateInstance(
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
 template <typename T>
 HRESULT HrCoCreateInstance(
-    Mso::TCntPtr<T>& target,
+    Mso::CntPtr<T>& target,
     _In_z_ LPCOLESTR szProgID,
     _In_opt_ LPUNKNOWN pUnkOuter = nullptr,
     DWORD dwClsContext = CLSCTX_ALL) noexcept
@@ -41,7 +41,7 @@ HRESULT HrCoCreateInstance(
 }
 #endif
 
-}} // namespace Mso::ComUtil
+} // namespace Mso::ComUtil
 
 namespace Mso {
 
@@ -56,17 +56,17 @@ __declspec(
 
 #endif // MS_TARGET_WINDOWS
 
-namespace Mso { namespace Details {
+namespace Mso::Details {
 
-// Overloaded global function to provide to IID_PPV_ARGS that support Details::TCntPtrRef
+// Overloaded global function to provide to IID_PPV_ARGS that support Details::CntPtrRef
 template <typename T>
-void** IID_PPV_ARGS_Helper(_Inout_ TCntPtrRef<T> pp) noexcept
+void** IID_PPV_ARGS_Helper(_Inout_ CntPtrRef<T> pp) noexcept
 {
   static_assert(std::is_base_of<IUnknown, T>::value, "T has to derive from IUnknown");
   return pp;
 }
 
-}} // namespace Mso::Details
+} // namespace Mso::Details
 
 #endif // __cplusplus
-#endif // LIBLET_COMUTIL_QICAST_H
+#endif // MSO_COMUTIL_QICAST_H

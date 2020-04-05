@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  Support for reference counting.
-*/
-
 #pragma once
-#ifdef __cplusplus
+#ifndef MSO_OBJECT_OBJECTREFCOUNT_H
+#define MSO_OBJECT_OBJECTREFCOUNT_H
 #include <cstdint>
 #include <type_traits>
 
@@ -20,10 +17,6 @@
 // It does not provide any additional features such as WeakPtr, and uses minimum memory per instance: only 4 bytes.
 // The ObjectRefCount<TDerived> template does not have a v-table. It calls the TDerived type destructor.
 //
-
-#pragma pack(push, _CRT_PACKING)
-#pragma push_macro("new")
-#undef new
 
 #define MSO_OBJECT_SIMPLEREFCOUNT(TObject)                                                         \
 public:                                                                                            \
@@ -224,7 +217,7 @@ public:
   The actual type / Make() function everybody would use
 */
 template <typename T>
-using RefCountedPtr = Mso::TCntPtr<RefCountedWrapper<T>>;
+using RefCountedPtr = Mso::CntPtr<RefCountedWrapper<T>>;
 
 template <typename T, typename... U>
 RefCountedPtr<T> Make_RefCounted(U&&... args) noexcept
@@ -234,7 +227,4 @@ RefCountedPtr<T> Make_RefCounted(U&&... args) noexcept
 
 } // namespace Mso
 
-#pragma pop_macro("new")
-#pragma pack(pop)
-
-#endif // __cplusplus
+#endif // MSO_OBJECT_OBJECTREFCOUNT_H

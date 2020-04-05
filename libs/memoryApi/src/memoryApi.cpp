@@ -4,6 +4,7 @@
 /**
   CRT based implementation for Mso::Memory
 */
+#include <platformAdapters/windowsFirst.h>
 #include <memoryApi/memoryApi.h>
 #include <cstdlib>
 #include <memory>
@@ -19,7 +20,7 @@ __declspec(noreturn) void ThrowOOM()
 
 namespace Mso { namespace Memory {
 
-_Use_decl_annotations_ void* AllocateEx(size_t cb, DWORD /*allocFlags*/) noexcept
+_Use_decl_annotations_ void* AllocateEx(size_t cb, uint32_t /*allocFlags*/) noexcept
 {
   return ::malloc(cb);
 }
@@ -69,12 +70,11 @@ _Use_decl_annotations_ void Free(void* pv) noexcept
 }} // namespace Mso::Memory
 
 #ifdef DEBUG
-MSOAPI_(void) MsoSetLazyLeakDetection(const void*) noexcept {}
+void MsoSetLazyLeakDetection(const void*) noexcept {}
 
-MSOAPI_(void) MsoSetShutdownLeakDetection(const void*) noexcept {}
+void MsoSetShutdownLeakDetection(const void*) noexcept {}
 
-MSOAPI_(BOOL)
-FMemHeapMsoSaveBeHost(
+BOOL FMemHeapMsoSaveBeHost(
     void* /*pinst*/,
     LPARAM /*lParam*/,
     const void* /*pvBlock*/,

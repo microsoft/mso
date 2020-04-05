@@ -1,16 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/****************************************************************************
-Unit tests for classes in the Functor.h
-****************************************************************************/
-
-#include "precomp.h"
+#include "functional/functorRef.h"
 #include <functional>
-#include <functional/functor.h>
-#include <functional/functorRef.h>
-#include "test/skipSEHUT.h"
-#include <motifCpp/testCheck.h>
+#include "functional/functor.h"
+#include "motifCpp/testCheck.h"
 
 // use the anonymous namespace to avoid potential conflict with MyParam def in FunctorRef.cpp
 namespace {
@@ -68,29 +62,29 @@ struct TestClass
   }
 
   static int PassByRef(
-      const Mso::TCntPtr<MyParam>& p,
-      const Mso::FunctorRef<int(const Mso::TCntPtr<MyParam>&)>& func) noexcept
+      const Mso::CntPtr<MyParam>& p,
+      const Mso::FunctorRef<int(const Mso::CntPtr<MyParam>&)>& func) noexcept
   {
     return func(p);
   }
 
   static int PassByRefThrow(
-      const Mso::TCntPtr<MyParam>& p,
-      const Mso::FunctorRefThrow<int(const Mso::TCntPtr<MyParam>&)>& func)
+      const Mso::CntPtr<MyParam>& p,
+      const Mso::FunctorRefThrow<int(const Mso::CntPtr<MyParam>&)>& func)
   {
     return func(p);
   }
 
-  static Mso::TCntPtr<MyParam> PassAsRValue(
-      Mso::TCntPtr<MyParam>&& p,
-      const Mso::FunctorRef<Mso::TCntPtr<MyParam>(Mso::TCntPtr<MyParam>&&)>& func) noexcept
+  static Mso::CntPtr<MyParam> PassAsRValue(
+      Mso::CntPtr<MyParam>&& p,
+      const Mso::FunctorRef<Mso::CntPtr<MyParam>(Mso::CntPtr<MyParam>&&)>& func) noexcept
   {
     return func(std::move(p));
   }
 
-  static Mso::TCntPtr<MyParam> PassAsRValueThrow(
-      Mso::TCntPtr<MyParam>&& p,
-      const Mso::FunctorRefThrow<Mso::TCntPtr<MyParam>(Mso::TCntPtr<MyParam>&&)>& func)
+  static Mso::CntPtr<MyParam> PassAsRValueThrow(
+      Mso::CntPtr<MyParam>&& p,
+      const Mso::FunctorRefThrow<Mso::CntPtr<MyParam>(Mso::CntPtr<MyParam>&&)>& func)
   {
     return func(std::move(p));
   }
@@ -128,15 +122,15 @@ struct TestClassNoexcept
   }
 
   static int PassByRef(
-      const Mso::TCntPtr<MyParam>& p,
-      const Mso::FunctorRef<int(const Mso::TCntPtr<MyParam>&) noexcept>& func) noexcept
+      const Mso::CntPtr<MyParam>& p,
+      const Mso::FunctorRef<int(const Mso::CntPtr<MyParam>&) noexcept>& func) noexcept
   {
     return func(p);
   }
 
-  static Mso::TCntPtr<MyParam> PassAsRValue(
-      Mso::TCntPtr<MyParam>&& p,
-      const Mso::FunctorRef<Mso::TCntPtr<MyParam>(Mso::TCntPtr<MyParam>&&) noexcept>& func) noexcept
+  static Mso::CntPtr<MyParam> PassAsRValue(
+      Mso::CntPtr<MyParam>&& p,
+      const Mso::FunctorRef<Mso::CntPtr<MyParam>(Mso::CntPtr<MyParam>&&) noexcept>& func) noexcept
   {
     return func(std::move(p));
   }
@@ -192,12 +186,12 @@ TEST_CLASS (FunctorRefTest)
     TestCheck(isCalled);
   }
 
-  TESTMETHOD_REQUIRES_SEH(FunctorRef_Nullable_Crash)
+  TEST_METHOD(FunctorRef_Nullable_Crash)
   {
     TestCheckCrash(TestClass::Execute(nullptr));
   }
 
-  TESTMETHOD_REQUIRES_SEH(FunctorRefThrow_Nullable_Crash)
+  TEST_METHOD(FunctorRefThrow_Nullable_Crash)
   {
     TestCheckCrash(TestClass::ExecuteThrow(nullptr));
   }
@@ -222,26 +216,26 @@ TEST_CLASS (FunctorRefTest)
 
   TEST_METHOD(FunctorRef_LambdaPassParamByRef)
   {
-    // Pass an Mso::TCntPtr as an const reference and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an const reference and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
     param.Value = 10;
 
-    int result = TestClass::PassByRef(spParam, [](const Mso::TCntPtr<MyParam>& p) noexcept { return p->Value; });
+    int result = TestClass::PassByRef(spParam, [](const Mso::CntPtr<MyParam>& p) noexcept { return p->Value; });
     TestCheckEqual(10, result);
     TestCheckEqual(1, param.AddRefCount);
   }
 
   TEST_METHOD(FunctorRef_LambdaPassParamAsRValue)
   {
-    // Pass an Mso::TCntPtr as an r-value and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an r-value and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
 
     auto spParam2 =
-        TestClass::PassAsRValue(std::move(spParam), [](Mso::TCntPtr<MyParam>&& p) noexcept { return std::move(p); });
+        TestClass::PassAsRValue(std::move(spParam), [](Mso::CntPtr<MyParam>&& p) noexcept { return std::move(p); });
     TestCheckEqual(1, param.AddRefCount);
   }
 
@@ -272,26 +266,26 @@ TEST_CLASS (FunctorRefTest)
 
   TEST_METHOD(FunctorRef_noexcept_LambdaPassParamByRef)
   {
-    // Pass an Mso::TCntPtr as an const reference and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an const reference and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
     param.Value = 10;
 
-    int result = TestClass::PassByRef(spParam, [](const Mso::TCntPtr<MyParam>& p) noexcept { return p->Value; });
+    int result = TestClass::PassByRef(spParam, [](const Mso::CntPtr<MyParam>& p) noexcept { return p->Value; });
     TestCheckEqual(10, result);
     TestCheckEqual(1, param.AddRefCount);
   }
 
   TEST_METHOD(FunctorRef_noexcept_LambdaPassParamAsRValue)
   {
-    // Pass an Mso::TCntPtr as an r-value and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an r-value and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
 
     auto spParam2 =
-        TestClass::PassAsRValue(std::move(spParam), [](Mso::TCntPtr<MyParam>&& p) noexcept { return std::move(p); });
+        TestClass::PassAsRValue(std::move(spParam), [](Mso::CntPtr<MyParam>&& p) noexcept { return std::move(p); });
     TestCheckEqual(1, param.AddRefCount);
   }
 
@@ -316,29 +310,29 @@ TEST_CLASS (FunctorRefTest)
 
   TEST_METHOD(FunctorRefThrow_LambdaPassParamByRef)
   {
-    // Pass an Mso::TCntPtr as an const reference and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an const reference and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
     param.Value = 10;
 
-    using Function = std::function<int(const Mso::TCntPtr<MyParam>&)>;
+    using Function = std::function<int(const Mso::CntPtr<MyParam>&)>;
     int result =
-        TestClass::PassByRefThrow(spParam, Function([](const Mso::TCntPtr<MyParam>& p) noexcept { return p->Value; }));
+        TestClass::PassByRefThrow(spParam, Function([](const Mso::CntPtr<MyParam>& p) noexcept { return p->Value; }));
     TestCheckEqual(10, result);
     TestCheckEqual(1, param.AddRefCount);
   }
 
   TEST_METHOD(FunctorRefThrow_LambdaPassParamAsRValue)
   {
-    // Pass an Mso::TCntPtr as an r-value and see that it was never called AddRef()
+    // Pass an Mso::CntPtr as an r-value and see that it was never called AddRef()
     MyParam param;
-    auto spParam = Mso::TCntPtr<MyParam>(&param);
+    auto spParam = Mso::CntPtr<MyParam>(&param);
     TestCheckEqual(1, param.AddRefCount);
 
-    using Function = std::function<Mso::TCntPtr<MyParam>(Mso::TCntPtr<MyParam> &&)>;
+    using Function = std::function<Mso::CntPtr<MyParam>(Mso::CntPtr<MyParam> &&)>;
     auto spParam2 = TestClass::PassAsRValueThrow(
-        std::move(spParam), Function([](Mso::TCntPtr<MyParam>&& p) noexcept { return std::move(p); }));
+        std::move(spParam), Function([](Mso::CntPtr<MyParam>&& p) noexcept { return std::move(p); }));
     TestCheckEqual(1, param.AddRefCount);
   }
 

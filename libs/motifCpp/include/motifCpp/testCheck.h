@@ -121,9 +121,9 @@
 // It is done by adding the following member to the test class:
 // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 //=============================================================================
-#define TEST_DISABLE_MEMORY_LEAK_DETECTION() \
-  StopTrackingMemoryAllocations();           \
-  auto restartTrackingMemoryAllocations = Mso::TCleanup::Make([&]() noexcept { StartTrackingMemoryAllocations(); });
+#define TEST_DISABLE_MEMORY_LEAK_DETECTION()
+// StopTrackingMemoryAllocations();
+// auto restartTrackingMemoryAllocations = Mso::TCleanup::Make([&]() noexcept { StartTrackingMemoryAllocations(); });
 
 //=============================================================================
 // Helper functions to implement TestCheckTerminate.

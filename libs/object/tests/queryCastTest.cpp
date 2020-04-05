@@ -1,11 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/****************************************************************************
-Unit tests for classes in the ObjectQueryCast.h
-****************************************************************************/
-
-#include "precomp.h"
 #include <object/queryCast.h>
 #include <motifCpp/testCheck.h>
 
@@ -484,218 +479,219 @@ inline TTarget* TraitsQueryCast(const TSource& source, const GUID& riid = __uuid
   return nullptr;
 }
 
-TestClassComponent(ObjectQueryCastTest, Mso.ObjectQueryCast)
-    TEST_CLASS (ObjectQueryCastTest){// Use GUID by default.
-                                     TEST_METHOD(QueryCastTraits_Guid){QueryCastTraitsSample1 obj;
+TEST_CLASS (ObjectQueryCastTest)
+{ // Use GUID by default.
+  TEST_METHOD(QueryCastTraits_Guid)
+  {
+    QueryCastTraitsSample1 obj;
 
-auto base1 = TraitsQueryCast<IQueryCastBase1, IQueryCastBase1*>(&obj);
-TestAssert::IsNotNull(base1);
-TestAssert::IsTrue((void*)&obj == (void*)base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1, IQueryCastBase1*>(&obj);
+    TestAssert::IsNotNull(base1);
+    TestAssert::IsTrue((void*)&obj == (void*)base1);
 
-auto base2 = TraitsQueryCast<IQueryCastBase1, IQueryCastBase1*>(&obj, __uuidof(IQueryCastBase2));
-TestAssert::IsNull(base2);
-}
+    auto base2 = TraitsQueryCast<IQueryCastBase1, IQueryCastBase1*>(&obj, __uuidof(IQueryCastBase2));
+    TestAssert::IsNull(base2);
+  }
 
-// Use QueryCast method if it is present.
-TEST_METHOD(QueryCastTraits_QueryCast)
-{
-  QueryCastTraitsSample2 obj;
+  // Use QueryCast method if it is present.
+  TEST_METHOD(QueryCastTraits_QueryCast)
+  {
+    QueryCastTraitsSample2 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNull(base2);
-}
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNull(base2);
+  }
 
-// QueryCast has higher priority over the assigned GUID.
-TEST_METHOD(QueryCastTraits_QueryCastOverridesGuid)
-{
-  QueryCastTraitsSample3 obj;
+  // QueryCast has higher priority over the assigned GUID.
+  TEST_METHOD(QueryCastTraits_QueryCastOverridesGuid)
+  {
+    QueryCastTraitsSample3 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<QueryCastTraitsBase3>(&obj);
-  TestAssert::IsNull(base2);
-}
+    auto base2 = TraitsQueryCast<QueryCastTraitsBase3>(&obj);
+    TestAssert::IsNull(base2);
+  }
 
-// Test use of QueryCastChain to query for a base interface.
-TEST_METHOD(QueryCastChain_Test)
-{
-  QueryCastChainSample1 obj;
-  TestAssert::AreEqual(sizeof(uintptr_t), sizeof(obj), L"There must be only one v-table.");
+  // Test use of QueryCastChain to query for a base interface.
+  TEST_METHOD(QueryCastChain_Test)
+  {
+    QueryCastChainSample1 obj;
+    TestAssert::AreEqual(sizeof(uintptr_t), sizeof(obj), L"There must be only one v-table.");
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto derived1 = TraitsQueryCast<IQueryCastDerived1>(&obj);
-  TestAssert::IsNotNull(derived1);
-}
+    auto derived1 = TraitsQueryCast<IQueryCastDerived1>(&obj);
+    TestAssert::IsNotNull(derived1);
+  }
 
-// Test use of QueryCastChain to query for a base interface.
-TEST_METHOD(QueryCastChain_InList)
-{
-  QueryCastChainSample2 obj;
-  TestAssert::AreEqual(sizeof(uintptr_t) * 2, sizeof(obj), L"There must be only two v-tables.");
+  // Test use of QueryCastChain to query for a base interface.
+  TEST_METHOD(QueryCastChain_InList)
+  {
+    QueryCastChainSample2 obj;
+    TestAssert::AreEqual(sizeof(uintptr_t) * 2, sizeof(obj), L"There must be only two v-tables.");
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto derived1 = TraitsQueryCast<IQueryCastDerived1>(&obj);
-  TestAssert::IsNotNull(derived1);
+    auto derived1 = TraitsQueryCast<IQueryCastDerived1>(&obj);
+    TestAssert::IsNotNull(derived1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNotNull(base2);
-}
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNotNull(base2);
+  }
 
-// Test use of QueryCastDerived to query the derived type by its GUID.
-TEST_METHOD(QueryCastDerived_Test)
-{
-  QueryCastDerivedSample1 obj;
-  TestAssert::AreEqual(sizeof(uintptr_t), sizeof(obj), L"There must be only one v-table.");
+  // Test use of QueryCastDerived to query the derived type by its GUID.
+  TEST_METHOD(QueryCastDerived_Test)
+  {
+    QueryCastDerivedSample1 obj;
+    TestAssert::AreEqual(sizeof(uintptr_t), sizeof(obj), L"There must be only one v-table.");
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto derived = TraitsQueryCast<QueryCastDerivedSample1>(&obj);
-  TestAssert::IsNotNull(derived);
-}
+    auto derived = TraitsQueryCast<QueryCastDerivedSample1>(&obj);
+    TestAssert::IsNotNull(derived);
+  }
 
-// Test use of QueryCastGuid to query for a base interface.
-TEST_METHOD(QueryCastGuid_Test)
-{
-  QueryCastGuidSample1 obj;
-  TestAssert::AreEqual(sizeof(uintptr_t) * 2, sizeof(obj), L"There must be only two v-tables.");
+  // Test use of QueryCastGuid to query for a base interface.
+  TEST_METHOD(QueryCastGuid_Test)
+  {
+    QueryCastGuidSample1 obj;
+    TestAssert::AreEqual(sizeof(uintptr_t) * 2, sizeof(obj), L"There must be only two v-tables.");
 
-  auto base1 = TraitsQueryCast<IQueryCastNoGuid1>(&obj, MyTestGuid1);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastNoGuid1>(&obj, MyTestGuid1);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNotNull(base2);
-}
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNotNull(base2);
+  }
 
-// QueryCastHidden hides the base interface from the query cast.
-TEST_METHOD(QueryCastHidden_Test)
-{
-  QueryCastHiddenSample1 obj;
+  // QueryCastHidden hides the base interface from the query cast.
+  TEST_METHOD(QueryCastHidden_Test)
+  {
+    QueryCastHiddenSample1 obj;
 
-  IQueryCastBase1* intf = &obj;
-  TestAssert::IsNotNull(intf);
+    IQueryCastBase1* intf = &obj;
+    TestAssert::IsNotNull(intf);
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNull(base1);
-}
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNull(base1);
+  }
 
-// Test use of QueryCastList with one base type.
-TEST_METHOD(QueryCastList_OneBaseType)
-{
-  QueryCastListSample1 obj;
+  // Test use of QueryCastList with one base type.
+  TEST_METHOD(QueryCastList_OneBaseType)
+  {
+    QueryCastListSample1 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
-}
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
+  }
 
-// Test use of QueryCastList with two base types.
-TEST_METHOD(QueryCastList_TwoBaseTypes)
-{
-  QueryCastListSample2 obj;
+  // Test use of QueryCastList with two base types.
+  TEST_METHOD(QueryCastList_TwoBaseTypes)
+  {
+    QueryCastListSample2 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNotNull(base2);
-}
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNotNull(base2);
+  }
 
-// Test use of QueryCastList with three base types.
-TEST_METHOD(QueryCastList_ThreeBaseTypes)
-{
-  QueryCastListSample3 obj;
+  // Test use of QueryCastList with three base types.
+  TEST_METHOD(QueryCastList_ThreeBaseTypes)
+  {
+    QueryCastListSample3 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNotNull(base2);
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNotNull(base2);
 
-  auto base3 = TraitsQueryCast<IQueryCastBase3>(&obj);
-  TestAssert::IsNotNull(base3);
-}
+    auto base3 = TraitsQueryCast<IQueryCastBase3>(&obj);
+    TestAssert::IsNotNull(base3);
+  }
 
-// Test use of QueryCastList with a type that already inherits from the QueryCastList.
-TEST_METHOD(QueryCastList_DerivedQueryCastList)
-{
-  QueryCastListDerivedSample1 obj;
+  // Test use of QueryCastList with a type that already inherits from the QueryCastList.
+  TEST_METHOD(QueryCastList_DerivedQueryCastList)
+  {
+    QueryCastListDerivedSample1 obj;
 
-  auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
-  TestAssert::IsNotNull(base1);
+    auto base1 = TraitsQueryCast<IQueryCastBase1>(&obj);
+    TestAssert::IsNotNull(base1);
 
-  auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
-  TestAssert::IsNotNull(base2);
+    auto base2 = TraitsQueryCast<IQueryCastBase2>(&obj);
+    TestAssert::IsNotNull(base2);
 
-  auto base3 = TraitsQueryCast<IQueryCastBase3>(&obj);
-  TestAssert::IsNotNull(base3);
-}
+    auto base3 = TraitsQueryCast<IQueryCastBase3>(&obj);
+    TestAssert::IsNotNull(base3);
+  }
 
-TEST_METHOD(QueryCastList_StaticCast)
-{
-  StaticCastSample1 obj;
+  TEST_METHOD(QueryCastList_StaticCast)
+  {
+    StaticCastSample1 obj;
 
-  IQueryCastBase1* base1 = obj.StaticCastElseNull<IQueryCastBase1*>();
-  TestAssert::IsNotNull(base1);
-  TestAssert::AreEqual(12, base1->GetValue1());
+    IQueryCastBase1* base1 = obj.StaticCastElseNull<IQueryCastBase1*>();
+    TestAssert::IsNotNull(base1);
+    TestAssert::AreEqual(12, base1->GetValue1());
 
-  IQueryCastBase2* base2 = obj.StaticCastElseNull<IQueryCastBase2*>();
-  TestAssert::IsNotNull(base2);
-  TestAssert::AreEqual(22, base2->GetValue2());
+    IQueryCastBase2* base2 = obj.StaticCastElseNull<IQueryCastBase2*>();
+    TestAssert::IsNotNull(base2);
+    TestAssert::AreEqual(22, base2->GetValue2());
 
-  IQueryCastBase3* base3 = obj.StaticCastElseNull<IQueryCastBase3*>();
-  TestAssert::IsNotNull(base3);
-  TestAssert::AreEqual(33, base3->GetValue3());
-}
+    IQueryCastBase3* base3 = obj.StaticCastElseNull<IQueryCastBase3*>();
+    TestAssert::IsNotNull(base3);
+    TestAssert::AreEqual(33, base3->GetValue3());
+  }
 
-TEST_METHOD(QueryCastList_StaticCast2)
-{
-  StaticSample1 sample1;
-  StaticSample2 sample2;
-  StaticSample3 sample3;
-  StaticSample4 sample4;
-  StaticSample5 sample5;
-  StaticSample6 sample6;
-  StaticSample7 sample7;
-  StaticSample8 sample8;
-  StaticSample9 sample9;
-  TestAssert::IsNotNull(sample1.StaticCastElseNull<IUnknown*>(), L"sample1");
-  TestAssert::IsNotNull(sample2.StaticCastElseNull<IUnknown*>(), L"sample2");
-  TestAssert::IsNull(sample3.StaticCastElseNull<IUnknown*>(), L"sample3");
-  TestAssert::IsNull(sample4.StaticCastElseNull<IUnknown*>(), L"sample4");
-  TestAssert::IsNotNull(sample5.StaticCastElseNull<IUnknown*>(), L"sample5");
-  TestAssert::IsNotNull(sample6.StaticCastElseNull<IUnknown*>(), L"sample6");
-  TestAssert::IsNotNull(sample7.StaticCastElseNull<IUnknown*>(), L"sample7");
-  TestAssert::IsNotNull(sample8.StaticCastElseNull<IUnknown*>(), L"sample8");
-  TestAssert::IsNull(sample9.StaticCastElseNull<IUnknown*>(), L"sample9");
-}
+  TEST_METHOD(QueryCastList_StaticCast2)
+  {
+    StaticSample1 sample1;
+    StaticSample2 sample2;
+    StaticSample3 sample3;
+    StaticSample4 sample4;
+    StaticSample5 sample5;
+    StaticSample6 sample6;
+    StaticSample7 sample7;
+    StaticSample8 sample8;
+    StaticSample9 sample9;
+    TestAssert::IsNotNull(sample1.StaticCastElseNull<IUnknown*>(), L"sample1");
+    TestAssert::IsNotNull(sample2.StaticCastElseNull<IUnknown*>(), L"sample2");
+    TestAssert::IsNull(sample3.StaticCastElseNull<IUnknown*>(), L"sample3");
+    TestAssert::IsNull(sample4.StaticCastElseNull<IUnknown*>(), L"sample4");
+    TestAssert::IsNotNull(sample5.StaticCastElseNull<IUnknown*>(), L"sample5");
+    TestAssert::IsNotNull(sample6.StaticCastElseNull<IUnknown*>(), L"sample6");
+    TestAssert::IsNotNull(sample7.StaticCastElseNull<IUnknown*>(), L"sample7");
+    TestAssert::IsNotNull(sample8.StaticCastElseNull<IUnknown*>(), L"sample8");
+    TestAssert::IsNull(sample9.StaticCastElseNull<IUnknown*>(), L"sample9");
+  }
 
-TEST_METHOD(QueryCastChain_ForwardCtorArgs)
-{
-  StructWithBase<Mso::QueryCastChain<QueryCastBase1WithArgs, IQueryCastBase1>> testStruct(5, "asdf");
-  TestAssert::AreEqual(5, testStruct.m_int);
-  TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
-}
+  TEST_METHOD(QueryCastChain_ForwardCtorArgs)
+  {
+    StructWithBase<Mso::QueryCastChain<QueryCastBase1WithArgs, IQueryCastBase1>> testStruct(5, "asdf");
+    TestAssert::AreEqual(5, testStruct.m_int);
+    TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
+  }
 
-TEST_METHOD(QueryCastGuid_ForwardCtorArgs)
-{
-  StructWithBase<Mso::QueryCastGuid<QueryCastBase1WithArgs, &MyTestGuid1>> testStruct(5, "asdf");
-  TestAssert::AreEqual(5, testStruct.m_int);
-  TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
-}
+  TEST_METHOD(QueryCastGuid_ForwardCtorArgs)
+  {
+    StructWithBase<Mso::QueryCastGuid<QueryCastBase1WithArgs, &MyTestGuid1>> testStruct(5, "asdf");
+    TestAssert::AreEqual(5, testStruct.m_int);
+    TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
+  }
 
-TEST_METHOD(QueryCastHidden_ForwardCtorArgs)
-{
-  StructWithBase<Mso::QueryCastHidden<QueryCastBase1WithArgs>> testStruct(5, "asdf");
-  TestAssert::AreEqual(5, testStruct.m_int);
-  TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
-}
-}
-;
+  TEST_METHOD(QueryCastHidden_ForwardCtorArgs)
+  {
+    StructWithBase<Mso::QueryCastHidden<QueryCastBase1WithArgs>> testStruct(5, "asdf");
+    TestAssert::AreEqual(5, testStruct.m_int);
+    TestAssert::AreEqual("asdf", testStruct.m_string.c_str());
+  }
+};

@@ -1,71 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  IUnknown implementation.
-*/
-
 #pragma once
+#ifndef MSO_OBJECT_UNKNOWNOBJECT_H
+#define MSO_OBJECT_UNKNOWNOBJECT_H
 
+#include <platformAdapters/IUnknownShim.h>
 #include <object/objectRefCount.h>
 #include <object/objectWithWeakRef.h>
 #include <object/queryCast.h>
 #include <object/weakPtr.h>
 #include <compilerAdapters/compilerWarnings.h>
-
-#pragma pack(push, _CRT_PACKING)
-#pragma push_macro("new")
-#undef new
-
-BEGIN_DISABLE_WARNING_INCONSISTENT_MISSING_OVERRIDE()
-
-namespace Mso {
-namespace Details {
-
-template <typename T>
-struct QueryInterfaceHelper
-{
-  _Success_(return == S_OK) static HRESULT QueryInterface(T* obj, const GUID& riid, _Outptr_ void** ppvObject) noexcept
-  {
-    VerifyElseCrashSzTag(ppvObject != nullptr, "ppvObject must not be null.", 0x01003717 /* tag_bad2x */);
-
-#if defined(MSO_ENABLE_QICHECK) && defined(DEBUG) && !defined(__clang__)
-    // Windows gives un-initialized pointers when querying for IMarshal and IAgileObjectthese interfaces. Ignore them.
-    if (riid != __uuidof(IMarshal) && riid != __uuidof(IAgileObject))
-    {
-      VerifyElseCrashSzTag(
-          *ppvObject == nullptr, "*ppvObject must be null to avoid memory leaks.", 0x01003718 /* tag_bad2y */);
-    }
-#endif
-
-    // QueryCastBridge is used to QI for an interface without AddRef
-    const GUID& intfGuid =
-        (riid == __uuidof(QueryCastBridge)) ? reinterpret_cast<QueryCastBridge*>(ppvObject)->ObjectId : riid;
-
-    if (intfGuid == __uuidof(IUnknown))
-    {
-      *ppvObject = obj->template StaticCastElseNull<IUnknown*>();
-    }
-    else
-    {
-      *ppvObject = obj->QueryCast(intfGuid);
-    }
-
-    if (!*ppvObject)
-    {
-      return E_NOINTERFACE;
-    }
-
-    if (&riid == &intfGuid)
-    {
-      obj->AddRef();
-    }
-
-    return S_OK;
-  }
-};
-
-} // namespace Details
 
 /**
   UnknownObject is a class template that implements the IUnknown interface (AddRef, Release, and QueryInterface).
@@ -99,7 +44,7 @@ struct QueryInterfaceHelper
         void DoSomething() override { ... }
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   2)  A class that implements multiple COM interfaces.
@@ -133,8 +78,8 @@ struct QueryInterfaceHelper
         void DoQuxStuff() override { ... }
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
-      Mso::TCntPtr<IBar> spBar = Mso::Make<Foo, IBar>();			// Create a TCntPtr<IBar> directly.
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<IBar> spBar = Mso::Make<Foo, IBar>();      // Create a CntPtr<IBar> directly.
 
 
   3)  A class that inherits from one or more base classes.
@@ -167,7 +112,7 @@ struct QueryInterfaceHelper
         // Foo::QueryInterface will succeed when queried for IBar, returning a BarMixin*
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   4)  A class that implements a COM interface and has support for weak references:
@@ -190,7 +135,7 @@ struct QueryInterfaceHelper
         });
       }
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   5) A class that implements a COM interface with weak references and a custom deleter:
@@ -222,7 +167,7 @@ struct QueryInterfaceHelper
         });
       }
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   6)  A class that implements a COM interface, with a private constructor.
@@ -235,13 +180,13 @@ struct QueryInterfaceHelper
         friend MakePolicy;
 
       private:
-        Foo(const Bar& bar) { }		// Private constructor
+        Foo(const Bar& bar) { }    // Private constructor
 
         ...
       };
 
       const Bar& bar = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>(bar);
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>(bar);
 
 
   7)  A class that uses the 'InitializeThis' pattern, which allows you to separate object construction
@@ -270,13 +215,13 @@ struct QueryInterfaceHelper
 
       const Baz& baz = ...;
       const Qux& qux = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make(baz, qux);
+      Mso::CntPtr<Foo> spFoo = Mso::Make(baz, qux);
 
 
   8)  A class that implements a COM interface without actual ref counting.
 
     This can be useful if the object's lifetime is managed via some other method, but the object
-    still needs to be used with ComPtr, TCntPtr or other code that expects AddRef/Release.
+    still needs to be used with ComPtr, CntPtr or other code that expects AddRef/Release.
     This can happen in several scenarios:
 
       - Singletons that want to avoid any AddRef/Release because there is one long-lived instance.
@@ -333,7 +278,7 @@ struct QueryInterfaceHelper
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   12) A class that implements a COM interface with a custom stateful allocator.
@@ -364,9 +309,59 @@ struct QueryInterfaceHelper
       };
 
       ICustomHeap& heap = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>(&heap);
-
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>(&heap);
 */
+
+BEGIN_DISABLE_WARNING_INCONSISTENT_MISSING_OVERRIDE()
+
+namespace Mso::Details {
+
+template <typename T>
+struct QueryInterfaceHelper
+{
+  _Success_(return == S_OK) static HRESULT QueryInterface(T* obj, const GUID& riid, _Outptr_ void** ppvObject) noexcept
+  {
+    VerifyElseCrashSzTag(ppvObject != nullptr, "ppvObject must not be null.", 0x01003717 /* tag_bad2x */);
+
+#if defined(MSO_ENABLE_QICHECK) && defined(DEBUG) && !defined(__clang__)
+    // Windows gives un-initialized pointers when querying for IMarshal and IAgileObjectthese interfaces. Ignore them.
+    if (riid != __uuidof(IMarshal) && riid != __uuidof(IAgileObject))
+    {
+      VerifyElseCrashSzTag(
+          *ppvObject == nullptr, "*ppvObject must be null to avoid memory leaks.", 0x01003718 /* tag_bad2y */);
+    }
+#endif
+
+    // QueryCastBridge is used to QI for an interface without AddRef
+    const GUID& intfGuid =
+        (riid == __uuidof(QueryCastBridge)) ? reinterpret_cast<QueryCastBridge*>(ppvObject)->ObjectId : riid;
+
+    if (intfGuid == __uuidof(Mso::IUnknown))
+    {
+      *ppvObject = obj->template StaticCastElseNull<Mso::IUnknown*>();
+    }
+    else
+    {
+      *ppvObject = obj->QueryCast(intfGuid);
+    }
+
+    if (!*ppvObject)
+    {
+      return E_NOINTERFACE;
+    }
+
+    if (&riid == &intfGuid)
+    {
+      obj->AddRef();
+    }
+
+    return S_OK;
+  }
+};
+
+} // namespace Mso::Details
+
+namespace Mso {
 template <typename TBaseType0, typename... TBaseTypes>
 class DECLSPEC_NOVTABLE UnknownObject : public Mso::QueryCastList<TBaseType0, TBaseTypes...>
 {
@@ -689,9 +684,9 @@ public:
     {
       if (m_ftm.IsEmpty())
       {
-        Mso::TCntPtr<IUnknown> ftm;
+        Mso::CntPtr<Mso::IUnknown> ftm;
         VerifySucceededElseCrashTag(
-            CoCreateFreeThreadedMarshaler(this->template StaticCastElseNull<IUnknown*>(), &ftm),
+            CoCreateFreeThreadedMarshaler(this->template StaticCastElseNull<Mso::IUnknown*>(), &ftm),
             0x01003719 /* tag_bad2z */);
         // Only assign ftm to m_ftm if its value is nullptr. Otherwise we will delete the new ftm and use the existing
         // m_ftm.
@@ -713,12 +708,11 @@ protected:
   using AgileUnknownObjectType = AgileUnknownObject;
 
 private:
-  Mso::TCntPtr<IUnknown> m_ftm;
+  Mso::CntPtr<Mso::IUnknown> m_ftm;
 };
 
 } // namespace Mso
 
 END_DISABLE_WARNING_INCONSISTENT_MISSING_OVERRIDE()
 
-#pragma pop_macro("new")
-#pragma pack(pop)
+#endif // MSO_OBJECT_UNKNOWNOBJECT_H
