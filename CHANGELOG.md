@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Sun, 05 Apr 2020 03:22:13 GMT and should not be manually modified.
+This log was last generated on Sun, 05 Apr 2020 23:15:22 GMT and should not be manually modified.
 
+## 0.0.15
+Sun, 05 Apr 2020 23:15:22 GMT
+
+### Patches
+
+- Updated mortifCpp and guid liblets from RNW Mso fork (vmorozov@microsoft.com)
 ## 0.0.14
 Sun, 05 Apr 2020 03:22:13 GMT
 

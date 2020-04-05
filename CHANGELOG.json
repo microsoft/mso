@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Sun, 05 Apr 2020 23:15:22 GMT",
+      "tag": "@microsoft/mso_v0.0.15",
+      "version": "0.0.15",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Updated mortifCpp and guid liblets from RNW Mso fork",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 05 Apr 2020 03:22:13 GMT",
       "tag": "@microsoft/mso_v0.0.14",
       "version": "0.0.14",
