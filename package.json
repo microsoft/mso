@@ -9,7 +9,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit-disabled": "yarn format"
+      "pre-commit": "yarn format"
     }
   },
   "repository": {

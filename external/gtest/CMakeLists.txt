@@ -5,12 +5,16 @@ if(MSO_ENABLE_UNIT_TESTS)
   # the following code to fetch googletest
   # is inspired by and adapted after:
   #   - https://cmake.org/cmake/help/v3.11/module/FetchContent.html
+  #
+  # We use version of GTest as in the https://github.com/Microsoft/TestAdapterForGoogleTest
+  # It allows to run GTests in Visual Studio and ADO.
+  # Please update the GIT_TAG below after the TAFGT is updated the reference.
   include(FetchContent)
 
   FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        origin/master
+    GIT_TAG        2fe3bd994b3189899d93f1d5a881e725e046fdc2
     GIT_SHALLOW    1
     GIT_PROGRESS   1
   )

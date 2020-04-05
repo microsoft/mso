@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Updated mortifCpp and guid liblets from RNW Mso fork",
+  "packageName": "@microsoft/mso",
+  "email": "vmorozov@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-04-05T22:48:50.448Z"
+}
