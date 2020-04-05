@@ -12,6 +12,8 @@
 
 namespace Mso {
 
+BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
 /**
   Mso::Make creates a new instance of class T and returns a CntPtr to the instance of type TResult.
   TResult is either the original type T (default), or one of its interfaces.
@@ -58,6 +60,8 @@ inline Mso::CntPtr<TResult> MakeAlloc(TAllocArg&& allocArg, TArgs&&... args) noe
   memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
   return Mso::CntPtr<TResult>{result, AttachTag};
 }
+
+END_DISABLE_WARNING_UNREACHABLE_CODE()
 
 /**
   Mso::MakeElseNull creates a new instance of class T and returns a CntPtr to the instance of type TResult.

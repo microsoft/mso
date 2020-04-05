@@ -271,6 +271,8 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(deleted);
   }
 
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectRefCount_Make_CannotAllocate)
   {
     Mso::CntPtr<ObjectRefCountSample3CannotAllocate> obj;
@@ -278,8 +280,6 @@ TEST_CLASS (ObjectRefCountTest)
 
     TestAssert::IsTrue(obj.IsEmpty());
   }
-
-  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
 
   TEST_METHOD(ObjectRefCount_Make_CtorThrows)
   {
@@ -397,6 +397,8 @@ TEST_CLASS (ObjectRefCountTest)
     AssertAllocState(state);
   }
 
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectRefCount_MakeAlloc_CannotAllocate)
   {
     Mso::CntPtr<ObjectRefCountSample31CannotAllocate> obj;
@@ -409,7 +411,6 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
-  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectRefCount_MakeAlloc_CtorThrows)
   {
     Mso::CntPtr<ObjectRefCountSample41Throw> obj;
