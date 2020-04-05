@@ -3,7 +3,6 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/libs/compilerAdapters/include",
                 "${workspaceFolder}/libs/comUtil/include",
                 "${workspaceFolder}/libs/cppExtensions/include",
@@ -21,7 +20,8 @@
                 "${workspaceFolder}/libs/platform_posix/include",
                 "${workspaceFolder}/libs/smartPtr/include",
                 "${workspaceFolder}/libs/tagUtils/include",
-                "${workspaceFolder}/libs/typeTraits/include"
+                "${workspaceFolder}/libs/typeTraits/include",
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

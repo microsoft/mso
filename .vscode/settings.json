@@ -12,5 +12,16 @@
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true
-  }
+  },
+  "cSpell.words": [
+    "GTEST",
+    "HRESULT",
+    "MOTIFCPP",
+    "MOTIFCPPTEST",
+    "OACR",
+    "STREQ",
+    "STRNE",
+    "XCTEST",
+    "unwinded"
+  ]
 }
