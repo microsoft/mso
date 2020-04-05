@@ -585,15 +585,6 @@ inline void ExpectException(const std::function<void()>& statement, const WCHAR*
   EXPECT_THROW(statement(), ExceptionType) << message;
 }
 
-template <typename ExceptionType>
-inline void ExpectException(
-    const std::function<void()>& statement,
-    const std::function<void()>& onException,
-    const WCHAR* message = L"")
-{
-  EXPECT_THROW(statement(), ExceptionType) << message;
-}
-
 inline void ExpectNoThrow(const std::function<void()>& statement, const WCHAR* message = L"")
 {
   EXPECT_NO_THROW(statement()) << message;
