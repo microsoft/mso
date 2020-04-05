@@ -66,7 +66,8 @@ template <
         && !std::is_same<ExpectedType, char>::value>::type>
 void AreEqual(_In_ const ExpectedType* expected, _In_ const ActualType* actual, _In_z_ const WCHAR* message = L"")
 {
-  AreEqual(*expected, *actual, message);
+  std::wstring wstrMessage(message);
+  ASSERT_EQ(expected, actual) << wstrMessage.c_str();
 }
 
 inline void AreEqual(_In_ const wchar_t* expected, _In_ const wchar_t* actual, _In_z_ const WCHAR* message = L"")

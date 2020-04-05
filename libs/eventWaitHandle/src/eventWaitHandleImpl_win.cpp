@@ -10,7 +10,7 @@
 //! These APIs were added in Windows Vista and considered to be more
 //! lightweight when events created with CreateEventEx Windows API.
 
-namespace Mso { namespace Async {
+namespace Mso {
 
 namespace {
 
@@ -96,4 +96,4 @@ LIBLET_PUBLICAPI AutoResetEvent::AutoResetEvent(EventWaitHandleState state) noex
 {
 }
 
-}} // namespace Mso::Async
+} // namespace Mso

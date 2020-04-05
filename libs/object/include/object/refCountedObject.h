@@ -1,20 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  IRefCounted implementation.
-*/
 #pragma once
+#ifndef MSO_OBJECT_REFCOUNTEDOBJECT_H
+#define MSO_OBJECT_REFCOUNTEDOBJECT_H
 
 #include <object/make.h>
 #include <object/objectRefCount.h>
 #include <object/objectWithWeakRef.h>
 #include <object/weakPtr.h>
 #include <compilerAdapters/compilerWarnings.h>
-
-#pragma pack(push, _CRT_PACKING)
-#pragma push_macro("new")
-#undef new
 
 BEGIN_DISABLE_WARNING_INCONSISTENT_MISSING_OVERRIDE()
 
@@ -29,7 +24,7 @@ namespace Mso {
 
   If you want to avoid the overhead of a v-table, you can use RefCountedObjectNoVTable, which
   defines non-virtual AddRef/Release methods.  These are still compatible with templated
-  smart pointers like TCntPtr and ComPtr because those smart pointers don't actually use
+  smart pointers like CntPtr and ComPtr because those smart pointers don't actually use
   virtual method dispatch to call AddRef/Release.
 
   To implement IUnknown, use Mso::UnknownObject.
@@ -50,7 +45,7 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   2)  A class that implements some interface that derives from IRefCounted:
@@ -62,8 +57,8 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
-      Mso::TCntPtr<IBar> spBar = Mso::Make<Foo, IBar>();			// Create a TCntPtr<IBar> directly.
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<IBar> spBar = Mso::Make<Foo, IBar>();      // Create a CntPtr<IBar> directly.
 
 
   3)  A class that inherits from multiple base types and implements IRefCounted:
@@ -73,7 +68,7 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   4)  A class that implements IRefCounted and has support for weak references:
@@ -96,7 +91,7 @@ namespace Mso {
         });
       }
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   5)  A class that implements IRefCounted with weak references and a custom deleter:
@@ -130,7 +125,7 @@ namespace Mso {
         });
       }
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   6)  A class that implements some IRefCounted-derived interface, with a private constructor.
@@ -151,7 +146,7 @@ namespace Mso {
       };
 
       const Bar& bar = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make(bar);
+      Mso::CntPtr<Foo> spFoo = Mso::Make(bar);
 
 
   7)  A class that uses the 'InitializeThis' pattern, which allows you to separate object construction
@@ -179,13 +174,13 @@ namespace Mso {
 
       const Baz& baz = ...;
       const Qux& qux = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make(baz, qux);
+      Mso::CntPtr<Foo> spFoo = Mso::Make(baz, qux);
 
 
   8)  A class that uses ref counting without a v-table.
 
     Non-virtual AddRef and Release methods are implemented.  These are still compatible with most
-    template-based smart-pointers (like TCntPtr and ComPtr) since they call 'AddRef' and 'Release'
+    template-based smart-pointers (like CntPtr and ComPtr) since they call 'AddRef' and 'Release'
     by name and not necessarily through virtual-method dispatch.
 
     Note that RefCountedObjectNoVTable uses the "Curiously Recursive Template Pattern" which requires
@@ -196,13 +191,13 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   9)  A class that implements IRefCounted without actual ref counting.
 
     This can be useful if the object's lifetime is managed via some other method, but the object
-    still needs to be used with TCntPtr or other code that expects AddRef/Release.
+    still needs to be used with CntPtr or other code that expects AddRef/Release.
     This often happens in two scenarios:
 
     - Singletons that want to avoid any AddRef/Release because there is one long-lived instance.
@@ -213,7 +208,7 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   10) A class that implements IRefCounted with a custom stateless allocator.
@@ -239,7 +234,7 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>();
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>();
 
 
   11) A class that implements IRefCounted with a custom stateful allocator.
@@ -272,7 +267,7 @@ namespace Mso {
       };
 
       ICustomHeap& heap = ...;
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>(&heap);
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>(&heap);
 
 
   12) A class that has a throwing ctor and implements IRefCounted:
@@ -285,7 +280,7 @@ namespace Mso {
         ...
       };
 
-      Mso::TCntPtr<Foo> spFoo = Mso::Make<Foo>(); // can throw
+      Mso::CntPtr<Foo> spFoo = Mso::Make<Foo>(); // can throw
 
 */
 
@@ -559,5 +554,4 @@ protected:
 
 END_DISABLE_WARNING_INCONSISTENT_MISSING_OVERRIDE()
 
-#pragma pop_macro("new")
-#pragma pack(pop)
+#endif // MSO_OBJECT_REFCOUNTEDOBJECT_H

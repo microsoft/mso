@@ -124,7 +124,7 @@ public:
   MSO_NO_COPY_CTOR_AND_ASSIGNMENT(Swarm);
 
   template <typename T, typename TResult = T, typename... TArgs>
-  static Mso::TCntPtr<TResult> Make(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
+  static Mso::CntPtr<TResult> Make(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
   {
     typename T::RefCountPolicy::template MemoryGuard<T, ObjectWeakRefContainer<T, Swarm>> memoryGuard = {};
     T::RefCountPolicy::AllocateMemory(memoryGuard);
@@ -135,11 +135,11 @@ public:
 
     TResult* result = memoryGuard.Obj;
     memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
-    return Mso::TCntPtr<TResult>(result, /*fDoAddRef*/ false);
+    return Mso::CntPtr<TResult>(result, Mso::AttachTag);
   }
 
   template <typename T, typename TResult = T, typename TAllocArg, typename... TArgs>
-  static Mso::TCntPtr<TResult> MakeAlloc(TAllocArg&& allocArg, TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
+  static Mso::CntPtr<TResult> MakeAlloc(TAllocArg&& allocArg, TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
   {
     typename T::RefCountPolicy::template MemoryGuard<T, ObjectWeakRefContainer<T, Swarm>> memoryGuard = {};
     T::RefCountPolicy::AllocateMemory(memoryGuard, std::forward<TAllocArg>(allocArg));
@@ -150,7 +150,7 @@ public:
 
     TResult* result = memoryGuard.Obj;
     memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
-    return Mso::TCntPtr<TResult>(result, /*fDoAddRef*/ false);
+    return Mso::CntPtr<TResult>(result, Mso::AttachTag);
   }
 
   // We return swarm member as a raw pointer because the new object shares ref count with the swarm and in many cases
@@ -216,9 +216,9 @@ public:
     return Super::QueryCastWeakRef(riid);
   }
 
-  static TCntPtr<Swarm> FromWeakRef(_In_opt_ const ObjectWeakRef* weakRef) noexcept
+  static CntPtr<Swarm> FromWeakRef(_In_opt_ const ObjectWeakRef* weakRef) noexcept
   {
-    TCntPtr<Swarm> swarm;
+    CntPtr<Swarm> swarm;
     if (weakRef)
     {
       swarm = static_cast<Swarm*>(const_cast<ObjectWeakRef*>(weakRef)->QueryCastWeakRef(__uuidof(Swarm)));
@@ -228,7 +228,7 @@ public:
   }
 
   template <typename T>
-  static TCntPtr<Swarm> FromObject(_In_opt_ T* obj) noexcept
+  static CntPtr<Swarm> FromObject(_In_opt_ T* obj) noexcept
   {
     return FromObjectInternal(obj, OverloadTag());
   }
@@ -236,7 +236,7 @@ public:
   template <typename T>
   bool Contains(_In_opt_ T* obj) const noexcept
   {
-    TCntPtr<Swarm> swarm = Swarm::FromObjectInternal(obj, OverloadTag());
+    CntPtr<Swarm> swarm = Swarm::FromObjectInternal(obj, OverloadTag());
     return this == swarm.Get();
   }
 
@@ -256,9 +256,9 @@ protected:
 private:
   template <typename T>
   static auto FromObjectInternal(_In_opt_ T* obj, OverloadTagP1) noexcept
-      -> decltype(obj->GetWeakRef(), TCntPtr<Swarm>())
+      -> decltype(obj->GetWeakRef(), CntPtr<Swarm>())
   {
-    TCntPtr<Swarm> swarm;
+    CntPtr<Swarm> swarm;
     if (obj)
     {
       swarm = Swarm::FromWeakRef(&obj->GetWeakRef());
@@ -269,9 +269,9 @@ private:
 
   // This method assumes that obj implements IUnknown.
   template <typename T>
-  static TCntPtr<Swarm> FromObjectInternal(_In_opt_ T* obj, OverloadTagP2) noexcept
+  static CntPtr<Swarm> FromObjectInternal(_In_opt_ T* obj, OverloadTagP2) noexcept
   {
-    TCntPtr<Swarm> swarm;
+    CntPtr<Swarm> swarm;
     ObjectWeakRef* weakRef = query_cast<ObjectWeakRef*>(obj);
     if (weakRef)
     {

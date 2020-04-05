@@ -186,6 +186,8 @@ public:
     return result;
   }
 
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   template <size_t Index, typename... TArgs>
   void MakeMember(TArgs&&... args) noexcept(MemberType<Index>::MakePolicy::IsNoExcept)
   {
@@ -203,6 +205,8 @@ public:
     Debug(TMember::RefCountPolicy::ValidateObject(memoryGuard));
     memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
   }
+
+  END_DISABLE_WARNING_UNREACHABLE_CODE()
 
 protected:
   using FixedSwarmType = FixedSwarmBase;

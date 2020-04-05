@@ -5,7 +5,7 @@
 #include "eventWaitHandleImpl.h"
 #include <pthread.h>
 
-namespace Mso { namespace Async {
+namespace Mso {
 
 namespace {
 
@@ -93,4 +93,4 @@ LIBLET_PUBLICAPI AutoResetEvent::AutoResetEvent(EventWaitHandleState state) noex
 {
 }
 
-}} // namespace Mso::Async
+} // namespace Mso

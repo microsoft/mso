@@ -1,21 +1,22 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Licensed under the MIT License.
 
-#include "precomp.h"
 #include <eventWaitHandle/eventWaitHandle.h>
+
+#include <compilerAdapters/cppMacrosDebug.h>
 #include <motifCpp/libletAwareMemLeakDetection.h>
+#include <motifCpp/motifCppTest.h>
 #include <motifCpp/testCheck.h>
-#include <test/skipSEHUT.h>
+
 #include <atomic>
 #include <thread>
 
 using namespace std::chrono_literals;
 
-namespace Mso { namespace Async { namespace Test {
+namespace Mso::Test {
 
-TEST_CLASS (EventWaitHandleTest)
+TEST_CLASS_EX (EventWaitHandleTest, LibletAwareMemLeakDetection)
 {
-  // TODO: enable MemoryLeakDetection
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
   TEST_METHOD(ManualResetEvent_ctor_default)
@@ -65,10 +66,14 @@ TEST_CLASS (EventWaitHandleTest)
     std::atomic<int32_t> value{0};
     ManualResetEvent ev;
     // Note that we capture by value to make a copy of the pointer.
-    std::thread th([ev, &value]() noexcept {
-      ev.Set();
-      ++value;
-    });
+    std::thread th;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th = std::thread([ev, &value]() noexcept {
+        ev.Set();
+        ++value;
+      });
+    }
     ev.Wait();
     th.join();
     TestCheckEqual(1, value.load());
@@ -78,10 +83,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     std::atomic<int32_t> value{0};
     ManualResetEvent ev;
-    std::thread th([ev, &value]() noexcept {
-      ev.Set();
-      ++value;
-    });
+
+    std::thread th;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th = std::thread([ev, &value]() noexcept {
+        ev.Set();
+        ++value;
+      });
+    }
     ev.Wait();
     ev.Wait(); // Second Wait succeeds because it is not auto-reset.
     th.join();
@@ -92,14 +102,20 @@ TEST_CLASS (EventWaitHandleTest)
   {
     ManualResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      ev.Wait();
-      ++value;
-    });
-    std::thread th2([ev, &value]() noexcept {
-      ev.Wait();
-      ++value;
-    });
+
+    std::thread th1, th2;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        ev.Wait();
+        ++value;
+      });
+
+      th2 = std::thread([ev, &value]() noexcept {
+        ev.Wait();
+        ++value;
+      });
+    }
     ev.Set();
     th1.join();
     th2.join();
@@ -110,18 +126,27 @@ TEST_CLASS (EventWaitHandleTest)
   {
     ManualResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      ev.Wait();
-      ++value;
-      ev.Reset();
-    });
+
+    std::thread th1, th2;
+
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        ev.Wait();
+        ++value;
+        ev.Reset();
+      });
+    }
     ev.Set();
     th1.join();
     TestCheckEqual(1, value.load());
-    std::thread th2([ev, &value]() noexcept {
-      ev.Wait();
-      ++value;
-    });
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th2 = std::thread([ev, &value]() noexcept {
+        ev.Wait();
+        ++value;
+      });
+    }
     TestCheckEqual(1, value.load()); // Make sure that th2 waits
     ev.Set();
     th2.join();
@@ -132,10 +157,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     ManualResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(!ev.WaitFor(0ms)); // Must always timeout in our case.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(!ev.WaitFor(0ms)); // Must always timeout in our case.
+        ++value;
+      });
+    }
     th1.join();
     TestCheckEqual(1, value.load());
   }
@@ -144,10 +174,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     ManualResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(!ev.WaitFor(1ms)); // Must always timeout in our case.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(!ev.WaitFor(1ms)); // Must always timeout in our case.
+        ++value;
+      });
+    }
     th1.join();
     TestCheckEqual(1, value.load());
   }
@@ -156,27 +191,30 @@ TEST_CLASS (EventWaitHandleTest)
   {
     ManualResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(ev.WaitFor(1000s)); // Must succeed because we call Set.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(ev.WaitFor(1000s)); // Must succeed because we call Set.
+        ++value;
+      });
+    }
     ev.Set();
     th1.join();
     TestCheckEqual(1, value.load());
   }
 
-  TESTMETHOD_REQUIRES_SEH(ManualResetEvent_WaitFor_CrashForOverflow)
+  TEST_METHOD(ManualResetEvent_WaitFor_CrashForOverflow)
   {
-    // TODO: enable MemoryLeakDetection
-    // TEST_DISABLE_MEMORY_LEAK_DETECTION();
+    TEST_DISABLE_MEMORY_LEAK_DETECTION();
     ManualResetEvent ev;
     TestCheckCrash(ev.WaitFor(std::chrono::seconds::max()));
   }
 
   TEST_METHOD(ManualResetEvent_WaitFor_CrashForInfinite)
   {
-    // TODO: enable MemoryLeakDetection
-    // TEST_DISABLE_MEMORY_LEAK_DETECTION();
+    TEST_DISABLE_MEMORY_LEAK_DETECTION();
     ManualResetEvent ev;
     TestCheckCrash(ev.WaitFor(std::chrono::milliseconds(std::numeric_limits<uint32_t>::max())));
   }
@@ -213,10 +251,15 @@ TEST_CLASS (EventWaitHandleTest)
     std::atomic<int32_t> value{0};
     AutoResetEvent ev;
     // Note that we capture by value to make a copy of the pointer.
-    std::thread th([ev, &value]() noexcept {
-      ev.Set();
-      ++value;
-    });
+
+    std::thread th;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th = std::thread([ev, &value]() noexcept {
+        ev.Set();
+        ++value;
+      });
+    }
     ev.Wait();
     th.join();
     TestCheckEqual(1, value.load());
@@ -226,10 +269,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     std::atomic<int32_t> value{0};
     AutoResetEvent ev;
-    std::thread th([ev, &value]() noexcept {
-      ev.Set();
-      ++value;
-    });
+
+    std::thread th;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th = std::thread([ev, &value]() noexcept {
+        ev.Set();
+        ++value;
+      });
+    }
     ev.Wait();
     TestCheck(!ev.WaitFor(1ms)); // Second Wait fails because it is auto-reset.
     th.join();
@@ -241,16 +289,21 @@ TEST_CLASS (EventWaitHandleTest)
     AutoResetEvent ev;
     ManualResetEvent valueChanged;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value, valueChanged]() noexcept {
-      ev.Wait();
-      ++value;
-      valueChanged.Set();
-    });
-    std::thread th2([ev, &value, valueChanged]() noexcept {
-      ev.Wait();
-      ++value;
-      valueChanged.Set();
-    });
+
+    std::thread th1, th2;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value, valueChanged]() noexcept {
+        ev.Wait();
+        ++value;
+        valueChanged.Set();
+      });
+      th2 = std::thread([ev, &value, valueChanged]() noexcept {
+        ev.Wait();
+        ++value;
+        valueChanged.Set();
+      });
+    }
     ev.Set();
     valueChanged.Wait();
     TestCheckEqual(1, value.load());
@@ -267,10 +320,15 @@ TEST_CLASS (EventWaitHandleTest)
     ev.Set();
     ev.Reset();
     TestCheck(!ev.WaitFor(1ms)); // Make sure that ev is not signaling.
-    std::thread th([ev, &value]() noexcept {
-      ev.Wait();
-      ++value;
-    });
+
+    std::thread th;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th = std::thread([ev, &value]() noexcept {
+        ev.Wait();
+        ++value;
+      });
+    }
     ev.Set();
     th.join();
     TestCheckEqual(1, value.load());
@@ -280,10 +338,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     AutoResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(!ev.WaitFor(0ms)); // Must always timeout in our case.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(!ev.WaitFor(0ms)); // Must always timeout in our case.
+        ++value;
+      });
+    }
     th1.join();
     TestCheckEqual(1, value.load());
   }
@@ -292,10 +355,15 @@ TEST_CLASS (EventWaitHandleTest)
   {
     AutoResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(!ev.WaitFor(1ms)); // Must always timeout in our case.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(!ev.WaitFor(1ms)); // Must always timeout in our case.
+        ++value;
+      });
+    }
     th1.join();
     TestCheckEqual(1, value.load());
   }
@@ -304,30 +372,33 @@ TEST_CLASS (EventWaitHandleTest)
   {
     AutoResetEvent ev;
     std::atomic<int32_t> value{0};
-    std::thread th1([ev, &value]() noexcept {
-      TestCheck(ev.WaitFor(1000s)); // Must succeed because we call Set.
-      ++value;
-    });
+
+    std::thread th1;
+    {
+      // Debug(Mso::Memory::AutoIgnoreLeakScope ignore);
+      th1 = std::thread([ev, &value]() noexcept {
+        TestCheck(ev.WaitFor(1000s)); // Must succeed because we call Set.
+        ++value;
+      });
+    }
     ev.Set();
     th1.join();
     TestCheckEqual(1, value.load());
   }
 
-  TESTMETHOD_REQUIRES_SEH(AutoResetEvent_WaitFor_CrashForOverflow)
+  TEST_METHOD(AutoResetEvent_WaitFor_CrashForOverflow)
   {
-    // TODO: enable MemoryLeakDetection
-    // TEST_DISABLE_MEMORY_LEAK_DETECTION();
+    TEST_DISABLE_MEMORY_LEAK_DETECTION();
     AutoResetEvent ev;
     TestCheckCrash(ev.WaitFor(std::chrono::seconds::max()));
   }
 
-  TESTMETHOD_REQUIRES_SEH(AutoResetEvent_WaitFor_CrashForInfinite)
+  TEST_METHOD(AutoResetEvent_WaitFor_CrashForInfinite)
   {
-    // TODO: enable MemoryLeakDetection
-    // TEST_DISABLE_MEMORY_LEAK_DETECTION();
+    TEST_DISABLE_MEMORY_LEAK_DETECTION();
     AutoResetEvent ev;
     TestCheckCrash(ev.WaitFor(std::chrono::milliseconds(std::numeric_limits<uint32_t>::max())));
   }
 };
 
-}}} // namespace Mso::Async::Test
+} // namespace Mso::Test

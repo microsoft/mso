@@ -2,12 +2,12 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef LIBLET_MEMORYAPI_SCOPE
-#define LIBLET_MEMORYAPI_SCOPE
-#ifdef __cplusplus
+#ifndef MSO_MEMORYAPI_MEMORYLEAKSCOPE_H
+#define MSO_MEMORYAPI_MEMORYLEAKSCOPE_H
+
 #include <compilerAdapters/functionDecorations.h>
 
-namespace Mso { namespace Memory {
+namespace Mso::Memory {
 
 /**
   Is the ShutdownLeakScope currently active?
@@ -105,7 +105,6 @@ struct AutoIgnoreLeakScope
   }
 };
 
-}} // namespace Mso::Memory
+} // namespace Mso::Memory
 
-#endif // C++
-#endif // LIBLET_MEMORYAPI_SCOPE
+#endif // MSO_MEMORYAPI_MEMORYLEAKSCOPE_H

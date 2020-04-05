@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 #pragma once
-#ifndef LIBLET_COMUTIL_QICASTCORE_H
-#define LIBLET_COMUTIL_QICASTCORE_H
+#ifndef MSO_COMUTIL_QICASTCORE_H
+#define MSO_COMUTIL_QICASTCORE_H
 #include <guiddef.h>
 #include <compilerAdapters/compilerWarnings.h>
 #include <platformAdapters/IUnknownShim.h>
@@ -39,13 +39,13 @@
   explicitly passed as a 2nd parameter.
 */
 template <typename TTarget, typename TSource>
-Mso::TCntPtr<TTarget> qi_cast(TSource& piSource, const IID& riid = __uuidof(TTarget)) noexcept
+Mso::CntPtr<TTarget> qi_cast(TSource& piSource, const IID& riid = __uuidof(TTarget)) noexcept
 {
-  Mso::TCntPtr<TTarget> spTarget;
+  Mso::CntPtr<TTarget> spTarget;
   if (piSource != nullptr)
   {
     if (FAILED(piSource->QueryInterface(riid, &spTarget)))
-      spTarget.Empty();
+      spTarget = nullptr;
   }
   return spTarget;
 }
@@ -59,7 +59,7 @@ Mso::TCntPtr<TTarget> qi_cast(TSource& piSource, const IID& riid = __uuidof(TTar
   to disambiguate against the primary function.
 */
 template <typename TTarget, typename TSource>
-Mso::TCntPtr<TTarget> qi_cast(const TSource* piSource, const IID& riid = __uuidof(TTarget)) noexcept
+Mso::CntPtr<TTarget> qi_cast(const TSource* piSource, const IID& riid = __uuidof(TTarget)) noexcept
 {
   TSource* piSourceNonConst = const_cast<TSource*>(piSource);
   return qi_cast<TTarget, TSource*>(piSourceNonConst, riid);
@@ -75,9 +75,9 @@ BEGIN_DISABLE_WARNING_DEPRECATED_BY_PRAGMA()
   This is useful when the qi_cast must succeed or otherwise it is a bug.
 */
 template <typename TTarget, typename TSource>
-Mso::TCntPtr<TTarget> qi_cast_or_crash(TSource& piSource, const IID& riid = __uuidof(TTarget)) noexcept
+Mso::CntPtr<TTarget> qi_cast_or_crash(TSource& piSource, const IID& riid = __uuidof(TTarget)) noexcept
 {
-  Mso::TCntPtr<TTarget> target = qi_cast<TTarget>(piSource, riid);
+  Mso::CntPtr<TTarget> target = qi_cast<TTarget>(piSource, riid);
   VerifyElseCrashSzTag(target, "Query interface failed.", 0x022054c3 /* tag_ciftd */);
   return target;
 }
@@ -89,9 +89,9 @@ Mso::TCntPtr<TTarget> qi_cast_or_crash(TSource& piSource, const IID& riid = __uu
   This is useful when the qi_cast must succeed or otherwise it is a bug.
 */
 template <typename TTarget, typename TSource>
-Mso::TCntPtr<TTarget> qi_cast_or_crash(const TSource* piSource, const IID& riid = __uuidof(TTarget)) noexcept
+Mso::CntPtr<TTarget> qi_cast_or_crash(const TSource* piSource, const IID& riid = __uuidof(TTarget)) noexcept
 {
-  Mso::TCntPtr<TTarget> target = qi_cast<TTarget>(piSource, riid);
+  Mso::CntPtr<TTarget> target = qi_cast<TTarget>(piSource, riid);
   VerifyElseCrashSzTag(target, "Query interface failed.", 0x022054c4 /* tag_cifte */);
   return target;
 }
@@ -135,10 +135,10 @@ TTarget* simpleqi_cast(const TSource* piSource, const IID& riid = __uuidof(TTarg
   return simpleqi_cast<TTarget, TSource*>(piSourceNonConst, riid);
 }
 
-namespace Mso { namespace ComUtil {
+namespace Mso::ComUtil {
 
 template <typename T, typename TOther>
-HRESULT HrQueryFrom(Mso::TCntPtr<T>& target, const TOther* pOther, const IID& riid = __uuidof(T)) noexcept
+HRESULT HrQueryFrom(Mso::CntPtr<T>& target, const TOther* pOther, const IID& riid = __uuidof(T)) noexcept
 {
   if (pOther == nullptr)
     return E_POINTER;
@@ -146,7 +146,7 @@ HRESULT HrQueryFrom(Mso::TCntPtr<T>& target, const TOther* pOther, const IID& ri
 }
 
 template <typename T, typename TOther>
-HRESULT HrQueryFrom(Mso::TCntPtr<T>& target, const TOther& other, const IID& riid = __uuidof(T)) noexcept
+HRESULT HrQueryFrom(Mso::CntPtr<T>& target, const TOther& other, const IID& riid = __uuidof(T)) noexcept
 {
   if (other == nullptr)
     return E_POINTER;
@@ -154,28 +154,28 @@ HRESULT HrQueryFrom(Mso::TCntPtr<T>& target, const TOther& other, const IID& rii
 }
 
 template <typename T, typename TOther>
-HRESULT HrQueryFrom(Mso::TCntPtr<T>& target, const Mso::TCntPtr<TOther>& other, const IID& riid = __uuidof(T)) noexcept
+HRESULT HrQueryFrom(Mso::CntPtr<T>& target, const Mso::CntPtr<TOther>& other, const IID& riid = __uuidof(T)) noexcept
 {
   if (other == nullptr)
     return E_POINTER;
-  return const_cast<Mso::TCntPtr<TOther>&>(other)->QueryInterface(
+  return const_cast<Mso::CntPtr<TOther>&>(other)->QueryInterface(
       riid, reinterpret_cast<void**>(target.ClearAndGetAddressOf()));
 }
 
 template <typename T, typename TOther>
-bool FQueryFrom(Mso::TCntPtr<T>& target, const TOther* pOther, const IID& riid = __uuidof(T)) noexcept
+bool FQueryFrom(Mso::CntPtr<T>& target, const TOther* pOther, const IID& riid = __uuidof(T)) noexcept
 {
   return SUCCEEDED(HrQueryFrom(target, pOther, riid));
 }
 
 template <typename T, typename TOther>
-bool FQueryFrom(Mso::TCntPtr<T>& target, const TOther& other, const IID& riid = __uuidof(T)) noexcept
+bool FQueryFrom(Mso::CntPtr<T>& target, const TOther& other, const IID& riid = __uuidof(T)) noexcept
 {
   return SUCCEEDED(HrQueryFrom(target, other, riid));
 }
 
 template <typename T, typename TOther>
-bool FQueryFrom(Mso::TCntPtr<T>& target, const Mso::TCntPtr<TOther>& other, const IID& riid = __uuidof(T)) noexcept
+bool FQueryFrom(Mso::CntPtr<T>& target, const Mso::CntPtr<TOther>& other, const IID& riid = __uuidof(T)) noexcept
 {
   return SUCCEEDED(HrQueryFrom(target, other, riid));
 }
@@ -198,31 +198,27 @@ bool AreEqualObjects(const T1* pLeft, const T2* pRight) noexcept
   if (!punk2)
     return false;
 
-  IUnknown* pComp1 = Details::TCntPtrAddRefStrategyImpl<
-      Details::AddRefStrategyForType<T1>::TAddRefStrategy::Strategy>::GetIUnknownForObjectCompare(punk1.Get());
-  IUnknown* pComp2 = Details::TCntPtrAddRefStrategyImpl<
-      Details::AddRefStrategyForType<T2>::TAddRefStrategy::Strategy>::GetIUnknownForObjectCompare(punk2.Get());
-  return (pComp1 == pComp2);
+  return (punk1 == punk2);
 }
 
 template <typename T1, typename T2>
-bool AreEqualObjects(const T1* pLeft, const Mso::TCntPtr<T2>& right) noexcept
+bool AreEqualObjects(const T1* pLeft, const Mso::CntPtr<T2>& right) noexcept
 {
   return Mso::ComUtil::AreEqualObjects(pLeft, right.Get());
 }
 
 template <typename T1, typename T2>
-bool AreEqualObjects(const Mso::TCntPtr<T1>& left, const T2* pRight) noexcept
+bool AreEqualObjects(const Mso::CntPtr<T1>& left, const T2* pRight) noexcept
 {
   return Mso::ComUtil::AreEqualObjects(left.Get(), pRight);
 }
 
 template <typename T1, typename T2>
-bool AreEqualObjects(const Mso::TCntPtr<T1>& left, const Mso::TCntPtr<T2>& right) noexcept
+bool AreEqualObjects(const Mso::CntPtr<T1>& left, const Mso::CntPtr<T2>& right) noexcept
 {
   return Mso::ComUtil::AreEqualObjects(left.Get(), right.Get());
 }
 
-}} // namespace Mso::ComUtil
+} // namespace Mso::ComUtil
 
-#endif // LIBLET_COMUTIL_QICASTCORE_H
+#endif // MSO_COMUTIL_QICASTCORE_H

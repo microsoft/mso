@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-Reference counting building blocks with support for a weak pointer.
-To implement your classes please use classes defined in the msoUnknownObject.h or msoRefCountedObject.h files.
-*/
-
 #pragma once
+#ifndef MSO_OBJECT_OBJECTWITHWEAKREF_H
+#define MSO_OBJECT_OBJECTWITHWEAKREF_H
+
+#include <guid/msoGuid.h>
 #include <object/objectRefCount.h>
 
 //
@@ -16,7 +15,7 @@ To implement your classes please use classes defined in the msoUnknownObject.h o
 //
 // Design of these classes is inspired by the std::shared_ptr implementation. The main differences are that we:
 // - Expose the reference counting control block as a public API - ObjectWeakRef class.
-// - Add a base class ObjectWithWeakRef to support TCntPtr.
+// - Add a base class ObjectWithWeakRef to support CntPtr.
 //
 // Classes must be inherited from the ObjectWithWeakRef and assigned an instance of ObjectWeakRef right after
 // the construction. ObjectWithWeakRef delegates all ref counting to ObjectWeakRef.
@@ -24,13 +23,13 @@ To implement your classes please use classes defined in the msoUnknownObject.h o
 // ObjectWeakRef is an ObjectRefCount that maintains a m_strongRefCount variable to control the lifetime of classes
 // inherited from the ObjectWithWeakRef.
 //
-// ObjectWithWeakRef base class has a TCntPtr to the ObjectWeakRef that contributes +1 to the m_weakRefCount
+// ObjectWithWeakRef base class has a CntPtr to the ObjectWeakRef that contributes +1 to the m_weakRefCount
 // while object is alive. It provides a guarantee that the ObjectWeakRef will always be destroyed after
 // the controlled object.
 //
 // When a new instance is constructed both m_weakRefCount and m_refCount have value 1:
 // - m_weakRefCount has 1 because the new ObjectWithWeakRef has a strong reference to it.
-// - m_refCount has 1 because we return a TCntPtr to the newly constructed object.
+// - m_refCount has 1 because we return a CntPtr to the newly constructed object.
 //
 // To allocate memory we use ObjectWeakRefContainer. It is inherited from the ObjectWeakRef and has storage
 // for the constructed object. So, we have only one memory allocation instead of two.
@@ -63,12 +62,8 @@ To implement your classes please use classes defined in the msoUnknownObject.h o
 // In future we can also support classes that are not inherited from the ObjectWithWeakRef. In that case we would need
 // to implement a SharedPtr which has two pointers: one to the object and another to the ObjectWeakRef.
 // The only reason we have the ObjectWithWeakRef base class is to be able to have a single pointer to the object using
-// TCntPtr and get a pointer to the ObjectWeakRef using the base ObjectWithWeakRef class.
+// CntPtr and get a pointer to the ObjectWeakRef using the base ObjectWithWeakRef class.
 //
-
-#pragma pack(push, _CRT_PACKING)
-#pragma push_macro("new")
-#undef new
 
 #define MSO_OBJECT_WEAKREFCOUNT(TObject)                                        \
 public:                                                                         \
@@ -345,9 +340,9 @@ using WeakRef = WeakRefCountPolicy<DefaultRefCountedDeleter, MakeAllocator>;
 namespace Details {
 
 /**
-  Mso::MakeWeakRefObject creates a new instance of class T in container TContainer and returns a TCntPtr to the instance
-  of type TResult. TResult is either the original type T (default), or one of its interfaces. Returning an interface
-  type can help to avoid creation of unnecessary TCntPtr template instances.
+  Mso::MakeWeakRefObject creates a new instance of class T in container TContainer and returns a CntPtr to the
+  instance of type TResult. TResult is either the original type T (default), or one of its interfaces. Returning an
+  interface type can help to avoid creation of unnecessary CntPtr template instances.
 
   Method MakeWeakRefObject is noexcept depending on the Make policy noexcept value.
 */
@@ -356,7 +351,7 @@ template <
     typename TResult = T,
     typename TContainer = ObjectWeakRefContainer<T, ObjectWeakRef>,
     typename... TArgs>
-inline Mso::TCntPtr<TResult> MakeWeakRefObject(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
+inline Mso::CntPtr<TResult> MakeWeakRefObject(TArgs&&... args) noexcept(T::MakePolicy::IsNoExcept)
 {
   typename T::RefCountPolicy::template MemoryGuard<T, TContainer> memoryGuard = {};
   T::RefCountPolicy::AllocateMemory(memoryGuard);
@@ -367,16 +362,16 @@ inline Mso::TCntPtr<TResult> MakeWeakRefObject(TArgs&&... args) noexcept(T::Make
 
   TResult* result = memoryGuard.Obj;
   memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
-  return Mso::TCntPtr<TResult>(result, /*fDoAddRef*/ false);
+  return Mso::CntPtr<TResult>(result, /*fDoAddRef*/ false);
 }
 
 /**
-  Mso::MakeAllocWeakRefObject is an Mso::MakeWeakRefObject method for types T that use allocators accepting an argument.
-  The allocator argument allows to implement stateful allocators.
+  Mso::MakeAllocWeakRefObject is an Mso::MakeWeakRefObject method for types T that use allocators accepting an
+  argument. The allocator argument allows to implement stateful allocators.
 
-  MakeAllocWeakRefObject creates a new instance of class T in container TContainer and returns a TCntPtr to the instance
-  of type TResult. TResult is either the original type T (default), or one of its interfaces. Returning an interface
-  type can help to avoid creation of unnecessary TCntPtr template instantiations.
+  MakeAllocWeakRefObject creates a new instance of class T in container TContainer and returns a CntPtr to the
+  instance of type TResult. TResult is either the original type T (default), or one of its interfaces. Returning an
+  interface type can help to avoid creation of unnecessary CntPtr template instantiations.
 
   Method MakeAllocWeakRefObject is noexcept depending on the Make policy noexcept value.
 */
@@ -386,7 +381,7 @@ template <
     typename TContainer = ObjectWeakRefContainer<T, ObjectWeakRef>,
     typename TAllocArg,
     typename... TArgs>
-inline Mso::TCntPtr<TResult> MakeAllocWeakRefObject(TAllocArg&& allocArg, TArgs&&... args) noexcept(
+inline Mso::CntPtr<TResult> MakeAllocWeakRefObject(TAllocArg&& allocArg, TArgs&&... args) noexcept(
     T::MakePolicy::IsNoExcept)
 {
   typename T::RefCountPolicy::template MemoryGuard<T, TContainer> memoryGuard = {};
@@ -398,11 +393,10 @@ inline Mso::TCntPtr<TResult> MakeAllocWeakRefObject(TAllocArg&& allocArg, TArgs&
 
   TResult* result = memoryGuard.Obj;
   memoryGuard.Obj = nullptr; // To prevent memoryGuard from destroying the object.
-  return Mso::TCntPtr<TResult>(result, /*fDoAddRef*/ false);
+  return Mso::CntPtr<TResult>(result, /*fDoAddRef*/ false);
 }
 
 } // namespace Details
 } // namespace Mso
 
-#pragma pop_macro("new")
-#pragma pack(pop)
+#endif // MSO_OBJECT_OBJECTWITHWEAKREF_H

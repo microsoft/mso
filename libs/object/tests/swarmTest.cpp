@@ -5,12 +5,11 @@
 Unit tests for classes in the ObjectSwarm.h
 ****************************************************************************/
 
-#include "precomp.h"
 #include <object/swarm.h>
 #include <object/unknownObject.h>
-#include <test/skipSEHUT.h>
 #include "testAllocators.h"
 #include <motifCpp/testCheck.h>
+#include <comUtil/qiCast.h>
 
 //#define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
 // class.
@@ -65,7 +64,7 @@ public:
     return 2;
   }
 
-  Mso::TCntPtr<SwarmMemberSample1> GetOther() noexcept
+  Mso::CntPtr<SwarmMemberSample1> GetOther() noexcept
   {
     return m_other.Get();
   }
@@ -77,7 +76,7 @@ public:
 
   void SetOther(SwarmMemberSample1& other) noexcept
   {
-    Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(this);
+    Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(this);
     VerifyElseCrashSzTag(!swarm.IsEmpty(), "This object must be part of a swarm.", 0x01003708 /* tag_bad2i */);
     m_other = Mso::SwarmMemberPtr<SwarmMemberSample1>(&other, *swarm);
   }
@@ -208,7 +207,7 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
       TestAssert::IsNotNull(member1.Get());
     }
     TestAssert::IsTrue(deleted);
@@ -219,9 +218,9 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
-      Mso::TCntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
       TestAssert::IsNotNull(member2.Get());
     }
     TestAssert::IsTrue(deleted1, L"First Swarm member is not deleted.");
@@ -239,12 +238,12 @@ TEST_CLASS (ObjectSwarmTest)
     };
 
     {
-      Mso::TCntPtr<SwarmMemberSample21> member1 = Mso::Swarm::Make<SwarmMemberSample21>(deleteOrderIndex++, onDelete);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
-      Mso::TCntPtr<SwarmMemberSample22> member2 = swarm->MakeMember<SwarmMemberSample22>(deleteOrderIndex++, onDelete);
+      Mso::CntPtr<SwarmMemberSample21> member1 = Mso::Swarm::Make<SwarmMemberSample21>(deleteOrderIndex++, onDelete);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample22> member2 = swarm->MakeMember<SwarmMemberSample22>(deleteOrderIndex++, onDelete);
       TestAssert::IsNotNull(member2.Get());
       // Members can be of the same type
-      Mso::TCntPtr<SwarmMemberSample22> member3 = swarm->MakeMember<SwarmMemberSample22>(deleteOrderIndex++, onDelete);
+      Mso::CntPtr<SwarmMemberSample22> member3 = swarm->MakeMember<SwarmMemberSample22>(deleteOrderIndex++, onDelete);
       TestAssert::IsNotNull(member3.Get());
     }
 
@@ -261,21 +260,21 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
       TestAssert::IsNotNull(swarm.Get());
 
-      Mso::TCntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
       TestAssert::IsNotNull(member2.Get());
       swarm = Mso::Swarm::FromObject(member2.Get());
       TestAssert::IsNotNull(swarm.Get());
 
-      Mso::TCntPtr<ISwarmSample1> memberIntf1 = qi_cast<ISwarmSample1>(member1.Get());
+      Mso::CntPtr<ISwarmSample1> memberIntf1 = qi_cast<ISwarmSample1>(member1.Get());
       TestAssert::IsNotNull(memberIntf1.Get());
       swarm = Mso::Swarm::FromObject(memberIntf1.Get());
       TestAssert::IsNotNull(swarm.Get());
 
-      // Mso::TCntPtr<ISwarmSample2> memberIntf2 = qi_cast<ISwarmSample2>(member2.Get());
+      // Mso::CntPtr<ISwarmSample2> memberIntf2 = qi_cast<ISwarmSample2>(member2.Get());
       // TestAssert::IsNotNull(memberIntf2.Get());
       // swarm = Mso::Swarm::FromObject(memberIntf2.Get());
       // TestAssert::IsNotNull(swarm.Get());
@@ -294,9 +293,9 @@ TEST_CLASS (ObjectSwarmTest)
       Mso::WeakPtr<ISwarmSample1> memberIntfWeak1;
       Mso::WeakPtr<ISwarmSample2> memberIntfWeak2;
       {
-        Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-        Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
-        Mso::TCntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
+        Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+        Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+        Mso::CntPtr<SwarmMemberSample2> member2 = swarm->MakeMember<SwarmMemberSample2>(/*ref*/ deleted2);
 
         memberWeak1 = member1;
         memberWeak2 = member2;
@@ -311,10 +310,10 @@ TEST_CLASS (ObjectSwarmTest)
         Debug(TestAssert::AreEqual(/*members*/ 2u + /*weakptr*/ 4u, member1->GetWeakRef().WeakRefCount()));
         Debug(TestAssert::AreEqual(/*members*/ 2u + /*swarm*/ 1u, member1->GetWeakRef().RefCount()));
 
-        Mso::TCntPtr<SwarmMemberSample1> member11 = memberWeak1.GetStrongPtr();
-        Mso::TCntPtr<SwarmMemberSample2> member21 = memberWeak2.GetStrongPtr();
-        Mso::TCntPtr<ISwarmSample1> memberIntf11 = memberIntfWeak1.GetStrongPtr();
-        Mso::TCntPtr<ISwarmSample2> memberIntf21 = memberIntfWeak2.GetStrongPtr();
+        Mso::CntPtr<SwarmMemberSample1> member11 = memberWeak1.GetStrongPtr();
+        Mso::CntPtr<SwarmMemberSample2> member21 = memberWeak2.GetStrongPtr();
+        Mso::CntPtr<ISwarmSample1> memberIntf11 = memberIntfWeak1.GetStrongPtr();
+        Mso::CntPtr<ISwarmSample2> memberIntf21 = memberIntfWeak2.GetStrongPtr();
         TestAssert::IsNotNull(member11.Get());
         TestAssert::IsNotNull(member21.Get());
         TestAssert::IsNotNull(memberIntf11.Get());
@@ -325,10 +324,10 @@ TEST_CLASS (ObjectSwarmTest)
       TestAssert::IsTrue(memberIntfWeak1.IsExpired());
       TestAssert::IsTrue(memberIntfWeak2.IsExpired());
 
-      Mso::TCntPtr<SwarmMemberSample1> member11 = memberWeak1.GetStrongPtr();
-      Mso::TCntPtr<SwarmMemberSample2> member21 = memberWeak2.GetStrongPtr();
-      Mso::TCntPtr<ISwarmSample1> memberIntf11 = memberIntfWeak1.GetStrongPtr();
-      Mso::TCntPtr<ISwarmSample2> memberIntf21 = memberIntfWeak2.GetStrongPtr();
+      Mso::CntPtr<SwarmMemberSample1> member11 = memberWeak1.GetStrongPtr();
+      Mso::CntPtr<SwarmMemberSample2> member21 = memberWeak2.GetStrongPtr();
+      Mso::CntPtr<ISwarmSample1> memberIntf11 = memberIntfWeak1.GetStrongPtr();
+      Mso::CntPtr<ISwarmSample2> memberIntf21 = memberIntfWeak2.GetStrongPtr();
       TestAssert::IsNull(member11.Get());
       TestAssert::IsNull(member21.Get());
       TestAssert::IsNull(memberIntf11.Get());
@@ -343,9 +342,9 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member2.Get());
-      Mso::TCntPtr<SwarmMemberSample1> member1 = swarm->MakeMember<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member2.Get());
+      Mso::CntPtr<SwarmMemberSample1> member1 = swarm->MakeMember<SwarmMemberSample1>(/*ref*/ deleted1);
 
       member2->SetOther(*member1);
       TestAssert::IsTrue(member1.Get() == member2->GetOther().Get());
@@ -360,8 +359,8 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
 
       member2->SetOther(*member1);
       TestAssert::IsTrue(member1.Get() == member2->GetOther().Get());
@@ -376,8 +375,8 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample2> member0 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member0.Get());
+      Mso::CntPtr<SwarmMemberSample2> member0 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member0.Get());
 
       Mso::SwarmMemberPtr<SwarmMemberSample1, /*KnownSameSwarm*/ true> member1 =
           swarm->MakeMember<SwarmMemberSample1>(/*ref*/ deleted1);
@@ -402,8 +401,8 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted1;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
 
       TestAssert::ExpectVEC([&]() { swarm->MakeMember<SwarmMemberSample3CannotAllocate>(); });
 
@@ -417,8 +416,8 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted1;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
 
       TestAssert::ExpectException<std::runtime_error>([&]() { swarm->MakeMember<SwarmMemberSample4Throw>(); });
 
@@ -432,8 +431,8 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted1;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member1.Get());
 
       TestAssert::ExpectException<std::runtime_error>([&]() { swarm->MakeMember<SwarmMemberSample5InitThrow>(); });
 
@@ -448,11 +447,11 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
-      Mso::TCntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member2.Get());
-      Mso::TCntPtr<Mso::ObjectWeakRef> weakRef2 = &member2->GetWeakRef();
+      Mso::CntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<Mso::Swarm> swarm = Mso::Swarm::FromObject(member2.Get());
+      Mso::CntPtr<Mso::ObjectWeakRef> weakRef2 = &member2->GetWeakRef();
 
-      Mso::TCntPtr<SwarmMemberSample1> member1 = swarm->MakeMember<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<SwarmMemberSample1> member1 = swarm->MakeMember<SwarmMemberSample1>(/*ref*/ deleted1);
 
       Mso::SwarmMemberPtr<SwarmMemberSample1> swarmPtr =
           Mso::SwarmMemberPtr<SwarmMemberSample1>(member1.Get(), *weakRef2);
@@ -468,10 +467,10 @@ TEST_CLASS (ObjectSwarmTest)
     bool deleted1;
     bool deleted2;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
+      Mso::CntPtr<SwarmMemberSample1> member1 = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted1);
 
-      Mso::TCntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
-      Mso::TCntPtr<Mso::ObjectWeakRef> weakRef2 = &member2->GetWeakRef();
+      Mso::CntPtr<SwarmMemberSample2> member2 = Mso::Swarm::Make<SwarmMemberSample2>(/*ref*/ deleted2);
+      Mso::CntPtr<Mso::ObjectWeakRef> weakRef2 = &member2->GetWeakRef();
 
       Mso::SwarmMemberPtr<SwarmMemberSample1> swarmPtr =
           Mso::SwarmMemberPtr<SwarmMemberSample1>(member1.Get(), *weakRef2);
@@ -486,7 +485,7 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
+      Mso::CntPtr<SwarmMemberSample1> member = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
       Mso::SwarmMemberPtr<SwarmMemberSample1> swarmPtr =
           Mso::SwarmMemberPtr<SwarmMemberSample1>(member.Get(), *Mso::Swarm::FromObject(member.Get()));
       TestAssert::IsFalse(swarmPtr.IsDifferentSwarm());
@@ -506,7 +505,7 @@ TEST_CLASS (ObjectSwarmTest)
   {
     bool deleted = false;
     {
-      Mso::TCntPtr<SwarmMemberSample1> member = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
+      Mso::CntPtr<SwarmMemberSample1> member = Mso::Swarm::Make<SwarmMemberSample1>(/*ref*/ deleted);
       Mso::SwarmMemberPtr<SwarmMemberSample1, /*KnownSameSwarm*/ true> swarmPtr =
           Mso::SwarmMemberPtr<SwarmMemberSample1, /*KnownSameSwarm*/ true>(member.Get());
       TestAssert::IsFalse(swarmPtr.IsDifferentSwarm());
@@ -523,7 +522,7 @@ TEST_CLASS (ObjectSwarmTest)
   }
 
 #if defined(DEBUG) && defined(TEST_BAD_INHERITANCE1)
-  TESTMETHOD_REQUIRES_SEH(ObjectFixedSwarm_BadInheritance1)
+  TEST_METHOD(ObjectFixedSwarm_BadInheritance1)
   {
     TestAssert::ExpectVEC([&]() noexcept {
       // You will see a memory leak here because we cannot destroy object correctly.

@@ -1,17 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/**
-  Base class for all Mso Smart Pointers
-*/
 #pragma once
+#ifndef MSO_SMARTPTR_SMARTPOINTERBASE_H
+#define MSO_SMARTPTR_SMARTPOINTERBASE_H
+
 #include <compilerAdapters/compilerWarnings.h>
 #include <compilerAdapters/cppMacros.h>
-#include <typeTraits/typeTraits.h>
 #include <crash/verifyElseCrash.h>
 #include <debugAssertApi/debugAssertApi.h>
+#include <typeTraits/typeTraits.h>
 
-#ifdef __cplusplus
 BEGIN_DISABLE_WARNING_DEPRECATED()
 #include <utility>
 END_DISABLE_WARNING_DEPRECATED()
@@ -96,12 +95,10 @@ public:
     return TEmptyTraits::IsEmpty(m_pT);
   }
 
-#ifdef MSO_THOLDER_EXPLICIT_GET_ONLY
   explicit operator bool() const noexcept
   {
     return !IsEmpty();
   }
-#endif
 
   /**
     Access the contained data
@@ -116,16 +113,6 @@ public:
   {
     return this->Get();
   }
-
-#ifndef MSO_THOLDER_EXPLICIT_GET_ONLY
-  /**
-    cast operator
-  */
-  /*_SA_deprecated_(Get)*/ operator T() const noexcept
-  {
-    return m_pT;
-  }
-#endif
 
   TRefType& operator[](ptrdiff_t iSubscript) noexcept
   {
@@ -283,47 +270,6 @@ public:
     return this;
   }
 
-  /**
-    Deprecated APIs to remove over time.
-  */
-  /*_SA_deprecated_(Clear)*/ void Empty() noexcept
-  {
-    Clear();
-  }
-  /*_SA_deprecated_(Clear)*/ void Free() noexcept
-  {
-    Clear();
-  }
-  /*_SA_deprecated_(Clear)*/ void Close() noexcept
-  {
-    Clear();
-  }
-  /*_SA_deprecated_(Clear)*/ void Release() noexcept
-  {
-    Clear();
-  }
-  /*_SA_deprecated_(IsEmpty)*/ bool FIsEmpty() const noexcept
-  {
-    return IsEmpty();
-  }
-  /*_SA_deprecated_(Detach)*/ T Extract() noexcept
-  {
-    return Detach();
-  }
-  template <typename T1>
-  /*_SA_deprecated_(TransferFrom)*/ void Transfer(THolder<T1, THelper, TEmptyTraits>& from) noexcept
-  {
-    return TransferFrom(from);
-  }
-  /*_SA_deprecated_(GetAddressOf)*/ TAddrType Ptr() noexcept
-  {
-    return this->GetAddressOf();
-  }
-  /*_SA_deprecated_(ClearAndGetAddressOf)*/ TAddrType Address() noexcept
-  {
-    return this->ClearAndGetAddressOf();
-  }
-
 protected:
   T m_pT;
 
@@ -364,7 +310,6 @@ private:
   void Attach(const THolder<T1, THelper, TEmptyTraits>&); // use Transfer
 }; // class THolder
 
-#ifdef MSO_THOLDER_EXPLICIT_GET_ONLY
 /**
   Operators for THolder
 */
@@ -381,13 +326,13 @@ bool operator==(const THolder<T1, THelper1, TEmptyTraits1>& a, const THolder<T2,
 }
 
 template <typename T1, typename THelper1, typename TEmptyTraits1>
-bool operator==(const THolder<T1, THelper1, TEmptyTraits1>& a, decltype(__nullptr)) noexcept
+bool operator==(const THolder<T1, THelper1, TEmptyTraits1>& a, std::nullptr_t) noexcept
 {
   return a.Get() == nullptr;
 }
 
 template <typename T1, typename THelper1, typename TEmptyTraits1>
-bool operator==(decltype(__nullptr), const THolder<T1, THelper1, TEmptyTraits1>& a) noexcept
+bool operator==(std::nullptr_t, const THolder<T1, THelper1, TEmptyTraits1>& a) noexcept
 {
   return a.Get() == nullptr;
 }
@@ -405,17 +350,16 @@ bool operator!=(const THolder<T1, THelper1, TEmptyTraits1>& a, const THolder<T2,
 }
 
 template <typename T1, typename THelper1, typename TEmptyTraits1>
-bool operator!=(const THolder<T1, THelper1, TEmptyTraits1>& a, decltype(__nullptr)) noexcept
+bool operator!=(const THolder<T1, THelper1, TEmptyTraits1>& a, std::nullptr_t) noexcept
 {
   return a.Get() != nullptr;
 }
 
 template <typename T1, typename THelper1, typename TEmptyTraits1>
-bool operator!=(decltype(__nullptr), const THolder<T1, THelper1, TEmptyTraits1>& a) noexcept
+bool operator!=(std::nullptr_t, const THolder<T1, THelper1, TEmptyTraits1>& a) noexcept
 {
   return a.Get() != nullptr;
 }
-#endif // MSO_THOLDER_EXPLICIT_GET_ONLY
 
 /**
   Macros to implement a few basic THolder methods in derived classes.
@@ -567,22 +511,16 @@ public:
     return Super::get();
   }
 
-#ifdef MSO_THOLDER_EXPLICIT_GET_ONLY
   explicit operator bool() const noexcept
   {
     return Super::operator bool();
   }
-#else
-  /*_SA_deprecated_(Get)*/ operator T() const noexcept
-  {
-    return Get();
-  }
-#endif
 
   TRefType& operator[](ptrdiff_t iSubscript) noexcept
   {
     return Super::Get()[iSubscript];
   }
+
   T operator->() const noexcept
   {
     return Super::operator->();
@@ -592,6 +530,7 @@ public:
   {
     return Super::Swap(from);
   }
+
   T Place(T pT, _In_opt_ TData pData) noexcept
   {
     THolderPairData<T, TData> pair = {pT, pData};
@@ -634,14 +573,8 @@ public:
   {
     return this->m_pT.pData;
   }
-
-  /*_SA_deprecated_(Clear)*/ void Empty() noexcept
-  {
-    return Super::Clear();
-  }
 };
 
-#ifdef MSO_THOLDER_EXPLICIT_GET_ONLY
 /**
   Operators for THolderPair
 */
@@ -652,13 +585,13 @@ bool operator==(const THolderPair<T1, TData1, THelper1>& a, const THolderPair<T2
 }
 
 template <typename T1, typename TData1, typename THelper1>
-bool operator==(const THolderPair<T1, TData1, THelper1>& a, decltype(__nullptr)) noexcept
+bool operator==(const THolderPair<T1, TData1, THelper1>& a, std::nullptr_t) noexcept
 {
   return a.Get() == nullptr;
 }
 
 template <typename T1, typename TData1, typename THelper1>
-bool operator==(decltype(__nullptr), const THolderPair<T1, TData1, THelper1>& a) noexcept
+bool operator==(std::nullptr_t, const THolderPair<T1, TData1, THelper1>& a) noexcept
 {
   return a.Get() == nullptr;
 }
@@ -670,18 +603,17 @@ bool operator!=(const THolderPair<T1, TData1, THelper1>& a, const THolderPair<T2
 }
 
 template <typename T1, typename TData1, typename THelper1>
-bool operator!=(const THolderPair<T1, TData1, THelper1>& a, decltype(__nullptr)) noexcept
+bool operator!=(const THolderPair<T1, TData1, THelper1>& a, std::nullptr_t) noexcept
 {
   return a.Get() != nullptr;
 }
 
 template <typename T1, typename TData1, typename THelper1>
-bool operator!=(decltype(__nullptr), const THolderPair<T1, TData1, THelper1>& a) noexcept
+bool operator!=(std::nullptr_t, const THolderPair<T1, TData1, THelper1>& a) noexcept
 {
   return a.Get() != nullptr;
 }
-#endif // MSO_THOLDER_EXPLICIT_GET_ONLY
 
 } // namespace Mso
 
-#endif // __cplusplus
+#endif // MSO_SMARTPTR_SMARTPOINTERBASE_H

@@ -1,15 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-/****************************************************************************
-Unit tests for classes in the ObjectRefCount.h
-****************************************************************************/
-
-#include "precomp.h"
-//#include <core/memoryNew_Throw.h> // It must be here to define operator new which helps memory leak detection.
 #include <compilerAdapters/compilerWarnings.h>
 #include <object/refCountedObject.h>
-#include <test/skipSEHUT.h>
+
 #include "testAllocators.h"
 #include <motifCpp/testCheck.h>
 
@@ -249,12 +243,12 @@ TEST_CLASS (ObjectRefCountTest)
 
     bool deleted = false;
     {
-      Mso::TCntPtr<ObjectRefCountSample1> obj1 = Mso::Make<ObjectRefCountSample1>(5, /*ref*/ deleted);
+      Mso::CntPtr<ObjectRefCountSample1> obj1 = Mso::Make<ObjectRefCountSample1>(5, /*ref*/ deleted);
       {
         Debug(TestAssert::AreEqual(1u, obj1->RefCount()));
         TestAssert::AreEqual(5, obj1->Value());
 
-        Mso::TCntPtr<ObjectRefCountSample1> obj2(obj1);
+        Mso::CntPtr<ObjectRefCountSample1> obj2(obj1);
         Debug(TestAssert::AreEqual(2u, obj1->RefCount()));
         TestAssert::IsNotNull(obj2.Get());
         TestAssert::IsTrue(obj1.Get() == obj2.Get());
@@ -277,19 +271,19 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(deleted);
   }
 
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectRefCount_Make_CannotAllocate)
   {
-    Mso::TCntPtr<ObjectRefCountSample3CannotAllocate> obj;
+    Mso::CntPtr<ObjectRefCountSample3CannotAllocate> obj;
     TestAssert::ExpectVEC([&]() noexcept { obj = Mso::Make<ObjectRefCountSample3CannotAllocate>(); });
 
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
-  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
-
   TEST_METHOD(ObjectRefCount_Make_CtorThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample4Throw> obj;
+    Mso::CntPtr<ObjectRefCountSample4Throw> obj;
     bool deleted = false;
     TestAssert::ExpectException<std::runtime_error>(
         [&]() { obj = Mso::Make<ObjectRefCountSample4Throw>(/*ref*/ deleted); });
@@ -300,7 +294,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_Make_InitializeThisThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample5InitThrow> obj;
+    Mso::CntPtr<ObjectRefCountSample5InitThrow> obj;
     bool deleted = false;
     TestAssert::ExpectException<std::runtime_error>(
         [&]() { obj = Mso::Make<ObjectRefCountSample5InitThrow>(/*ref*/ deleted); });
@@ -343,7 +337,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_MakeElseNull_CtorThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample4Throw> obj;
+    Mso::CntPtr<ObjectRefCountSample4Throw> obj;
     bool deleted = false;
     TestAssert::ExpectException<std::runtime_error>(
         [&]() { obj = Mso::MakeElseNull<ObjectRefCountSample4Throw>(/*ref*/ deleted); });
@@ -354,7 +348,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_MakeElseNull_InitializeThisThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample5InitThrow> obj;
+    Mso::CntPtr<ObjectRefCountSample5InitThrow> obj;
     bool deleted = false;
     TestAssert::ExpectException<std::runtime_error>(
         [&]() { obj = Mso::MakeElseNull<ObjectRefCountSample5InitThrow>(/*ref*/ deleted); });
@@ -403,9 +397,11 @@ TEST_CLASS (ObjectRefCountTest)
     AssertAllocState(state);
   }
 
+  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
+
   TEST_METHOD(ObjectRefCount_MakeAlloc_CannotAllocate)
   {
-    Mso::TCntPtr<ObjectRefCountSample31CannotAllocate> obj;
+    Mso::CntPtr<ObjectRefCountSample31CannotAllocate> obj;
     TestAssert::ExpectVEC([&]() noexcept {
       AllocTestState state = {};
       MyMemHeap memHeap(/*ref*/ state.AllocCalled, /*ref*/ state.FreeCalled);
@@ -415,10 +411,9 @@ TEST_CLASS (ObjectRefCountTest)
     TestAssert::IsTrue(obj.IsEmpty());
   }
 
-  BEGIN_DISABLE_WARNING_UNREACHABLE_CODE()
   TEST_METHOD(ObjectRefCount_MakeAlloc_CtorThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample41Throw> obj;
+    Mso::CntPtr<ObjectRefCountSample41Throw> obj;
     AllocTestState state = {};
     TestAssert::ExpectException<std::runtime_error>([&]() {
       MyMemHeap memHeap(/*ref*/ state.AllocCalled, /*ref*/ state.FreeCalled);
@@ -431,7 +426,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_MakeAlloc_InitializeThisThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample51InitThrow> obj;
+    Mso::CntPtr<ObjectRefCountSample51InitThrow> obj;
     AllocTestState state = {};
     TestAssert::ExpectException<std::runtime_error>([&]() {
       MyMemHeap memHeap(/*ref*/ state.AllocCalled, /*ref*/ state.FreeCalled);
@@ -479,7 +474,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_MakeAllocElseNull_CtorThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample41Throw> obj;
+    Mso::CntPtr<ObjectRefCountSample41Throw> obj;
     AllocTestState state = {};
     TestAssert::ExpectException<std::runtime_error>([&]() {
       MyMemHeap memHeap(/*ref*/ state.AllocCalled, /*ref*/ state.FreeCalled);
@@ -492,7 +487,7 @@ TEST_CLASS (ObjectRefCountTest)
 
   TEST_METHOD(ObjectRefCount_MakeAllocElseNull_InitializeThisThrows)
   {
-    Mso::TCntPtr<ObjectRefCountSample51InitThrow> obj;
+    Mso::CntPtr<ObjectRefCountSample51InitThrow> obj;
     AllocTestState state = {};
     TestAssert::ExpectException<std::runtime_error>([&]() {
       MyMemHeap memHeap(/*ref*/ state.AllocCalled, /*ref*/ state.FreeCalled);
