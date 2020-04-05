@@ -117,7 +117,7 @@ TEST_CLASS (MaybeTest)
   {
     Mso::Maybe<std::vector<int>> m1{Mso::InPlaceTag(), {1, 2, 3, 4}};
     TestCheck(m1.IsValue());
-    TestCheckEqual(4, m1.GetValue().size());
+    TestCheckEqual(4u, m1.GetValue().size());
     TestCheckEqual(3, m1.GetValue()[2]);
   }
 
