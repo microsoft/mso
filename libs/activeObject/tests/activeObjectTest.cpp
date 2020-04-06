@@ -35,7 +35,7 @@ struct CallableVoidFunctor : Mso::UnknownObject<Mso::RefCountStrategy::SimpleNoQ
 private:
   bool m_shouldBeCalled{false};
   bool m_isCalled{false};
-  char const* m_name{nullptr};
+  [[maybe_unused]] char const* m_name{nullptr};
 };
 
 struct EqualQueueFunctor : CallableVoidFunctor
