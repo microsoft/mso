@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#include "activeObject/activeObject.h"
+#include <activeObject/activeObject.h>
+#include <eventWaitHandle/eventWaitHandle.h>
+#include <functional/functorRef.h>
+#include <motifCpp/libletAwareMemLeakDetection.h>
+#include <motifCpp/testCheck.h>
+#include <object/refCountedObject.h>
+
 #include <memory>
-#include "eventWaitHandle/eventWaitHandle.h"
-#include "functional/functorRef.h"
-#include "motifCpp/libletAwareMemLeakDetection.h"
-#include "motifCpp/testCheck.h"
-#include "object/refCountedObject.h"
 
 OACR_WARNING_PUSH
 OACR_WARNING_DISABLE(NOEXCEPT_FUNC_THROWS, "Allow to crash in noexcept functions in unit tests.")
@@ -24,7 +25,7 @@ struct CallableVoidFunctor : Mso::UnknownObject<Mso::RefCountStrategy::SimpleNoQ
 
   ~CallableVoidFunctor() noexcept override
   {
-    TestCheckEqual(m_isCalled, m_shouldBeCalled);
+    TestCheckEqualM(m_isCalled, m_shouldBeCalled, "Action name: %s", m_name);
   }
 
   void Invoke() noexcept override
@@ -35,7 +36,7 @@ struct CallableVoidFunctor : Mso::UnknownObject<Mso::RefCountStrategy::SimpleNoQ
 private:
   bool m_shouldBeCalled{false};
   bool m_isCalled{false};
-  [[maybe_unused]] char const* m_name{nullptr};
+  char const* m_name;
 };
 
 struct EqualQueueFunctor : CallableVoidFunctor
