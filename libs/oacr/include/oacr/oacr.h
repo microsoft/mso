@@ -401,7 +401,7 @@ __extern_c void OACRUsePtr(void* p);
 #elif defined(__clang__)
 #define OACR_USE_PTR(p) __oacr_noop()
 #else
-#define OACR_USE_PTR(p) (p)
+#define OACR_USE_PTR(p) (void)p
 #endif
 #endif // OACR_USE_PTR
 
