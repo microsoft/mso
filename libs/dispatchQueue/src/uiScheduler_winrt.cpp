@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#if !__has_include(<base.h>)
+
+#include "uiSchedulerStub.h"
+
+#else
+
 #include "eventWaitHandle/eventWaitHandle.h"
 #include "object/refCountedObject.h"
 #include "queueService.h"
@@ -293,3 +299,5 @@ void UISchedulerWinRT::CleanupContext::CheckTermination() noexcept
 }
 
 } // namespace Mso
+
+#endif // __has_include(<base.h>)
