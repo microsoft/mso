@@ -10,7 +10,7 @@
 
 #include "queueService.h"
 
-#include <crash/verifyElseCrash.h">
+#include <crash/verifyElseCrash.h>
 #include <dispatchQueue/dispatchQueue.h>
 
 namespace Mso {
