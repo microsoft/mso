@@ -132,7 +132,8 @@ int32_t __stdcall TaskDispatchedHandler::Invoke() noexcept
 // UISchedulerWinRT implementation
 //=============================================================================
 
-UISchedulerWinRT::UISchedulerWinRT(CoreDispatcher&& coreDispatcher) noexcept : m_coreDispatcher{std::move(coreDispatcher)}
+UISchedulerWinRT::UISchedulerWinRT(CoreDispatcher&& coreDispatcher) noexcept
+    : m_coreDispatcher{std::move(coreDispatcher)}
 {
 }
 

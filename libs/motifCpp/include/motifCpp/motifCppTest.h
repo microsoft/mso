@@ -33,12 +33,18 @@ inline std::string FormatMsg(char const* format, ...) noexcept
 {
   std::string result;
   va_list vlist;
+
   va_start(vlist, format);
   auto size = std::vsnprintf(nullptr, 0, format, vlist);
-  result.append(size + 1, '\0');
-  std::vsnprintf(&result[0], size + 1, format, vlist);
-  result.resize(size);
   va_end(vlist);
+
+  result.append(size + 1, '\0');
+
+  va_start(vlist, format);
+  std::vsnprintf(&result[0], size + 1, format, vlist);
+  va_end(vlist);
+
+  result.resize(size);
   return result;
 }
 
