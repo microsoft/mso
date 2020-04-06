@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Mon, 06 Apr 2020 06:21:31 GMT and should not be manually modified.
+This log was last generated on Mon, 06 Apr 2020 21:31:49 GMT and should not be manually modified.
 
+## 0.0.18
+Mon, 06 Apr 2020 21:31:49 GMT
+
+### Patches
+
+- Added activeObject liblet from RNW Mso fork (vmorozov@microsoft.com)
 ## 0.0.17
 Mon, 06 Apr 2020 06:21:31 GMT
 

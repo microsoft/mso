@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Mon, 06 Apr 2020 21:31:49 GMT",
+      "tag": "@microsoft/mso_v0.0.18",
+      "version": "0.0.18",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added activeObject liblet from RNW Mso fork",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 06 Apr 2020 06:21:31 GMT",
       "tag": "@microsoft/mso_v0.0.17",
       "version": "0.0.17",
