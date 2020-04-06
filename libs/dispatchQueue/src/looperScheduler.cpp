@@ -109,7 +109,7 @@ void LooperScheduler::AwaitTermination() noexcept
     }
     else
     {
-      // We are on the same thread. We cannot join because it would crash because of a deadlock.
+      // We are on the same thread. We cannot join because it would cause a deadlock and crash.
       // We also cannot allow std::thread destructor to run because it would crash on non-joined thread.
       // So, we just detach and let the underlying system thread finish on its own.
       m_looperThread.detach();

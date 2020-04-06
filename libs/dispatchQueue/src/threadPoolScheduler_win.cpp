@@ -129,7 +129,7 @@ bool ThreadPoolSchedulerWin::IsSerial() noexcept
 
 void ThreadPoolSchedulerWin::Post() noexcept
 {
-  //! Call SubmitThreadpoolWork if number of used threads is below m_maxThreads
+  // Call SubmitThreadpoolWork if number of used threads is below m_maxThreads
   uint32_t usedThreads = m_usedThreads.load(std::memory_order_relaxed);
   do
   {

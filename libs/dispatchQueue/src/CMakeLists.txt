@@ -14,8 +14,16 @@ liblet_sources(
     taskQueue.h
     threadMutex.h
     uiSchedulerStub.h
+  SOURCES_APPLE
+    threadPoolScheduler_linux.cpp
+    uiScheduler_linux.cpp
+  SOURCES_LINUX
+    threadPoolScheduler_linux.cpp
+    uiScheduler_linux.cpp
   SOURCES_WIN
     threadPoolScheduler_win.cpp
+  SOURCES_WIN32
+    uiScheduler_linux.cpp
   SOURCES_WINRT
     uiScheduler_winrt.cpp
 )

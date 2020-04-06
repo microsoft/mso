@@ -35,13 +35,15 @@ See the msoGuid.h for the usage guidelines.
   extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*);                      \
   END_DISABLE_WARNING_MISSING_ANNOTATION()
 #else // For Clang
-#define MSO_GUID_IMPL(keyword, type, guidString)                \
-  keyword type;                                                 \
-  extern "C++" inline constexpr GUID MsoGetGuid(type*) noexcept \
-  {                                                             \
-    return ::Mso::Details::GuidUtils::StringToGuid(guidString); \
-  }                                                             \
-  extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*);
+#define MSO_GUID_IMPL(keyword, type, guidString)                          \
+  keyword type;                                                           \
+  extern "C++" inline constexpr GUID MsoGetGuid(type*) noexcept           \
+  {                                                                       \
+    return ::Mso::Details::GuidUtils::StringToGuid(guidString);           \
+  }                                                                       \
+  BEGIN_DISABLE_WARNING_UNUSED_FUNCTION()                                 \
+  extern "C++" ::Mso::Details::GuidUtils::TrueType MsoTypeHasGuid(type*); \
+  END_DISABLE_WARNING_UNUSED_FUNCTION()
 #endif // COMPILER_SUPPORTS_UUID
 
 /// Associates type with a GUID. To be used before type declaration.
