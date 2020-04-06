@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Mon, 06 Apr 2020 00:13:16 GMT",
+      "tag": "@microsoft/mso_v0.0.16",
+      "version": "0.0.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added errorCode liblet from RNW Mso fork",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 05 Apr 2020 23:15:22 GMT",
       "tag": "@microsoft/mso_v0.0.15",
       "version": "0.0.15",

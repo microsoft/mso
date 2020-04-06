@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Sun, 05 Apr 2020 23:15:22 GMT and should not be manually modified.
+This log was last generated on Mon, 06 Apr 2020 00:13:16 GMT and should not be manually modified.
 
+## 0.0.16
+Mon, 06 Apr 2020 00:13:16 GMT
+
+### Patches
+
+- Added errorCode liblet from RNW Mso fork (vmorozov@microsoft.com)
 ## 0.0.15
 Sun, 05 Apr 2020 23:15:22 GMT
 

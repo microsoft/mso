@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added errorCode liblet from RNW Mso fork",
-  "packageName": "@microsoft/mso",
-  "email": "vmorozov@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-04-05T23:39:56.560Z"
-}
