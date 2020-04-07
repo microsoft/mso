@@ -22,7 +22,6 @@ TEST_CLASS_EX (WhenAnyTest, LibletAwareMemLeakDetection)
 
   TEST_METHOD(WhenAny_Init_Three)
   {
-    std::atomic<int32_t> finishCount{0};
     Mso::ManualResetEvent finished13;
     auto f1 = Mso::PostFuture([finished13]() noexcept {
       finished13.Wait();
@@ -165,7 +164,6 @@ TEST_CLASS_EX (WhenAnyTest, LibletAwareMemLeakDetection)
 
   TEST_METHOD(WhenAny_Init_Void_Three)
   {
-    std::atomic<int32_t> finishCount{0};
     Mso::ManualResetEvent finished13;
     int r2 = 0;
     auto f1 = Mso::PostFuture([finished13]() noexcept { finished13.Wait(); });
@@ -187,7 +185,6 @@ TEST_CLASS_EX (WhenAnyTest, LibletAwareMemLeakDetection)
 
   TEST_METHOD(WhenAny_Init_Void_Three_Error)
   {
-    std::atomic<int32_t> finishCount{0};
     Mso::ManualResetEvent finished13;
 
     auto f1 = Mso::PostFuture([finished13]() noexcept { finished13.Wait(); });
@@ -223,7 +220,6 @@ TEST_CLASS_EX (WhenAnyTest, LibletAwareMemLeakDetection)
 
   TEST_METHOD(WhenAny_Array_Void_Three_Error)
   {
-    std::atomic<int32_t> finishCount{0};
     Mso::ManualResetEvent finished13;
 
     Mso::Future<void> futures[] = {
