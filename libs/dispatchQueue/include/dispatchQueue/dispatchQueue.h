@@ -68,6 +68,8 @@ Mso::VoidFunctor MakeDispatchTask(TInvoke&& invoke, TOnCancel&& onCancel) noexce
 template <typename TInvoke>
 Mso::VoidFunctor MakeDispatchCleanupTask(TInvoke&& invoke) noexcept;
 
+void UnitTest_UninitConcurrentQueue() noexcept;
+
 //! RAII class to unlock the queue local value by swapping it back with TLS variable.
 struct DispatchLocalValueGuard
 {

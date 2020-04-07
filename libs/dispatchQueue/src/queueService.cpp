@@ -327,12 +327,29 @@ DispatchQueue DispatchQueueStatic::CurrentQueue() noexcept
   return Mso::CntPtr{TaskContext::CurrentQueue()};
 }
 
+//TODO: Use thread-safe patterns. Or better yet implement DI container.
+static DispatchQueue s_concurrentQueue{nullptr};
+
 DispatchQueue const& DispatchQueueStatic::ConcurrentQueue() noexcept
 {
-  static auto concurrentQueue{Mso::Make<QueueService, IDispatchQueueService>(MakeThreadPoolScheduler(0))};
-  return *static_cast<DispatchQueue*>(static_cast<void*>(&concurrentQueue));
+  if (!s_concurrentQueue)
+  {
+    s_concurrentQueue = Mso::Make<QueueService, IDispatchQueueService>(MakeThreadPoolScheduler(0));
+  }
+
+  return *static_cast<DispatchQueue*>(static_cast<void*>(&s_concurrentQueue));
 }
 
+void UnitTest_UninitConcurrentQueue() noexcept
+{
+  using std::swap;
+  DispatchQueue concurrentQueue{nullptr};
+  swap(concurrentQueue, s_concurrentQueue);
+  if (concurrentQueue)
+  {
+    concurrentQueue.AwaitTermination();
+  }
+}
 DispatchQueue const& DispatchQueueStatic::MainUIQueue() noexcept
 {
   static auto mainUIQueue{Mso::Make<QueueService, IDispatchQueueService>(MakeMainUIScheduler())};
