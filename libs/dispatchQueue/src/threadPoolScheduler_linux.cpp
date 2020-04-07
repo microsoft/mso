@@ -67,8 +67,6 @@ void ThreadPoolSchedulerLinux::RunInThread() noexcept
   ThreadAccessGuard guard{this};
   for (;;)
   {
-    ++m_busyThreads;
-
     if (auto queue = m_queue.GetStrongPtr())
     {
       DispatchTask task;
@@ -78,14 +76,14 @@ void ThreadPoolSchedulerLinux::RunInThread() noexcept
       }
     }
 
-    --m_busyThreads;
-
     if (m_isShutdown)
     {
       break;
     }
 
+    --m_busyThreads;
     m_wakeUpEvent.Wait();
+    ++m_busyThreads;
 
     if (!m_isShutdown)
     {
@@ -137,6 +135,7 @@ void ThreadPoolSchedulerLinux::Post() noexcept
     if (m_threadCount.compare_exchange_weak(
             threadCount, threadCount + 1, std::memory_order_release, std::memory_order_relaxed))
     {
+      ++m_busyThreads;
       m_threads[index] = std::thread(&ThreadPoolSchedulerLinux::RunInThread, this);
     }
   }
