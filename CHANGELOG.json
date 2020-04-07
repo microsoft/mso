@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 07 Apr 2020 23:51:46 GMT",
+      "tag": "@microsoft/mso_v0.0.19",
+      "version": "0.0.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added future liblet from the RNW Mso fork",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 06 Apr 2020 21:31:49 GMT",
       "tag": "@microsoft/mso_v0.0.18",
       "version": "0.0.18",
