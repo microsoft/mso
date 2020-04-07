@@ -124,7 +124,7 @@ TEST_CLASS_EX (FutureFuncTest, LibletAwareMemLeakDetection)
   {
     auto future = Mso::MakeCompletedFutureEmplaced<std::vector<int>>({1, 2, 3, 4});
     auto result = Mso::FutureWaitAndGetValue(future);
-    TestCheckEqual(4, result.size());
+    TestCheckEqual(4u, result.size());
     TestCheckEqual(2, result[1]);
   }
 // TODO: implement Mso::PotsTimer and Mso::WhenDoneOrTimeout

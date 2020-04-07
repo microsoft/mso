@@ -15,14 +15,14 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
   {
     Mso::Async::ArrayView<int> a1;
     TestCheckEqual(nullptr, a1.Data());
-    TestCheckEqual(0, a1.Size());
+    TestCheckEqual(0u, a1.Size());
   }
 
   TEST_METHOD(ArrayView_ctor_Array)
   {
     int xs[] = {1, 2, 3};
     Mso::Async::ArrayView<int> a1(xs);
-    TestCheckEqual(3, a1.Size());
+    TestCheckEqual(3u, a1.Size());
     TestCheckEqual(1, a1[0]);
     TestCheckEqual(2, a1[1]);
     TestCheckEqual(3, a1[2]);
@@ -32,7 +32,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
   {
     // We use lambda to avoid ArrayView use temporary objects.
     [](Mso::Async::ArrayView<int> a1) {
-      TestCheckEqual(3, a1.Size());
+      TestCheckEqual(3u, a1.Size());
       TestCheckEqual(1, a1[0]);
       TestCheckEqual(2, a1[1]);
       TestCheckEqual(3, a1[2]);
@@ -43,7 +43,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
   {
     std::vector<int> xs = {1, 2, 3};
     Mso::Async::ArrayView<int> a1(xs.data(), xs.size());
-    TestCheckEqual(3, a1.Size());
+    TestCheckEqual(3u, a1.Size());
     TestCheckEqual(1, a1[0]);
     TestCheckEqual(2, a1[1]);
     TestCheckEqual(3, a1[2]);
@@ -54,7 +54,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
     std::vector<int> xs = {1, 2, 3};
     Mso::Async::ArrayView<int> a1(xs.data(), xs.size());
     Mso::Async::ArrayView<int> a2(a1);
-    TestCheckEqual(3, a2.Size());
+    TestCheckEqual(3u, a2.Size());
     TestCheckEqual(1, a2[0]);
     TestCheckEqual(2, a2[1]);
     TestCheckEqual(3, a2[2]);
@@ -66,7 +66,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
     Mso::Async::ArrayView<int> a1(xs.data(), xs.size());
     Mso::Async::ArrayView<int> a2;
     a2 = a1;
-    TestCheckEqual(3, a2.Size());
+    TestCheckEqual(3u, a2.Size());
     TestCheckEqual(1, a2[0]);
     TestCheckEqual(2, a2[1]);
     TestCheckEqual(3, a2[2]);
@@ -77,7 +77,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
     std::vector<int> xs = {1, 2, 3};
     Mso::Async::ArrayView<int> a1(xs.data(), xs.size());
     TestCheckEqual(xs.data(), a1.Data());
-    TestCheckEqual(3, a1.Size());
+    TestCheckEqual(3u, a1.Size());
   }
 
   TEST_METHOD(ArrayView_ConstData_Size)
@@ -85,7 +85,7 @@ TEST_CLASS_EX (ArrayViewTest, LibletAwareMemLeakDetection)
     std::vector<int> xs = {1, 2, 3};
     const auto a1 = Mso::Async::ArrayView<int>(xs.data(), xs.size());
     TestCheckEqual(xs.data(), a1.Data());
-    TestCheckEqual(3, a1.Size());
+    TestCheckEqual(3u, a1.Size());
   }
 
   TEST_METHOD(ArrayView_VoidData)
