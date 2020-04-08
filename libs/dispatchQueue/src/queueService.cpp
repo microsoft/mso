@@ -327,7 +327,7 @@ DispatchQueue DispatchQueueStatic::CurrentQueue() noexcept
   return Mso::CntPtr{TaskContext::CurrentQueue()};
 }
 
-//TODO: Use thread-safe patterns. Or better yet implement DI container.
+// TODO: Use thread-safe patterns. Or better yet implement DI container.
 static DispatchQueue s_concurrentQueue{nullptr};
 
 DispatchQueue const& DispatchQueueStatic::ConcurrentQueue() noexcept
