@@ -13,6 +13,11 @@ TEST_CLASS_EX (PromiseTest, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~PromiseTest() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   TEST_METHOD(Promise_ctor_Default)
   {
     Mso::Promise<int> p1;

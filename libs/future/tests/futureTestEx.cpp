@@ -28,6 +28,11 @@ TEST_CLASS_EX (FutureTestEx, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~FutureTestEx() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   static Mso::Future<std::vector<int>> CreateVectorFuture() noexcept
   {
     Mso::Promise<std::vector<int>> p1;

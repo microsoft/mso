@@ -16,6 +16,11 @@ TEST_CLASS_EX (Future2Test, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~Future2Test() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   TEST_METHOD(Futureint_ctor_Default)
   {
     Mso::Future<int> f1;

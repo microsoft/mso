@@ -14,6 +14,11 @@ TEST_CLASS_EX (ExecutorTest, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~ExecutorTest() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   TEST_METHOD(ExecutorReference)
   {
     auto queue = MakeTestDispatchQueue();
