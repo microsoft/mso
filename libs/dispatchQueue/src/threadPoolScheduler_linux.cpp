@@ -5,6 +5,8 @@
 #include "queueService.h"
 
 #include <array>
+#include <condition_variable>
+#include <mutex>
 
 namespace Mso {
 
@@ -40,11 +42,12 @@ private:
   constexpr static uint32_t MaxConcurrentThreads{64};
 
   Mso::WeakPtr<IDispatchQueueService> m_queue;
-  ManualResetEvent m_wakeUpEvent;
+  std::condition_variable m_wakeUpThread;
+  std::mutex m_threadMutex;
   const uint32_t m_maxThreads{1};
-  std::atomic<uint32_t> m_busyThreads{0};
-  std::atomic<uint32_t> m_threadCount{0};
-  std::atomic_bool m_isShutdown{false};
+  uint32_t m_busyThreads{0};
+  uint32_t m_threadCount{0};
+  bool m_isShutdown{false};
   std::array<std::thread, (size_t)MaxConcurrentThreads> m_threads;
 };
 
@@ -70,24 +73,31 @@ void ThreadPoolSchedulerLinux::RunInThread() noexcept
     if (auto queue = m_queue.GetStrongPtr())
     {
       DispatchTask task;
-      while (queue->TryDequeTask(task))
+      while (queue->TryDequeTask(/*ref*/ task))
       {
         queue->InvokeTask(std::move(task), std::nullopt);
       }
-    }
 
-    if (m_isShutdown)
+      std::unique_lock lock{m_threadMutex};
+      --m_busyThreads;
+      if (m_isShutdown)
+      {
+        break;
+      }
+      else if (queue->HasTasks())
+      {
+        ++m_busyThreads;
+        continue;
+      }
+
+      queue = nullptr; // release the queue
+
+      m_wakeUpThread.wait(lock);
+      ++m_busyThreads;
+    }
+    else
     {
       break;
-    }
-
-    --m_busyThreads;
-    m_wakeUpEvent.Wait();
-    ++m_busyThreads;
-
-    if (!m_isShutdown)
-    {
-      m_wakeUpEvent.Reset();
     }
   }
 }
@@ -109,42 +119,25 @@ bool ThreadPoolSchedulerLinux::IsSerial() noexcept
 
 void ThreadPoolSchedulerLinux::Post() noexcept
 {
-  // Increase number of threads if m_busyThreads == m_threadCount
-  uint32_t threadCount = m_threadCount.load(std::memory_order_relaxed);
-  for (;;)
+  std::unique_lock lock{m_threadMutex};
+
+  // See if we need to increase number of threads
+  if (m_busyThreads == m_threadCount && m_threadCount < m_maxThreads)
   {
-    if (threadCount > m_busyThreads.load(std::memory_order_relaxed))
-    {
-      break;
-    }
-
-    if (m_isShutdown)
-    {
-      // Do not add new threads when we shutdown.
-      break;
-    }
-
-    if (threadCount >= m_maxThreads)
-    {
-      break;
-    }
-
-    uint32_t index = threadCount;
-    if (m_threadCount.compare_exchange_weak(
-            threadCount, threadCount + 1, std::memory_order_release, std::memory_order_relaxed))
-    {
-      ++m_busyThreads;
-      m_threads[index] = std::thread(&ThreadPoolSchedulerLinux::RunInThread, this);
-    }
+    ++m_busyThreads;
+    m_threads[m_threadCount++] = std::thread(&ThreadPoolSchedulerLinux::RunInThread, this);
   }
-
-  m_wakeUpEvent.Set();
+  else
+  {
+    m_wakeUpThread.notify_one();
+  }
 }
 
 void ThreadPoolSchedulerLinux::Shutdown() noexcept
 {
+  std::unique_lock lock{m_threadMutex};
   m_isShutdown = true;
-  m_wakeUpEvent.Set();
+  m_wakeUpThread.notify_all();
 }
 
 void ThreadPoolSchedulerLinux::AwaitTermination() noexcept
@@ -154,17 +147,7 @@ void ThreadPoolSchedulerLinux::AwaitTermination() noexcept
   {
     if (thread.joinable())
     {
-      if (thread.get_id() != std::this_thread::get_id())
-      {
-        thread.join();
-      }
-      else
-      {
-        // We are on the same thread. We cannot join because it would cause a deadlock and crash.
-        // We also cannot allow std::thread destructor to run because it would crash on non-joined thread.
-        // So, we just detach and let the underlying system thread finish on its own.
-        thread.detach();
-      }
+      thread.join();
     }
   }
 }
