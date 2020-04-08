@@ -1,0 +1,8 @@
+{
+  "type": "none",
+  "comment": "Added more unit tests for CI loop to run",
+  "packageName": "@microsoft/mso",
+  "email": "vmorozov@microsoft.com",
+  "dependentChangeType": "none",
+  "date": "2020-04-08T01:35:05.583Z"
+}
