@@ -66,6 +66,7 @@ TEST_CLASS_EX (ExecutorTest, LibletAwareMemLeakDetection)
 
   TEST_METHOD(ThrowingExecutorTestVoidValue)
   {
+    TestCheck(false); // to test CI failuires
     auto queue = MakeTestDispatchQueue();
     auto future = Mso::PostFuture(Mso::Executors::Executor::Throwing{queue}, []() {
                     // We return void
