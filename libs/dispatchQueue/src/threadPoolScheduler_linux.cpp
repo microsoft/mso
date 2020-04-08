@@ -115,8 +115,6 @@ void ThreadPoolSchedulerLinux::Post() noexcept
   {
     if (threadCount > m_busyThreads.load(std::memory_order_relaxed))
     {
-      // Just wake up a sleeping thread
-      m_wakeUpEvent.Set();
       break;
     }
 
@@ -139,6 +137,8 @@ void ThreadPoolSchedulerLinux::Post() noexcept
       m_threads[index] = std::thread(&ThreadPoolSchedulerLinux::RunInThread, this);
     }
   }
+
+  m_wakeUpEvent.Set();
 }
 
 void ThreadPoolSchedulerLinux::Shutdown() noexcept
