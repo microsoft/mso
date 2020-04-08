@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Wed, 08 Apr 2020 20:56:59 GMT",
+      "tag": "@microsoft/mso_v0.0.19",
+      "version": "0.0.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Added more unit tests for CI loop to run",
+            "author": "vmorozov@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 07 Apr 2020 23:51:46 GMT",
       "tag": "@microsoft/mso_v0.0.19",
       "version": "0.0.19",
