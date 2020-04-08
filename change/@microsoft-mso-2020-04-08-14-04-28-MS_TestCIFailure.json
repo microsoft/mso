@@ -1,0 +1,8 @@
+{
+  "type": "none",
+  "comment": "Fail a test to see CI behavior",
+  "packageName": "@microsoft/mso",
+  "email": "vmorozov@microsoft.com",
+  "dependentChangeType": "none",
+  "date": "2020-04-08T21:04:28.780Z"
+}
