@@ -22,29 +22,29 @@ steps:
     cmakeArgs: --install $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration) --prefix tests --component tests
 
 - script: ./activeObject_tests
-  displayName: Liblet tests: activeObject
+  displayName: Liblet tests - activeObject
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./errorCode_tests
-  displayName: Liblet tests: activeObject
+  displayName: Liblet tests - activeObject
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./eventWaitHandle_tests
-  displayName: Liblet tests: eventWaitHandle
+  displayName: Liblet tests - eventWaitHandle
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./functional_tests
-  displayName: Liblet tests: functional
+  displayName: Liblet tests - functional
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./future_tests
-  displayName: Liblet tests: future
+  displayName: Liblet tests - future
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./guid_tests
-  displayName: Liblet tests: guid
+  displayName: Liblet tests - guid
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
 
 - script: ./object_tests
-  displayName: Liblet tests: object
+  displayName: Liblet tests - object
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
