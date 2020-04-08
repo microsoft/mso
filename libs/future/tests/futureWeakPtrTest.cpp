@@ -13,6 +13,11 @@ TEST_CLASS_EX (FutureWeakPtrTest, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~FutureWeakPtrTest() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   TEST_METHOD(FutureWeakPtr_IsEmpty)
   {
     Mso::WeakPtr<Mso::Future<int>> weakPtr1;

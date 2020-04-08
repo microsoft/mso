@@ -80,14 +80,30 @@ jobs:
         workingDirectory: $(Pipeline.Workspace)
         cmakeArgs: --install $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform) --prefix tests --component tests
 
+    - script: activeObject_tests
+      displayName: Liblet tests - activeObject
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - script: errorCode_tests
+      displayName: Liblet tests - activeObject
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
     - script: eventWaitHandle_tests
-      displayName: Tests - Event Wait Handle
+      displayName: Liblet tests - eventWaitHandle
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
 
     - script: functional_tests
-      displayName: Tests - Functional
+      displayName: Liblet tests - functional
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - script: future_tests
+      displayName: Liblet tests - future
+      workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - script: guid_tests
+      displayName: Liblet tests - guid
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
 
     - script: object_tests
-      displayName: Tests - Object
+      displayName: Liblet tests - object
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)

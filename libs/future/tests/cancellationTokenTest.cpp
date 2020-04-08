@@ -24,6 +24,11 @@ private:
 
 TEST_CLASS_EX (CancellationTokenTest, LibletAwareMemLeakDetection)
 {
+  ~CancellationTokenTest() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   static Mso::CancellationToken GetEmptyCancellationToken() noexcept
   {
     Mso::CancellationTokenSource tokenSource;

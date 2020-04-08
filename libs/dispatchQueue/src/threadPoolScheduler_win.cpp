@@ -90,13 +90,13 @@ ThreadPoolSchedulerWin::~ThreadPoolSchedulerWin() noexcept
 
   if (auto queue = self->m_queue.GetStrongPtr())
   {
+    ThreadAccessGuard guard{self};
+
     auto endTime = std::chrono::steady_clock::now() + 100ms;
     DispatchTask task;
-    while (queue->TryDequeTask(task))
+    while (queue->TryDequeTask(/*ref*/ task))
     {
-      ThreadAccessGuard guard{self};
       queue->InvokeTask(std::move(task), endTime);
-
       if (std::chrono::steady_clock::now() > endTime)
       {
         break;

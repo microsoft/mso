@@ -15,6 +15,11 @@ TEST_CLASS_EX (FutureFuncTest, LibletAwareMemLeakDetection)
 {
   // MemoryLeakDetectionHook::TrackPerTest m_trackLeakPerTest;
 
+  ~FutureFuncTest() noexcept
+  {
+    Mso::UnitTest_UninitConcurrentQueue();
+  }
+
   TEST_METHOD(PostFutureDefaultExecutor)
   {
     auto future = Mso::PostFuture([]() noexcept { return 5; });
