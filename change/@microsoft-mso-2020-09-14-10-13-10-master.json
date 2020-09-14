@@ -1,0 +1,8 @@
+{
+  "type": "none",
+  "comment": "Create Dependabot config file",
+  "packageName": "@microsoft/mso",
+  "email": "dannyvv@microsoft.com",
+  "dependentChangeType": "none",
+  "date": "2020-09-14T17:13:10.922Z"
+}
