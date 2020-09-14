@@ -7,3 +7,5 @@ updates:
     time: "08:00"
     timezone: "America/Los_Angeles"
   versioning-strategy: lockfile-only
+  labels:
+  - "dependencies"
