@@ -4,5 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: "13:00"
+    time: "08:00"
+    timezone: "America/Los_Angeles"
   versioning-strategy: lockfile-only
