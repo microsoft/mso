@@ -1,6 +1,6 @@
 version: 2
 updates:
-- package-ecosystem: Yarn
+- package-ecosystem: npm
   directory: "/"
   schedule:
     interval: daily
