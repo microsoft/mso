@@ -21,5 +21,8 @@
     "beachball": "1.23.3",
     "clang-format": "1.4.0",
     "husky": "^3.0.9"
+  },
+  "resolutions": {
+    "lodash": "^4.17.21"
   }
 }

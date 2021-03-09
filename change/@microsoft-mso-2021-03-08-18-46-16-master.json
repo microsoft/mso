@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Bump lodash to 4.17.21",
+  "packageName": "@microsoft/mso",
+  "email": "dannyvv@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2021-03-09T02:46:16.168Z"
+}
