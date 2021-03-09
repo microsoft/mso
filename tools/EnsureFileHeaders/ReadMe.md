@@ -2,6 +2,7 @@
 
 ## Compile
 
+1. npm init
 1. npm install -g typescript
 1. npm install --save-dev @types/node
 1. npm install readdirp
