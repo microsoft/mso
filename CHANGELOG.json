@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 09 Mar 2021 23:55:49 GMT",
+      "tag": "@microsoft/mso_v0.0.20",
+      "version": "0.0.20",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update EnsureFileHeaders tool",
+            "author": "dannyvv@microsoft.com",
+            "commit": "723193d6c048927c53bc27ddbdedf18797917ca2",
+            "package": "@microsoft/mso"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Mar 2021 03:06:31 GMT",
       "tag": "@microsoft/mso_v0.0.20",
       "version": "0.0.20",
