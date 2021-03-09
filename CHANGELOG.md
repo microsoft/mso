@@ -1,7 +1,13 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Tue, 07 Apr 2020 23:51:46 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Mar 2021 03:06:31 GMT and should not be manually modified.
 
+## 0.0.20
+Tue, 09 Mar 2021 03:06:31 GMT
+
+### Patches
+
+- Bump lodash to 4.17.21 (dannyvv@microsoft.com)
 ## 0.0.19
 Tue, 07 Apr 2020 23:51:46 GMT
 
