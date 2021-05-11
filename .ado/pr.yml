@@ -2,7 +2,7 @@ name: PR.$(Date:yyyy-MM-dd).$(Rev:r)
 
 trigger: none
 pr:
-  - master
+  - main
 
 variables:
   - template: variables.yml
