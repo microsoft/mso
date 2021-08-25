@@ -23,6 +23,7 @@
     "husky": "^6.0.0"
   },
   "resolutions": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "path-parse": "^1.0.7"
   }
 }
