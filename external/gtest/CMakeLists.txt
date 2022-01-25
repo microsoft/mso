@@ -14,7 +14,7 @@ if(MSO_ENABLE_UNIT_TESTS)
   FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        2fe3bd994b3189899d93f1d5a881e725e046fdc2
+    GIT_TAG        7eae8de0da5774fa08ce350d9d470901b76b2834
     GIT_SHALLOW    1
     GIT_PROGRESS   1
   )
