@@ -107,3 +107,14 @@ jobs:
     - script: object_tests
       displayName: Liblet tests - object
       workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+      displayName: 📒 Generate Manifest Windows
+      inputs:
+        BuildDropPath: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)
+
+    - task: PublishPipelineArtifact@1
+      displayName: 📒 Publish Manifest  Windows
+      inputs:
+        artifactName: SBom- Windows-$(BuildConfiguration)-$(System.JobAttempt)
+        targetPath: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)/_manifest
