@@ -116,5 +116,5 @@ jobs:
     - task: PublishPipelineArtifact@1
       displayName: 📒 Publish Manifest  Windows
       inputs:
-        artifactName: SBom- Windows-$(BuildConfiguration)-$(System.JobAttempt)
+        artifactName: SBom-$(MsoPlatform)-$(BuildPlatform)-$(BuildConfiguration)-$(System.JobAttempt)
         targetPath: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/$(BuildPlatform)/_manifest
