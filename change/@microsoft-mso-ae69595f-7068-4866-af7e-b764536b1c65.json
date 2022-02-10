@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Use origin/main branch to publish",
+  "packageName": "@microsoft/mso",
+  "email": "vmorozov@microsoft.com",
+  "dependentChangeType": "patch"
+}
