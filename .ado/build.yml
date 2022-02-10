@@ -53,3 +53,14 @@ stages:
 
           - script: yarn run beachball publish --no-publish --message "Beachball Publish (no NPM) ***NO_CI***" --yes
             displayName: Beachball publish (no NPM)
+
+          - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+            displayName: 📒 Generate Manifest
+            inputs:
+              BuildDropPath: $(System.DefaultWorkingDirectory)
+
+          - task: PublishPipelineArtifact@1
+            displayName: 📒 Publish Manifest
+            inputs:
+              artifactName: SBom-$(System.JobAttempt)
+              targetPath: $(System.DefaultWorkingDirectory)/_manifest

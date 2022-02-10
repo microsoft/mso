@@ -48,3 +48,14 @@ steps:
 - script: ./object_tests
   displayName: Liblet tests - object
   workingDirectory: $(Pipeline.Workspace)/tests/$(MsoPlatform)/$(BuildConfiguration)
+
+- task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+  displayName: 📒 Generate Manifest
+  inputs:
+    BuildDropPath: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)
+
+- task: PublishPipelineArtifact@1
+  displayName: 📒 Publish Manifest
+  inputs:
+    artifactName: SBom-$(MsoPlatform)-$(BuildConfiguration)-$(System.JobAttempt)
+    targetPath: $(Build.BinariesDirectory)/$(MsoPlatform)/$(BuildConfiguration)/_manifest
