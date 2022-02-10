@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Fix build break related to fetching GTest sources",
+  "packageName": "@microsoft/mso",
+  "email": "vmorozov@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2022-02-10T01:01:10.496Z"
+}
