@@ -13,10 +13,7 @@ if(MSO_ENABLE_UNIT_TESTS)
 
   FetchContent_Declare(
     googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        7eae8de0da5774fa08ce350d9d470901b76b2834
-    GIT_SHALLOW    1
-    GIT_PROGRESS   1
+    URL https://github.com/google/googletest/archive/06519cedc3159de8b36a504766ad6b7966555f10.zip
   )
 
   FetchContent_GetProperties(googletest)

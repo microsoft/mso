@@ -47,8 +47,8 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set(WIN_TARGET_ARCH $ENV{VSCMD_ARG_TGT_ARCH})
-  if(${WIN_TARGET_ARCH} STREQUAL "")
-    message(FATAL_ERROR "Error: environment variable VSCMD_ARG_TGT_ARCH is not set (required for Windows builds). Are you using a Visual Studio Tools Command Prompt?")
+  if("${WIN_TARGET_ARCH}" STREQUAL "")
+    set(WIN_TARGET_ARCH "x64")
   endif()
 endif()
 
