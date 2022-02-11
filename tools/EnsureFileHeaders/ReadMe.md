@@ -1,14 +1,12 @@
+The EnsureFileHeaders utility updates source files to have the required copyright headers.
+
 # Usage
 
 ## Compile
 
-1. npm init
-1. npm install -g typescript
-1. npm install --save-dev @types/node
-1. npm install readdirp
-1. npm install yargs
-1. tsc EnsureFileHeaders.ts
+1. yarn
+1. yarn compile
 
 ## Run
 
-1. node EnsureFileHeaders.js -d directoryPathToScan
+1. yarn ensure-headers

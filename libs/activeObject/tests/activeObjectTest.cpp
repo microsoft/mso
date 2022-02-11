@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+// Licensed under the MIT license.
 
 #include <activeObject/activeObject.h>
 #include <eventWaitHandle/eventWaitHandle.h>
