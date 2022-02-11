@@ -1,6 +1,17 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Tue, 09 Mar 2021 03:06:31 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Feb 2022 22:59:00 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.0.21
+
+Fri, 11 Feb 2022 22:59:00 GMT
+
+### Patches
+
+- Fix build break related to fetching GTest sources (vmorozov@microsoft.com)
+- Use origin/main branch to publish (vmorozov@microsoft.com)
 
 ## 0.0.20
 Tue, 09 Mar 2021 03:06:31 GMT

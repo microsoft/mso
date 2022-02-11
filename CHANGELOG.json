@@ -2,6 +2,28 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Fri, 11 Feb 2022 22:59:00 GMT",
+      "tag": "@microsoft/mso_v0.0.21",
+      "version": "0.0.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "vmorozov@microsoft.com",
+            "package": "@microsoft/mso",
+            "commit": "0fcd615b5059b359d358533399a456da03e05524",
+            "comment": "Fix build break related to fetching GTest sources",
+            "date": "2022-02-10T01:01:10.496Z"
+          },
+          {
+            "author": "vmorozov@microsoft.com",
+            "package": "@microsoft/mso",
+            "commit": "883f4ab178815f5e24c6993c4674d88cd891a63c",
+            "comment": "Use origin/main branch to publish"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Mar 2021 23:55:49 GMT",
       "tag": "@microsoft/mso_v0.0.20",
       "version": "0.0.20",
