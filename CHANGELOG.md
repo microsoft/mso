@@ -1,8 +1,18 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Fri, 11 Feb 2022 22:59:00 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Feb 2022 23:07:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.0.21
+
+Fri, 11 Feb 2022 23:07:07 GMT
+
+### Patches
+
+- Fix build break related to fetching GTest sources (vmorozov@microsoft.com)
+- Add private package.json to EnsureFileHeaders tool (vmorozov@microsoft.com)
+- Use origin/main branch to publish (vmorozov@microsoft.com)
 
 ## 0.0.21
 

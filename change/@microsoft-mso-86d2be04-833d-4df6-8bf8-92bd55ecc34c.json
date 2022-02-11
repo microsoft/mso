@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Add private package.json to EnsureFileHeaders tool",
-  "packageName": "@microsoft/mso",
-  "email": "vmorozov@microsoft.com",
-  "dependentChangeType": "patch"
-}
