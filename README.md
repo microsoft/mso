@@ -78,13 +78,11 @@ ctest -C Debug
 ### Additional tasks for Pull Requests
 1. Run `yarn run change`
 
-{% tip %}
-
-Tip: If the output of the command is `No change files are needed`
-once you build with your changes, it is possible beachball 
-did not pickup your diff correctly. To fix this, run
-`yarn change --branch "origin/main"` where `origin/main` is
-your upstream branch.
+> Tip: If the output of the command is `No change files are needed`
+> once you build with your changes, it is possible beachball 
+> did not pickup your diff correctly. To fix this, run
+> `yarn change --branch "origin/main"` where `origin/main` is
+> your upstream branch.
 2. Ensure the generated `change/*.json` file is present in your
 PR.
 
