@@ -4,70 +4,11 @@
   Copyright (c) 1994 Microsoft Corporation
 
   Functions related to string and character characteristics.
-
-  %%Owner: AskIntl
-  %%Id: 96dc3da1-b7a4-424b-bdc2-7c21d7423405
 -------------------------------------------------------------------------*/
 #pragma once
 #ifndef LIBLET_ROOT_MSOSTRINGTRAITS_H
 #define LIBLET_ROOT_MSOSTRINGTRAITS_H
 #include <compilerAdapters/functionDecorations.h>
-#include <platformAdapters/windowsfirst.h>
-
-//typedef struct IMsoMemHeap IMsoMemHeap;
-//
-//#define wchUnicodeBig 0xFFFE
-//#define wchUnicodeLittle 0xFEFF
-//#define lUTF8BOM 0xBFBBEFL
-//#define lUTF8BOMMask 0xFFFFFFL
-//
-///*	Check whether if wch is an alphanumeric character. */
-//LIBLET_PUBLICAPI BOOL MsoFAlphaNumWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI int MsoFExtenderWch(WCHAR wch) MSONOEXCEPT;
-//
-///*	Check whether if ch/wch is a [hex]digit. */
-///* MBSupport: LIBLET_PUBLICAPI*/ BOOL MsoFDigitCh(int ch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI BOOL MsoFDigitWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI BOOL MsoFHexDigitWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI int ValHexDigitWch(WCHAR wch) MSONOEXCEPT;
-//
-///*	Check whether if sz/wz contains all digits */
-//LIBLET_PUBLICAPI BOOL MsoFSzAllDigitsSimple(const CHAR* sz) MSONOEXCEPT; // only cares about ANSI '0'-'9'
-//LIBLET_PUBLICAPI BOOL MsoFWzAllDigits(const WCHAR* wz) MSONOEXCEPT;
-//
-//LIBLET_PUBLICAPI MSODLL_MANDATED_C_EXPORT BOOL MsoFPuncWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI MSOEXTERN_C BOOL MsoFAlphaWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI BOOL MsoFSpecChWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI BOOL MsoFComplexMarkWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI MSODLL_MANDATED_C_EXPORT BOOL MsoFSpaceWch(WCHAR wch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI MSOEXTERN_C BOOL MsoFSpaceCh(CHAR ch) MSONOEXCEPT;
-//
-//LIBLET_PUBLICAPI BOOL MsoFLowAsciiRgch(LPCSTR sz, int cch) MSONOEXCEPT;
-//LIBLET_PUBLICAPI BOOL MsoFLowAsciiRgwch(LPCWSTR wz, int cch) MSONOEXCEPT;
-//
-//#ifdef DEBUG
-//LIBLET_PUBLICAPI BOOL MsoFValidWtz(const WCHAR* wtz) MSONOEXCEPT;
-//#else
-//#define MsoFValidWtz(wtz) (1)
-//#endif // DEBUG
-//
-///*	Returns fTrue if and only if wch is a FE char. */
-//// C linkage required: Used by GetProcAddress
-//LIBLET_PUBLICAPI MSOEXTERN_C BOOL MsoFFEWch(WCHAR wch) MSONOEXCEPT;
-//
-//LIBLET_PUBLICAPI BOOL MsoIsWchVietToneMark(WCHAR wch) MSONOEXCEPT;
-///*	Returns fTrue if and only if wch is a Indic vowel. */
-//LIBLET_PUBLICAPI BOOL MsoIsWchIndicVowel(WCHAR wch) MSONOEXCEPT;
-//
-///* PluggableUI: LIBLET_PUBLICAPI*/ int MsoIOFCTriggerFromXchXch(WCHAR xch1, WCHAR xch2) MSONOEXCEPT;
-//
-///*-----------------------------------------------------------------------------
-//    %%owner:  DanJump
-//    MetroFValidPartChar
-//
-//    Returns TRUE if the character is valid in a metro part name
-//-----------------------------------------------------------------------------*/
-//LIBLET_PUBLICAPI BOOL MetroFValidPartChar(const WCHAR wch) MSONOEXCEPT;
 
 #define MsoFIsLowerFast(ch) ((unsigned)((ch) - 'a') <= 'z' - 'a')
 #define ASCII_TOUPPER(x) (FBetween(x, 'a', 'z') ? (x) - ('a' - 'A') : (x))
