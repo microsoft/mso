@@ -206,7 +206,7 @@ inline void UnformattedStringToGUID(const std::wstring& str, GUID& guid)
   StringToGUID(localStr, guid);
 }
 
-inline bool FEmptyGuid(const GUID& guid) noexcept
+inline bool IsEmptyGuid(const GUID& guid) noexcept
 {
   static const GUID emptyGuid = {0, 0, 0, {0, 0, 0, 0, 0, 0, 0, 0}};
   return static_cast<bool>(IsEqualGUID(emptyGuid, guid));
