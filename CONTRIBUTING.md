@@ -13,7 +13,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-
 ## Additional steps for Pull Requests
 
 0. It is recommended that you rename your remote to `upstream`.
@@ -23,7 +22,7 @@ https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
 
 1. Run `yarn change`
 
-> Tip: If the output of the command is `No change files are needed`
+> **Tip:** If the output of the command is `No change files are needed`
 > once you build with your changes, it is possible beachball 
 > did not pickup your diff correctly. To fix this, run
 > `yarn change --branch "upstream/main"` where `upstream/main` is
