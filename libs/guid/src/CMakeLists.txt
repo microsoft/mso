@@ -1,8 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
 
-liblet_tests(
+liblet_sources(
   SOURCES
-    guidTest.cpp
-    oguidTest.cpp
+    oguid.cpp
 )
