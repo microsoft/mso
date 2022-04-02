@@ -5,5 +5,6 @@ liblet_includes(
   INCLUDES
     memoryApi/leakDetection.h
     memoryApi/memoryApi.h
+    memoryApi/memoryComparison.h
     memoryApi/memoryLeakScope.h
 )
