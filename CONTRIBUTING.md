@@ -29,5 +29,4 @@ https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
 > `yarn change --branch "upstream/main"` where `upstream/main` is
 > your upstream remote, as per previous step.
 
-2. Ensure the generated `change/*.json` file is present in your
-PR.
+2. Ensure the generated `change/*.json` file is present in your PR.
