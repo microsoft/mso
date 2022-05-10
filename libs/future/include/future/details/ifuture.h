@@ -75,7 +75,7 @@ struct IFuture : IUnknown
   virtual void AddContinuation(Mso::CntPtr<IFuture>&& continuation) noexcept = 0;
 
   _Success_(
-      return ) virtual bool TryStartSetValue(_Out_ ByteArrayView& valueBuffer, bool crashIfFailed = false) noexcept = 0;
+      return) virtual bool TryStartSetValue(_Out_ ByteArrayView& valueBuffer, bool crashIfFailed = false) noexcept = 0;
   virtual void Post() noexcept = 0;
   virtual void StartAwaiting() noexcept = 0;
   virtual bool TrySetSuccess(bool crashIfFailed = false) noexcept = 0;

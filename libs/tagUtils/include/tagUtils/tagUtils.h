@@ -340,7 +340,7 @@ public:
   /**
   @return a pointer to a null-terminated character buffer
   */
-  _Ret_z_ operator T const *() const noexcept
+  _Ret_z_ operator T const*() const noexcept
   {
     return this->c_str();
   }

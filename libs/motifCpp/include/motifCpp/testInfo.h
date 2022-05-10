@@ -9,33 +9,39 @@
 #include <vector>
 #include "motifCpp/motifCppTestBase.h"
 
-#define TEST_CLASS(className)                                                                      \
-  struct className;                                                                                \
-                                                                                                   \
-  struct TestClassInfo_##className final                                                           \
-      : Mso::UnitTests::Internal::TestClassInfoReg<TestClassInfo_##className, className>           \
-  {                                                                                                \
-    TestClassInfo_##className() noexcept : TestClassInfoRegType{#className, __FILE__, __LINE__} {} \
-  };                                                                                               \
-                                                                                                   \
+#define TEST_CLASS(className)                                                                   \
+  struct className;                                                                             \
+                                                                                                \
+  struct TestClassInfo_##className final                                                        \
+      : Mso::UnitTests::Internal::TestClassInfoReg<TestClassInfo_##className, className>        \
+  {                                                                                             \
+    TestClassInfo_##className() noexcept : TestClassInfoRegType{#className, __FILE__, __LINE__} \
+    {                                                                                           \
+    }                                                                                           \
+  };                                                                                            \
+                                                                                                \
   struct className : Mso::UnitTests::Internal::TestClassBase<className, TestClassInfo_##className>
 
-#define TEST_CLASS_EX(className, baseClass)                                                                     \
-  struct className;                                                                                             \
-                                                                                                                \
-  struct TestClassInfo_##className final                                                                        \
-      : baseClass                                                                                               \
-      , Mso::UnitTests::Internal::TestClassInfoReg<TestClassInfo_##className, className>                        \
-  {                                                                                                             \
-    TestClassInfo_##className() noexcept : baseClass{}, TestClassInfoRegType{#className, __FILE__, __LINE__} {} \
-  };                                                                                                            \
-                                                                                                                \
+#define TEST_CLASS_EX(className, baseClass)                                                                  \
+  struct className;                                                                                          \
+                                                                                                             \
+  struct TestClassInfo_##className final                                                                     \
+      : baseClass                                                                                            \
+      , Mso::UnitTests::Internal::TestClassInfoReg<TestClassInfo_##className, className>                     \
+  {                                                                                                          \
+    TestClassInfo_##className() noexcept : baseClass{}, TestClassInfoRegType{#className, __FILE__, __LINE__} \
+    {                                                                                                        \
+    }                                                                                                        \
+  };                                                                                                         \
+                                                                                                             \
   struct className : Mso::UnitTests::Internal::TestClassBase<className, TestClassInfo_##className>
 
 #define TEST_METHOD(methodName)                                                                                       \
   struct TestMethodInfo_##methodName final : Mso::UnitTests::Internal::TestMethodInfoReg<TestMethodInfo_##methodName> \
   {                                                                                                                   \
-    TestMethodInfo_##methodName() : TestMethodInfoRegType{TestClassInfoType::Instance, #methodName, __LINE__} {}      \
+    TestMethodInfo_##methodName() : TestMethodInfoRegType{TestClassInfoType::Instance, #methodName, __LINE__}         \
+    {                                                                                                                 \
+    }                                                                                                                 \
                                                                                                                       \
     void Invoke(Mso::UnitTests::TestClass& test) const override                                                       \
     {                                                                                                                 \

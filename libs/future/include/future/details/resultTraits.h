@@ -84,8 +84,8 @@ struct GetResultTraits<TFutureValue, TExecutor, TCallback, CallbackArgKind::Mayb
 {
   using Type = ResultTraits<
       TFutureValue,
-      decltype(
-          std::declval<TExecutor>().Invoke(std::declval<TCallback>(), std::declval<Mso::Maybe<TFutureValue>&&>()))>;
+      decltype(std::declval<TExecutor>()
+                   .Invoke(std::declval<TCallback>(), std::declval<Mso::Maybe<TFutureValue>&&>()))>;
   static_assert(
       noexcept(std::declval<TExecutor>().Invoke(std::declval<TCallback>(), std::declval<Mso::Maybe<TFutureValue>&&>())),
       "Executor's Invoke method must not throw");

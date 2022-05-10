@@ -230,7 +230,7 @@ public:
   void AddContinuation(Mso::CntPtr<IFuture>&& continuation) noexcept override;
 
   _Success_(
-      return ) bool TryStartSetValue(_Out_ ByteArrayView& valueBuffer, bool crashIfFailed = false) noexcept override;
+      return) bool TryStartSetValue(_Out_ ByteArrayView& valueBuffer, bool crashIfFailed = false) noexcept override;
   void Post() noexcept override;
   void StartAwaiting() noexcept override;
   bool TrySetSuccess(bool crashIfFailed = false) noexcept override;
