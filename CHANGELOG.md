@@ -1,8 +1,16 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Fri, 11 Feb 2022 23:07:07 GMT and should not be manually modified.
+This log was last generated on Wed, 11 May 2022 17:17:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.0.22
+
+Wed, 11 May 2022 17:17:50 GMT
+
+### Patches
+
+- Bump clang-format to 1.8 to address CVE in async (dannyvv@microsoft.com)
 
 ## 0.0.21
 

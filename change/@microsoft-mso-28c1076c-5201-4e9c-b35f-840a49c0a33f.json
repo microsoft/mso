@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Bump clang-format to 1.8 to address CVE in async",
-  "packageName": "@microsoft/mso",
-  "email": "dannyvv@microsoft.com",
-  "dependentChangeType": "patch"
-}

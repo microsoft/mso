@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Wed, 11 May 2022 17:17:50 GMT",
+      "tag": "@microsoft/mso_v0.0.22",
+      "version": "0.0.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@microsoft/mso",
+            "commit": "b8bcfa4208d94180d7f6cbac4dd44ce4ab6d4094",
+            "comment": "Bump clang-format to 1.8 to address CVE in async"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Feb 2022 23:07:07 GMT",
       "tag": "@microsoft/mso_v0.0.21",
       "version": "0.0.21",
