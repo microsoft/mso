@@ -379,12 +379,14 @@ bool operator!=(std::nullptr_t, const THolder<T1, THelper1, TEmptyTraits1>& a) n
 /**
   Helper to add RVALUE methods to derived THolder classes
 */
-#define IMPLEMENT_THOLDER_RVALUE_REFS_(T, TBase)                       \
-  T(_Inout_ T&& rFrom) noexcept : TBase(std::forward<TBase>(rFrom)) {} \
-  T& operator=(_Inout_ T&& rFrom) noexcept                             \
-  {                                                                    \
-    this->TransferFrom(rFrom);                                         \
-    return *this;                                                      \
+#define IMPLEMENT_THOLDER_RVALUE_REFS_(T, TBase)                    \
+  T(_Inout_ T&& rFrom) noexcept : TBase(std::forward<TBase>(rFrom)) \
+  {                                                                 \
+  }                                                                 \
+  T& operator=(_Inout_ T&& rFrom) noexcept                          \
+  {                                                                 \
+    this->TransferFrom(rFrom);                                      \
+    return *this;                                                   \
   }
 #define IMPLEMENT_THOLDER_RVALUE_REFS(T) IMPLEMENT_THOLDER_RVALUE_REFS_(T, Super)
 

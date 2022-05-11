@@ -112,79 +112,79 @@
 #define _Pre_opt_tz_ \
   _Pre1_impl_(__maybenull_impl_notref) _Pre1_impl_(__zterm_impl) _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
 
-#define _Pre_t_cap_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_cap_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_t_bytecap_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_bytecap_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
+#define _Pre_t_cap_(size)                                                                                            \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTStr)
+#define _Pre_opt_t_cap_(size)                                                                                          \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTStr)
+#define _Pre_t_bytecap_(size)                                                                                \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_opt_t_bytecap_(size)                                                                              \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
 #define _Pre_tz_cap_(size) \
   _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_impl(size)) _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_cap_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_tz_bytecap_(size)                                                       \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_bytecap_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
+#define _Pre_opt_tz_cap_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_tz_bytecap_(size)                                                                                    \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_opt_tz_bytecap_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
 
-#define _Pre_t_cap_c_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_cap_c_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_t_bytecap_c_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_bytecap_c_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_tz_cap_c_(size)                                                       \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_cap_c_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_tz_bytecap_c_(size)                                                       \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_bytecap_c_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
+#define _Pre_t_cap_c_(size)                                                                                            \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTStr)
+#define _Pre_opt_t_cap_c_(size)                                                                              \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_t_bytecap_c_(size)                                                                                \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_opt_t_bytecap_c_(size)                                                                              \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_tz_cap_c_(size)                                                                                    \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_c_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_opt_tz_cap_c_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_c_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_tz_bytecap_c_(size)                                                                                    \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_opt_tz_bytecap_c_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
 
-#define _Pre_t_cap_x_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_cap_x_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_t_bytecap_x_(size)                                                               \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_opt_t_bytecap_x_(size)                                                             \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTStr)
-#define _Pre_tz_cap_x_(size)                                                         \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_x_impl(_csize)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_cap_x_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_tz_bytecap_x_(size)                                                       \
-  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
-#define _Pre_opt_tz_bytecap_x_(size)                                                     \
-  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$STR_TYPE(_$preTZStr)
+#define _Pre_t_cap_x_(size)                                                                                            \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTStr)
+#define _Pre_opt_t_cap_x_(size)                                                                              \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_t_bytecap_x_(size)                                                                                \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_opt_t_bytecap_x_(size)                                                                              \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) _Pre_valid_impl_ \
+  _$STR_TYPE(_$preTStr)
+#define _Pre_tz_cap_x_(size)                                                                                      \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_x_impl(_csize)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_opt_tz_cap_x_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __cap_x_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_tz_bytecap_x_(size)                                                                                    \
+  _Pre1_impl_(__notnull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
+#define _Pre_opt_tz_bytecap_x_(size)                                                                                  \
+  _Pre1_impl_(__maybenull_impl_notref) _Pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) _Pre_valid_impl_ _$STR_TYPE( \
+      _$preTZStr)
 
 #define _Post_t_ _Post1_impl_(__count_x_impl([0])) _Post_valid_impl_ _$STR_TYPE(_$postTStr)
 #define _Post_tz_ _Post1_impl_(__zterm_impl) _Post_valid_impl_ _$STR_TYPE(_$postTZStr)
@@ -208,118 +208,130 @@
 #define _Deref_out_tz_ _Out_ _Deref_post_tz_
 #define _Deref_out_opt_tz_ _Out_ _Deref_post_opt_tz_
 
-#define _Deref_pre_t_                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre1_impl_(__count_x_impl([0])) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
-#define _Deref_pre_opt_t_                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre1_impl_(__count_x_impl([0])) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_t_                                                                                                \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre1_impl_(__count_x_impl([0])) _Pre_valid_impl_ _$DEREF_STR_TYPE( \
+      _$preTStr)
+#define _Deref_pre_opt_t_                                                                                              \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre1_impl_(__count_x_impl([0])) _Pre_valid_impl_ _$DEREF_STR_TYPE( \
+      _$preTStr)
 #define _Deref_pre_tz_ \
   _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre1_impl_(__zterm_impl) _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_                                                   \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre1_impl_(__zterm_impl) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_                                                                                      \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre1_impl_(__zterm_impl) _Pre_valid_impl_ _$DEREF_STR_TYPE( \
+      _$preTZStr)
 
-#define _Deref_pre_t_cap_(size)                                                                     \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
-#define _Deref_pre_opt_t_cap_(size)                                                                   \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_t_cap_(size)                                                                                      \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_opt_t_cap_(size)                                                                                    \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_t_bytecap_(size)                                                                     \
   _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+      _Pre_valid_impl_                                                                                  \
+      _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_opt_t_bytecap_(size)                                                                   \
   _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
-#define _Deref_pre_tz_cap_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_cap_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_tz_bytecap_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_bytecap_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
+      _Pre_valid_impl_                                                                                    \
+      _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_tz_cap_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_cap_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_tz_bytecap_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_bytecap_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
 
-#define _Deref_pre_t_cap_c_(size)                                                                     \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_t_cap_c_(size)                                                                                      \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_opt_t_cap_c_(size)                                                                   \
   _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+      _Pre_valid_impl_                                                                                  \
+      _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_t_bytecap_c_(size)                                                                     \
   _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+      _Pre_valid_impl_                                                                                    \
+      _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_opt_t_bytecap_c_(size)                                                                   \
   _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
-#define _Deref_pre_tz_cap_c_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_cap_c_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_tz_bytecap_c_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_bytecap_c_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
+      _Pre_valid_impl_                                                                                      \
+      _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_tz_cap_c_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_c_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_cap_c_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_c_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_tz_bytecap_c_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_bytecap_c_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_c_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
 
-#define _Deref_pre_t_cap_x_(size)                                                                     \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_t_cap_x_(size)                                                                                      \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_opt_t_cap_x_(size)                                                                   \
   _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+      _Pre_valid_impl_                                                                                  \
+      _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_t_bytecap_x_(size)                                                                     \
   _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
+      _Pre_valid_impl_                                                                                    \
+      _$DEREF_STR_TYPE(_$preTStr)
 #define _Deref_pre_opt_t_bytecap_x_(size)                                                                   \
   _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTStr)
-#define _Deref_pre_tz_cap_x_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_cap_x_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_tz_bytecap_x_(size)                                                             \
-  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
-#define _Deref_pre_opt_tz_bytecap_x_(size)                                                           \
-  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) \
-      _Pre_valid_impl_ _$DEREF_STR_TYPE(_$preTZStr)
+      _Pre_valid_impl_                                                                                      \
+      _$DEREF_STR_TYPE(_$preTStr)
+#define _Deref_pre_tz_cap_x_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_x_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_cap_x_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __cap_x_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_tz_bytecap_x_(size)                                                                              \
+  _Deref_pre1_impl_(__notnull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
+#define _Deref_pre_opt_tz_bytecap_x_(size)                                                                            \
+  _Deref_pre1_impl_(__maybenull_impl_notref) _Deref_pre2_impl_(__zterm_impl, __bytecap_x_impl(size)) _Pre_valid_impl_ \
+  _$DEREF_STR_TYPE(_$preTZStr)
 
-#define _Deref_post_t_                                                              \
-  _Deref_post1_impl_(__notnull_impl_notref) _Deref_post1_impl_(__count_x_impl([0])) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
-#define _Deref_post_opt_t_                                                            \
-  _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post1_impl_(__count_x_impl([0])) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
-#define _Deref_post_tz_                                                      \
-  _Deref_post1_impl_(__notnull_impl_notref) _Deref_post1_impl_(__zterm_impl) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
-#define _Deref_post_opt_tz_                                                    \
-  _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post1_impl_(__zterm_impl) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
+#define _Deref_post_t_                                                                                \
+  _Deref_post1_impl_(__notnull_impl_notref) _Deref_post1_impl_(__count_x_impl([0])) _Post_valid_impl_ \
+  _$DEREF_STR_TYPE(_$postTStr)
+#define _Deref_post_opt_t_                                                                              \
+  _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post1_impl_(__count_x_impl([0])) _Post_valid_impl_ \
+  _$DEREF_STR_TYPE(_$postTStr)
+#define _Deref_post_tz_                                                                                          \
+  _Deref_post1_impl_(__notnull_impl_notref) _Deref_post1_impl_(__zterm_impl) _Post_valid_impl_ _$DEREF_STR_TYPE( \
+      _$postTZStr)
+#define _Deref_post_opt_tz_                                                                                        \
+  _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post1_impl_(__zterm_impl) _Post_valid_impl_ _$DEREF_STR_TYPE( \
+      _$postTZStr)
 
 #define _Deref_post_t_cap_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                               \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_cap_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                 \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_t_bytecap_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                   \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_bytecap_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                     \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_tz_cap_(size)                       _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__cap_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_opt_tz_cap_(size)                   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__zterm_impl),__cap_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_tz_bytecap_(size)                   _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__bytecap_impl(size)) _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
@@ -327,16 +339,20 @@
 
 #define _Deref_post_t_cap_c_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                 \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_cap_c_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_c_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                   \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_t_bytecap_c_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                     \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_bytecap_c_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_c_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                       \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_tz_cap_c_(size)                     _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__cap_c_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_opt_tz_cap_c_(size)                 _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__zterm_impl),__cap_c_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_tz_bytecap_c_(size)                 _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__bytecap_c_impl(size)) _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
@@ -344,16 +360,20 @@
 
 #define _Deref_post_t_cap_x_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                 \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_cap_x_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __cap_x_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                   \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_t_bytecap_x_(size)                                                                      \
   _Deref_post1_impl_(__notnull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                     \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_opt_t_bytecap_x_(size)                                                                    \
   _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__count_x_impl([0]), __bytecap_x_impl(size)) \
-      _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTStr)
+      _Post_valid_impl_                                                                                       \
+      _$DEREF_STR_TYPE(_$postTStr)
 #define _Deref_post_tz_cap_x_(size)                     _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__cap_x_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_opt_tz_cap_x_(size)                 _Deref_post1_impl_(__maybenull_impl_notref) _Deref_post2_impl_(__zterm_impl),__cap_x_impl(size))     _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)
 #define _Deref_post_tz_bytecap_x_(size)                 _Deref_post1_impl_(__notnull_impl_notref)   _Deref_post2_impl_(__zterm_impl),__bytecap_x_impl(size)) _Post_valid_impl_ _$DEREF_STR_TYPE(_$postTZStr)

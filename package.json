@@ -19,7 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "beachball": "2.21.0",
-    "clang-format": "1.6.0",
+    "clang-format": "1.8.0",
     "husky": "7.0.4"
   },
   "resolutions": {

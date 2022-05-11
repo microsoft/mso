@@ -33,7 +33,7 @@ template <typename char_type>
 class StringLiteral
 {
 public:
-  constexpr operator _Null_terminated_ const char_type *() const noexcept
+  constexpr operator _Null_terminated_ const char_type*() const noexcept
   {
     return m_string;
   }

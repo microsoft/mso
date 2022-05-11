@@ -15,8 +15,10 @@
   be included. Then, add the corresponding MSO_LINK_SYMBOL macro to one of the
   source files that gets compiled directly into your binary (as an *.obj file)
 */
-#define MSO_DEFINE_SYMBOL(symbol) \
-  extern "C" void __cdecl symbol() {}
+#define MSO_DEFINE_SYMBOL(symbol)  \
+  extern "C" void __cdecl symbol() \
+  {                                \
+  }
 
 // MSO_LINK_INCLUDE and MSO_LINK_SYMBOL macros are only needed for MSVC.
 #if MS_TARGET_WINDOWS

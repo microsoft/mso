@@ -11,8 +11,8 @@ Unit tests for classes in the ObjectSwarm.h
 #include <motifCpp/testCheck.h>
 #include <comUtil/qiCast.h>
 
-//#define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
-// class.
+// #define TEST_BAD_INHERITANCE1 // Uncomment to confirm VEC, but observe a memory leak. We cannot safely destroy this
+//  class.
 
 MSO_STRUCT_GUID(ISwarmSample1, "962D2470-7452-43AB-9F74-63545A3E8A58")
 struct DECLSPEC_NOVTABLE ISwarmSample1 : public IUnknown
