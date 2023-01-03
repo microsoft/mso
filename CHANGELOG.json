@@ -2,6 +2,21 @@
   "name": "@microsoft/mso",
   "entries": [
     {
+      "date": "Tue, 03 Jan 2023 19:45:22 GMT",
+      "tag": "@microsoft/mso_v0.0.23",
+      "version": "0.0.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@microsoft/mso",
+            "commit": "f88f81a359166be65b2590db82712d13647fc7ca",
+            "comment": "Apply compliance fixes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 May 2022 17:17:50 GMT",
       "tag": "@microsoft/mso_v0.0.22",
       "version": "0.0.22",

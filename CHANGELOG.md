@@ -1,8 +1,16 @@
 # Change Log - @microsoft/mso
 
-This log was last generated on Wed, 11 May 2022 17:17:50 GMT and should not be manually modified.
+This log was last generated on Tue, 03 Jan 2023 19:45:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.0.23
+
+Tue, 03 Jan 2023 19:45:22 GMT
+
+### Patches
+
+- Apply compliance fixes (dannyvv@microsoft.com)
 
 ## 0.0.22
 

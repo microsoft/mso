@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Apply compliance fixes",
-  "packageName": "@microsoft/mso",
-  "email": "dannyvv@microsoft.com",
-  "dependentChangeType": "patch"
-}
