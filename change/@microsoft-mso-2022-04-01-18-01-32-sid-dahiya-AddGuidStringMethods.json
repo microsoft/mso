@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "Add new methods to liblet guid",
+  "packageName": "@microsoft/mso",
+  "email": "sidahiy@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2022-04-02T01:01:32.436Z"
+}

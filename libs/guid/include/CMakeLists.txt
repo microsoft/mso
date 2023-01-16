@@ -3,6 +3,8 @@
 
 liblet_includes(
   INCLUDES
+    guid/comparison.h
     guid/msoGuid.h
     guid/msoGuidDetails.h
+    guid/oguid.h
 )
