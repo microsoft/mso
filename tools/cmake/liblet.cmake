@@ -57,8 +57,8 @@ function(liblet LIBLET_TARGET)
   # DEPENDS_ANDROID - liblet dependencies for Android
   # DEPENDS_APPLE   - liblet dependencies for Apple platforms (macOS or iOS)
   # DEPENDS_IOS     - liblet dependencies for iOS
-  # DEPENDS_LINUX   - liblet dependencies for Linux
   # DEPENDS_MAC     - liblet dependencies for macOS
+  # DEPENDS_LINUX   - liblet dependencies for Linux
   # DEPENDS_POSIX   - liblet dependencies for Android, Apple and Linux platforms
   # DEPENDS_WIN     - liblet dependencies for all Windows platforms
   # DEPENDS_WIN32   - liblet dependencies for Win32
@@ -68,8 +68,8 @@ function(liblet LIBLET_TARGET)
   # We always create STATIC library since INTERFACE libraries have limitations
   # such as not allowing custom commands.
   message(STATUS "Defining liblet Mso::${LIBLET_TARGET}")
-  add_library(${LIBLET_TARGET} STATIC)
   add_library(Mso::${LIBLET_TARGET} ALIAS ${LIBLET_TARGET})
+  add_library(${LIBLET_TARGET} STATIC)
 
   _liblet_set_platform_definitions(${LIBLET_TARGET})
 
