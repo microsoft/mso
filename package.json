@@ -3,9 +3,7 @@
   "version": "0.0.23",
   "scripts": {
     "change": "beachball change",
-    "check": "beachball check",
-    "format": "node tools/scripts/formatFiles.js -i -style=file -assume-filename=../../.clang-format",
-    "format:verify": "node tools/scripts/formatFiles.js -i -style=file -assume-filename=../../.clang-format -verify"
+    "check": "beachball check"
   },
   "husky": {
     "hooks": {
@@ -18,12 +16,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "beachball": "2.31.5",
-    "clang-format": "1.8.0",
-    "husky": "8.0.1"
-  },
-  "resolutions": {
-    "lodash": "^4.17.21",
-    "minimatch": "^3.1.2"
+    "beachball": "2.55.1"
   }
 }
