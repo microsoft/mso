@@ -1,6 +1,11 @@
 name: Build.$(Date:yyyy-MM-dd).$(Rev:r)
 
-trigger: none
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+
 pr: none
 
 resources:

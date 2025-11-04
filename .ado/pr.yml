@@ -1,7 +1,8 @@
 name: PR.$(Date:yyyy-MM-dd).$(Rev:r)
 
 trigger: none
-pr: none
+pr:
+  - main
 
 resources:
   repositories:
