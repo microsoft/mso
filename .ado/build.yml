@@ -24,9 +24,9 @@ extends:
     stages:
       - stage: placeholder
         jobs:
-          - job: Placeholder
+          - job: placeholder
             steps:
-              - script: echo "This is a placeholder stage."
+              - script: echo "This is a placeholder job."
 
 
 # stages:
