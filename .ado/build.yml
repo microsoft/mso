@@ -1,66 +1,84 @@
 name: Build.$(Date:yyyy-MM-dd).$(Rev:r)
 
-trigger:
-  batch: true
-  branches:
-    include:
-      - main
-
+trigger: none
 pr: none
+
+resources:
+  repositories:
+  - repository: OfficePipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/OfficePipelineTemplates
+    ref: refs/tags/release
 
 variables:
   - template: variables.yml
 
-stages:
-  - stage: Build
-    jobs:
-      - template: templates/windows-build-job.yml
+extends:
+  template: v1/Office.Official.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-latest
+      os: windows
 
-      - template: templates/apple-build-job.yml
+    stages:
+      - stage: placeholder
+        jobs:
+          - job: Placeholder
+            steps:
+              - script: echo "This is a placeholder stage."
 
-      - template: templates/linux-build-job.yml
 
-  - stage: Release
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-      - job: Publish
-        timeoutInMinutes: 15
-        cancelTimeoutInMinutes: 2
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - task: InstallSSHKey@0
-            inputs:
-              knownHostsEntry: github.com,192.30.255.113 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-              sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVmg0PBcc23t2Ys6C8o28qlHl8WL2tgptOky/sVSZ2dAMrTPog8ShQxs2c903PEuJGFtAnmBpjIDGcpSnJ38k+XDrkMvBgPReqjJQ+StNyriee8K2oPBOJURKWzGYvkMGC5daBv0keJxfFT71YhzHxoPwxCnXuodjAljhkmZsAYmeKt7MNUQILVpUxQOrVUmM3sN2ZaZ78hbpx+s3/G7kxYxsa4V+anT/HDyQBDLvyOGJce9yBZrI6B+pAbFiQ9dQg81EfRCtePJqjREjzQ5YMxCKlBi/ptL2xel9A7bsHuqK2xUeeY7Cix9ES/9AzTtgJaSmRh2jP7njooE29S81P rnsdkbot@microsoft.com
-              sshKeySecureFile: rnsdkbot_rsa
+# stages:
+#   - stage: Build
+#     jobs:
+#       - template: templates/windows-build-job.yml
 
-          - checkout: self
-            clean: false
-            submodules: false
+#       - template: templates/apple-build-job.yml
 
-          - task: CmdLine@2
-            displayName: Configure git user/email
-            inputs:
-              script: |
-                call git config --global user.email "62199986+rnsdkbot@users.noreply.github.com"
-                call git config --global user.name "Mso bot"
-                call git remote set-url origin git@github.com:microsoft/Mso.git
+#       - template: templates/linux-build-job.yml
 
-          - script: yarn install --frozen-lockfile
-            displayName: Install yarn packages
+#   - stage: Release
+#     dependsOn: Build
+#     condition: succeeded()
+#     jobs:
+#       - job: Publish
+#         timeoutInMinutes: 15
+#         cancelTimeoutInMinutes: 2
+#         pool:
+#           vmImage: 'windows-2019'
+#         steps:
+#           - task: InstallSSHKey@0
+#             inputs:
+#               knownHostsEntry: github.com,192.30.255.113 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+#               sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVmg0PBcc23t2Ys6C8o28qlHl8WL2tgptOky/sVSZ2dAMrTPog8ShQxs2c903PEuJGFtAnmBpjIDGcpSnJ38k+XDrkMvBgPReqjJQ+StNyriee8K2oPBOJURKWzGYvkMGC5daBv0keJxfFT71YhzHxoPwxCnXuodjAljhkmZsAYmeKt7MNUQILVpUxQOrVUmM3sN2ZaZ78hbpx+s3/G7kxYxsa4V+anT/HDyQBDLvyOGJce9yBZrI6B+pAbFiQ9dQg81EfRCtePJqjREjzQ5YMxCKlBi/ptL2xel9A7bsHuqK2xUeeY7Cix9ES/9AzTtgJaSmRh2jP7njooE29S81P rnsdkbot@microsoft.com
+#               sshKeySecureFile: rnsdkbot_rsa
 
-          - script: yarn run beachball publish --branch origin/main --no-publish --message "Beachball Publish (no NPM) ***NO_CI***" --yes
-            displayName: Beachball publish (no NPM)
+#           - checkout: self
+#             clean: false
+#             submodules: false
 
-          - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-            displayName: 📒 Generate Manifest
-            inputs:
-              BuildDropPath: $(System.DefaultWorkingDirectory)
+#           - task: CmdLine@2
+#             displayName: Configure git user/email
+#             inputs:
+#               script: |
+#                 call git config --global user.email "62199986+rnsdkbot@users.noreply.github.com"
+#                 call git config --global user.name "Mso bot"
+#                 call git remote set-url origin git@github.com:microsoft/Mso.git
 
-          - task: PublishPipelineArtifact@1
-            displayName: 📒 Publish Manifest
-            inputs:
-              artifactName: SBom-$(System.JobAttempt)
-              targetPath: $(System.DefaultWorkingDirectory)/_manifest
+#           - script: yarn install --frozen-lockfile
+#             displayName: Install yarn packages
+
+#           - script: yarn run beachball publish --branch origin/main --no-publish --message "Beachball Publish (no NPM) ***NO_CI***" --yes
+#             displayName: Beachball publish (no NPM)
+
+#           - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+#             displayName: 📒 Generate Manifest
+#             inputs:
+#               BuildDropPath: $(System.DefaultWorkingDirectory)
+
+#           - task: PublishPipelineArtifact@1
+#             displayName: 📒 Publish Manifest
+#             inputs:
+#               artifactName: SBom-$(System.JobAttempt)
+#               targetPath: $(System.DefaultWorkingDirectory)/_manifest
